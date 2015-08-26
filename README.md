@@ -6,6 +6,5 @@
   \inputfile{myfile.tex}
   ```
 
-## Note
-
+### Note
 Please use one line per sentence in the LaTeX source code.
