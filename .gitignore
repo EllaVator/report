@@ -1,0 +1,12 @@
+# Latex
+!/abstract.tex*
+
+#git
+*.pdf
+*.out
+*.log
+*.aux
+*.gz
+
+ # OSX
+.DS_Store
