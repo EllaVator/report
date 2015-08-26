@@ -1,0 +1,26 @@
+\subsection{Continuous integration with Travis CI}
+
+Continuous integration is based on the idea that all developers send their changes to a common code repository as soon as possible, as we did on GitHub. 
+Additionally these changes should be tested before they are merged into the main code repository. 
+In order to do this automatically, it is necessary to automate the build process completely, as we did using Gradle.
+If the build succeeds, all unit and integration tests can be executed, which prevents non-working code to enter the main repository if the error is covered by a test case.
+This procedure is much better than having each developer running the tests before committing the changes to the main repository for a couple of reasons.
+Firstly it does not rely on the developer to run all the tests which can be easily forgotten or skipped because the developer does not see the whole effect his modification has.
+Secondly the project is built in a “neutral” environment that should be a close copy of the production environment if possible. 
+This way for example code that runs fine on the developer's Windows machine but not on Linux can be detected.
+
+As it integrates seamlessly into GitHub, we decided to use Travis CI as our continuous integration service. Each pull request gets marked by colors: yellow means the build is still running, red means failed build or failed test, green says everything is OK. In each pull request there is a link to Travis that gives details about the build process, too.
+
+Travis is configured by a file named \texttt{.travis.yml} in the root directory of the project. 
+It is not even necessary to specify that the build process is handled by Gradle.
+Travis can detect this automatically, given that we specify groovy as our project language (\texttt{language: groovy}).
+We needed to use Java 8 because this is a minimum requirement for Opendial.
+Also, Travis must install the \texttt{sox} command, which is used to extract single sentences from our test audio files in the prompts subproject.
+Finally, we cache the gradle files to speed up the build process (otherwise the Gradle wrapper will download Gradle every time).
+
+Each developer can add Travis to his own repositories, too.
+That way failures can be detected even before sending a pull request.
+Travis can be activated by signing up on \url{https://travis-ci.org/} using your GitHub account.
+Then go to your profile page on Travis and activate the GitHub repositories you want to be watched (which must contain a \texttt{.travis.yml} file).
+From then on every push to these repositories will trigger Travis to build and run tests and send an email about the result.
+
