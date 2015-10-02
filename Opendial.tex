@@ -1,0 +1,167 @@
+\subsection{Dialog Manager}
+
+After a sound has been recognized as speech and the words have been extracted by the grammar, the system needs to decide which action to take and also perform it.
+This process is done in the so called “Dialog Manager”. When and how the system should react to speech is defined in this program.
+For the speaking elevator “EllaVator” the Dialog Manger “Open Dial” was used.
+Therefore I would like to give a quick introduction to the Dialog System Open Dial in the following Chapter.
+
+\subsection{Open Dial}
+
+Like most Dialogue Managers Open Dial also consist of three different components which interact to create a dialogue. 
+The first component is responsible for the recognition of language. 
+In Open Dial this component is called „ Natural Language Understanding model“. 
+The output of the first process is passed on to the next component which checks if there was a instruction given which action should be  be performed upon that input. 
+Such actions might be showing something on a GUI, starting a task or simply selecting an answer to the users input. 
+In OpenDial this part is called „Dialog Manager“.
+The third and last component is called „Natural Language Generation module“ and is basically the opposite of the „Natural Language Understanding model“. 
+The „Natural Language Generation model“ Generates Language from the output of the „Dialog Manger“. 
+Though the component is named “Natural Language Generation model” the output of a Dialogue System is not necessarily speech, but the output is often designed so that it can be easily used to generate speech with a TTS. 
+This is also the case for open Dial. 
+Open Dial also offers a GUI where the dialogue (input, as well as output) is displayed without having to use further plug-ins.
+
+\subsection{Domain}
+
+All of the components mentioned above are located in the so called Domain file.
+A dialogue designer working with Open Dial will in most cases just have to work on this one file. For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file.
+
+In this file the users input will be first transformed into a XML structure and then further processed.
+Some systems fill this structure with semantic information. 
+OpenDial however basically passes variables through the components of the system. 
+The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue. 
+There is a convention for the naming of the variables, they can however be named to the dialogue designers liking. 
+As all information is being passed through variables the correct naming is important though. 
+All three components have a slot “trigger” at the very beginning of their structure. 
+The value given to this slot has to be the name of all variables which are to activate this component.
+For example giving the component this trigger: <model trigger="a_u"> will make it respond to all variables with the name “a_u”. 
+So the variables in Open Dial do not only carry the value through the system but their names also determinate which module should continue to process that variable. The most common way to link them was described above: Having the Natural Language Understanding module process the users input, the Dialogue Manager process that input and then responding using the Natural Language Generation module. 
+In case there is no further processing needed one might also decide to directly link Natural Language Understanding module to Natural Language Generation module. 
+If the System should maybe ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the Natural Language Generation twice, either linking Natural Language Generation to Natural Language Generation module or Natural Language Generation module to the Dialogue Manager which again links back to the Natural Language Generation module.
+
+The domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
+The modules themselves are again subdivided into rules. Every rule in this file represents one command. 
+
+\subsection{Natural Language Understanding module}
+
+The first model to receive input is the “Natural Language Understanding module” (NLU). 
+Depending whether further plug-ins are used this module will get its input either directly from the user or from the plug-in.
+Open Dials NLU component is able to work with plain text input from the user, but in the case of the Ellavator project the User shall also be able to use speech commands to operate the elevator, therefore the NLU in this project receives input from the grammar file of the Sphinx plug-in.
+The grammar of the Sphinx plug-in already does part of the work, which would be usually done by the NLU alone.
+There is only a very limited amount of commands which the elevator is able to execute.
+Each of those can be however be triggered by various expressions. As different people will use different words and structures to express themselves.
+Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression.
+
+In the example shown below there is a rule which models the command of changing a direction.
+A rule consists of at least one case-expression.
+A case-expression itself consists of a “condition” and an “effect”.
+ In the “condition”, as the name already states the Dialogue Designer can define under which circumstances a case-expression will match the users input.
+These conditions are connected using a logical operator.
+In most cases one would want to use the conditions “or” as either one of those expressions should trigger the rule.
+ The “effect” will be the value passed on to the TM.
+As stated before this is done by assigning a variable of the proper name a value.
+In the case of the example below the variable is assigned the value of the function of changing to floor to the level of the given parameter. 
+
+<rule>
+    <case>
+     <condition operator="or">
+      <if var="u_u" value="go to second floor" relation="contains"/>
+      <if var="u_u" value="take me up to the second floor" relation="contains"/>
+	<if var="u_u" value="second floor" relation="contains"/>
+     </condition>
+     <effect prob="1">
+      <set var="a_u" value="Request(second)" />
+     </effect>
+    </case>
+    <case>
+     <condition operator="or">
+      <if var="u_u" value="go to thrid floor" relation="contains"/>
+      <if var="u_u" value="take me up to the third floor" relation="contains"/>
+	<if var="u_u" value="third floor" relation="contains"/>
+     </condition>
+     <effect prob="1">
+      <set var="a_u" value="Request(third)" />
+     </effect>
+   </case>
+   </case>
+  </rule>
+
+In the example above one rule is shown.
+This one rule includes two different commands.
+They are gathered in one rule as the both are orders to switch a floor.
+The only difference is the floor level they have.
+Resulting in different parameters which are given to the function of the variable “a_u” in the “effect” slot.
+
+
+
+As stated before every user will use different words to express themselves.
+To cover up all possible utterances for a command is impossible.
+But one should try to at least cover the most common ones,  to make the dialogue more natural for the user.
+This part can also be done in the  grammar of Sphinx.
+Open Dial offers a few possibilities to do so.
+The first possibility would be to simply list all the expressions as it is shown in the figure above.
+But as can be easily seen in the example above, there is only a small difference between the sentences.
+If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read.
+Therefore it is recommended to use the following expressions which will help to keep the Domain file smaller and easier to read which will make it less prone to mistakes and errors if used in the right amount.
+
+a? - The word „a“ may or may not occure in the expression.
+(a|b|...|x) - One of the symboles written in the brakets has to occure
+(a|b|...|x)? - One of the symboles written in the brakets may or may not occure
+ 
+This table shows the expressions which can be used to structure a the NLU.
+
+In the example used above all three user-utterances could be shortened down using the expression:
+<if var="u_u" value="(go|take me) (up to the)?  second floor" relation="contains"/>
+
+Using this expressions is therefore recommended.
+
+\subsection{Dialogue Manager}
+
+If the variable which was assigned in the NLU module was named correctly it should, in most cases, first be passed trough the Dialogue Manager (DM).
+In the Dialogue Manager the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
+As was said in the last subchapter, values in Open Dial are saved within and passed trough variables. 
+Just like all other modules each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
+Therefore in this component the output of the NLU component will be matched against all conditions in the DM. 
+As soon as one matching rule is found, that rule is triggered which sends the “effect” of that rule.
+The effect of a rule is of course again saved into a variable.
+If no further work, like printing information on a GUI is done, one could argue, that all the DM does is basically linking two variables, the one given in the “condition” to the variable written in the “effect”.
+Of course not all parameters do have to be listed.
+It is sufficient to merely put a placeholder in curly brackets to indicate that there is a parameter to be passed on.
+
+
+		<rule id="Movement">
+			<case>
+				<condition>
+					<if var="a_u" value="Request({x})" />
+				</condition>
+				<effect util="1">
+					<set var="a_m" value="floor({x})" />
+				</effect>
+			</case>
+		</rule>
+The figure above shows  a rule called “Movement” which links the users input “Request” with any parameter to the effect of that input.
+The variable with the name “a_m” and the value “floor” with the input of the Request is send.
+The parameter specified in the placeholder “x” written in curly brackets.
+
+\subsection{Natural Language Generation module}
+
+The last part of the system generates the speech. 
+Without any further plug-ins this will be done by printing the text to the GUI.
+As stated before, this component basically does the opposite of the Natural Language Understanding module. 
+Instead of transforming the users input into an XML structure, the system takes the last components output, which is a variable embedded in an XML structure and transforms it back to plan text, either spoken if plug-ins are used or printed on the GUI, if no plug-ins are used.
+
+Each command is again given its own “rule” and “case” structure, in which “condition and effect are included. 
+The effect of this rule is saved in a variable but also used as output for speech.
+
+<rule> 
+<case>
+				<condition>
+					<if var="a_m" value="floor({x})" />
+				</condition>
+				<effect util="1">
+					<set var="u_m" value="Okay, I will now take you to the {x} floor." />
+				</effect>
+			</case>
+</rule>
+
+The example above shows one rule from an NLG module. 
+In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
+
