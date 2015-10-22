@@ -1,0 +1,17 @@
+Within EllaVator project you can find the following classes that handle serial connection and data transmission between Raspberry Pi and the elevator: \texttt{ElevatorController.java, SerialControllerInterface.java, SerialPortController.java}.\\
+\texttt{ElevatorController.java} is basically a wrapper class that instantiates \texttt{SerialPortController} with predefined constant values for serial connection.
+These values are important and should not be changed unless you decide to replace Raspberri Pi.\\
+Serial port name = \textbf{\texttt{/dev/ttyAMA0}} default serial port on Raspberry Pi.\\
+\href{https://en.wikipedia.org/wiki/Serial\_port\#Speed}{Baudrate} = \textbf{38400} proved to work well with our implementation.\\
+\href{https://en.wikipedia.org/wiki/Serial\_port\#Data_bits}{Bits} = use \textbf{8} bits.\\
+\href{https://en.wikipedia.org/wiki/Serial\_port\#Stop_bits}{Stopbits} = use \textbf{1}.\\
+\href{https://en.wikipedia.org/wiki/Serial\_port\#Parity}{Data correction or Parity} = set to \textbf{NO\_PARITY}.\\
+
+All the constants are are kept in \texttt{SerialControllerInterface.java} class.
+After we instantiate \texttt{SerialPortController} the following public methods become available through \texttt{ElevatorController} class: \texttt{getCurrentFloor()} and \texttt{pushButton()}. 
+Method \texttt{pushButton()} is invoked whenever we want elevator to move to specific floor.
+It accepts integers from 0 to 5 where each integer corresponds to specific floor (see \texttt{SerialControllerInterface.java}). 
+Method \texttt{getCurrentFloor()} should return the integer which represents current floor the elevator is on.
+This method triggers \texttt{getReceivedBytes}, \texttt{findValidSubstrings} (taken from original code) and \texttt{checkMessage} (taken from original code).
+Method \texttt{findValidSubstrings} triggers \texttt{addByteStringToArrayList}.
+Each method is accompanied by extensive information, please read it first.
