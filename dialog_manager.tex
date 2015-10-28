@@ -1,11 +1,10 @@
-
 The dialog manager is responsible for keeping track of the conversation and deciding the next move of the system for each input. The domain of our project is fairly limited. Most conversational situations consist of the user naming a location and the machine taking the action of moving to that location and reassuring the user that it had understood the command. This can described by deterministic If...then... statements. A dialog manager that models the conversation flow as an deterministic FSA is well-suited for our needs.
 When choosing the dialog manager for our project we considered the following factors: It had to be open source, preferably Java, well documented.
 We were also looking for code that was actively maintained.
 We reviewed a few potential contenders:
 \begin{itemize}
 \item[IrisTK] \hfill \\
-TODO
+IrisTK is a sophistacated dialog manager. The main focus of this dialog manager is multimodality: it can integrate input from multiple sensory output: speech, vision. The multimodal nature of this manager adds a lot of functionality which we would not have used, so we decided not to use it.
 \item[InproTK] \hfill \\
 The most exciting asset of this dialog manager was incremental processing.
 The code is well maintained and actively developed. 
@@ -13,6 +12,6 @@ However, we failed to build a demo that uses incremental features due to the lac
 \item[OpenDial] \hfill \\
 OpenDial is probably the most popular open source dialog manager.
 After successfully implementing a short domain-relevant demo we opted for this manager.
-For more detailed description of OpenDial see next section.
+For more detailed description of OpenDial see section ~\ref{sec:opendial}.
 
 \end{itemize}
