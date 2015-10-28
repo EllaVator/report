@@ -1,12 +1,6 @@
-\subsection{Dialog Manager - this small chapter has to be synchronized with the previous one - }
-
-After a sound has been recognized as speech and the words have been extracted by the grammar, the system needs to decide which action to take and also perform it.
-This process is done in the so called ”Dialog Manager”. When and how the system should react to speech is defined in this program.
-
-For the speaking elevator ”EllaVator” the Dialog Manger ”Open Dial” was used.
-Therefore I would like to give a quick introduction to the Dialog System Open Dial in the following Chapter.
-
 \subsection{Open Dial}
+
+We used Opendial to implement not only the dialogue manager but our main class: the dialogue system. Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text to speech system. We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 for ASR and MaryTTS for text to speech. This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module. The main compontent one has to implement for the dialogue manager is the domain file. \\
 
 Like most Dialogue Managers Open Dial also consist of three different components which interact to create a dialogue. 
 
