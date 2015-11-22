@@ -1,2 +1,11 @@
-Raspberri Pi 2 is connected to the elevator via DE-9 type serial port.
-%\TODO add information about Raspberri PIN connection specifics
+Raspberri Pi 2 should be connected to the elevator via DE-9 type serial port.
+After numerous of unsuccessful attempts to connect Raspi to the serial port via its GPIO pins, we decided to buy a USB to serial converter. 
+The new converter worked fine out-of-the-box.
+We successfully sent test signals via serial port from Raspi to desktop PC and vice verse.
+After running several tests between Raspi and desktop PC we decided to test serial connection to the elevator.
+
+We managed to send a signal to the elevator via serial port however the elevator was able to move only to one specific floor (0.5 which corresponds to 1 floor).
+The signal was interpreted by the elevator as a command to move to floor 1.
+We suspect that this is due to insufficient power (5V) of Raspi USB to serial connector.
+The signal gets garbled upon transmission.
+We believe that if we manage to boost the serial port power up to 12V the connection should stabilize and work correctly.

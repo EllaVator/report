@@ -1,0 +1,36 @@
+It is technically impossible to test Raspi and elevator connection without opening the elevator control panel.
+Therefore, for testing we used an old laptop with serial port and a desktop PC.
+For testing purposes we wrote several python scripts, pi4j java testing tool and a small RXTX java implementation.
+We also used such shell utilities as minicom.
+\\
+
+There were 3 testing phases.
+
+1 testing:
+
+We used python pyserial implementation to test serial connection between Raspi, laptop and PC.
+After several unsuccessful attempts to use pi4j and GPIO pins connection, we switched to USB serial converter.
+Raspi successfully sent the signals via serial port using USB converter.
+We also managed to test the serial connection between a laptop and a desktop PC.
+Everything worked as expected.
+\\
+
+2 testing:
+
+We connected the laptop to the elevator via laptop serial port with a simple serial cord.
+Small RXTX serial port utility was used to send the signals from the laptop.
+Everything worked correctly and we managed to control the elevator from the laptop by sending the appropriate signals.
+\\
+
+3 testing:
+
+We connected Raspi to the elevator using USB serial converter.
+The same RXTX serial port utility was used to send the signals to the elevator.
+However whatever floor we tried to send the elevator to it moved to floor 1. 
+We suspect that Raspi simply does not have enough power to support serial connection to the elevator.
+\\
+
+Our next steps:
+
+Find a way how to boost Raspi serial port power from 5V to 12V.
+If it fails, drop Raspi completely and use a variant of desktop PC with an SD drive.
