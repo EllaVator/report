@@ -1,0 +1,16 @@
+Software testing is an essential process in modern software development, in particular in the process of quality assurance (QA) of software.
+As the name indicates software testing verifies whether the software does what it is supposed to do.
+But though invented for this purpose, software testing can accomplish more than that.
+Tests also help to maintain the features that have been developed in the past and protects them from being destroyed accidentally by new code.
+On top of that tests can help developers to understand or remember what exactly the code does, as tests are generally easier to understand than code.
+Tests provide examples of how the existing code is supposed to be used and therefore provide a very useful addition to the documentation.
+The most extreme incarnation of testing might be a development process called Test Driven Development.
+In this process tests are even written before the actual code.
+
+Generally there at least two types of tests: unit and integration tests.
+While unit tests are thought to test small components (e.g. classes) in isolation, integration tests verify how these components work as a whole.
+
+Seeing time constraints and also our lack of experience, we decided not to be as strict with testing, and we put a focus on integration testing.
+All tests are placed in the \texttt{test} source set, i.e. under \texttt{src/test}.
+There they can be found automatically by gradle when executing \texttt{./gradlew test} in the commandline.
+We used TestNG\footnote{http://testng.org/doc/} as our testing framework.
