@@ -15,7 +15,7 @@ Though the component is named ”Natural Language Generation model” the output
 This is also the case for open Dial. 
 Open Dial also offers a GUI where the dialogue (input, as well as output) is displayed without having to use further plug-ins.
 
-\subsection{Domain}
+\subsubsection{Domain}
 
 All of the components mentioned above are located in the so called Domain file.
 A dialogue designer working with Open Dial will in most cases just have to work on this one file. For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. \newline
@@ -38,7 +38,7 @@ If the System should maybe ask a question after having said something, it might 
 The domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
 The modules themselves are again subdivided into rules. Every rule in this file represents one command. 
 
-\subsection{Natural Language Understanding module}
+\subsubsection{Natural Language Understanding module}
 
 The first model to receive input is the ”Natural Language Understanding module” (NLU). 
 Depending whether further plug-ins are used this module will get its input either directly from the user or from the plug-in.
@@ -119,7 +119,7 @@ In the example used above all three user-utterances could be shortened down usin
 
 Using this expressions is therefore recommended.
 
-\subsection{Dialogue Manager}
+\subsubsection{Dialogue Manager}
 
 If the variable which was assigned in the NLU module was named correctly it should, in most cases, first be passed trough the Dialogue Manager (DM).
 In the Dialogue Manager the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
@@ -148,7 +148,7 @@ The figure above shows  a rule called ”Movement” which links the users input
 The variable with the name ”a\_m” and the value ”floor” with the input of the Request is send.
 The parameter specified in the placeholder ”x” written in curly brackets.
 
-\subsection{Natural Language Generation module}
+\subsubsection{Natural Language Generation module}
 
 The last part of the system generates the speech. 
 Without any further plug-ins this will be done by printing the text to the GUI.
