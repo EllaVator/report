@@ -12,7 +12,12 @@
 \usepackage{colortbl}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage{amsmath}
+
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
 \begin{document}
+
 %This file will subsume all of the individual chapters of the project report
 
 
@@ -21,18 +26,17 @@
 \include{title_page}
 \pagestyle{plain}
 \setcounter{page}{1}
-
+\tableofcontents
+\cleardoublepage
 %please put in the files you wrote in the corresponding order and space by
 %using \input{filename} so that we can compile the entire project report as one
 
-\section{Dialogue System}
+\section{Components of elevator control}
 
-\subsection{ASR}
+\subsection{Automatic speech recognition}
+\input{main_asr_components.tex}
 
-\subsubsection{Acoustic model}
-Training etc.
 \input{reverberation_rec.tex}
-\subsubsection{Language model}
 
 %\input{jsgf_summary.tex}
 
