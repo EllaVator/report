@@ -48,7 +48,7 @@ If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$
 \end{equation}
 In this equation, the word sequence $\hat{W}$ must be found, as the one that maximizes the product of $P(W)$ and $P(Y/W)$, where $P(W)$ is the prior probability which comes from the language model and $P(Y/W)$ is the probability of vector sequence $Y$ given some word sequence $W$, which is known from the acoustic model. $P(Y)$ is ignored, as it is a constant for all possible word sequences. Below each of the component is explained in more detail.
 \subsection{Acoustic modeling}
-The performance of the speech recognition systems mostly depends on a good acoustic model. Acoustic modeling for speech recognition refers to the process of how one can statistically represent the features vectors sequences, which are computed from the continuous speech. Since, it is difficult to have frequent number of each word in the training data to accumulate acoustic statistics for that word, therefore, each word is represented into smaller units of speech called the phonemes. This is usually called the  "pronunciation modeling". In modern speech recognition systems, approximately 39-45 phonemes are used, which are combined to form all possible words in English. To model the acoustic features, Hidden Markov Model (HMM)~\cite{hmm_for_SR} are used. Acoustic modeling is explained in more details in the next chapter.
+The performance of the speech recognition systems mostly depends on a good acoustic model. Acoustic modeling for speech recognition refers to the process of how one can statistically represent the features vectors sequences, which are computed from the continuous speech. Since, it is difficult to have frequent number of each word in the training data to accumulate acoustic statistics for that word, therefore, each word is represented into smaller units of speech called the phonemes. This is usually called the  "pronunciation modeling". In modern speech recognition systems, approximately 39-45 phonemes are used, which are combined to form all possible words in English. To model the acoustic features, Hidden Markov Model (HMM)~\cite{hmm_for_SR} are used.
 
 \subsection{Language modeling}
 The language modeling (LM) specifies what sequence of words to expect in the speech given the previous word or sequence of $N$ words. In equation~\ref{equ:bayes_rule}, the term $P(W)$, represents the language model. Many techniques have been used to estimate the probability, $P(W)$. Two of the most important techniques are mentioned below.
@@ -59,16 +59,15 @@ The formal or grammar based language model is composed of a grammar and a parsin
 \label{sec:prob_lang_model}
 The probabilistic language models assigns probabilities to words $\textit{W}_k$ based on preceding words $\textit{W}_k^{k-1} = \textit{w}_1 , \cdots \cdot,\textit{w}_{k-1}$  from a training corpus. The most commonly used language model from this category are the $N$-gram language models, where $N$ means number of preceding words to be considered. Some variations are \textit{unigrams}, \textit{bigrams} and \textit{trigrams}. 
 
-For \textit{trigrams}, where \textit{N=3} we can calculate the probablity as:
+For \textit{trigrams}, where \textit{N=3} we can calculate the probability as:
 \begin{equation}
   \hat{P}(w_k | w_{k-1},w_{k-2}) = \frac{c(w_{k-2},w_{k-1},w_k)}{n(w_{k-2},w_{k-1})} 
 \end{equation}
 where $c(w_{k-2},w_{k-1},w_k)$, specifies the number of times, the words $w_{k-2},w_{k-1}$ and $w_k$ comes together and $n(w_{k-2},w_{k-1})$, specifies the number of times the words $(w_{k-2},w_{k-1})$ occurs together. 
 
-For a vocabulary $V$ of 10,000 words, the \textit{trigrams} size equals to $V^3$, which is a large number and not all of the \textit{trigrams} appears in the training data. To avoid the training data sparsity problem for LM, some other techniques such as \textit{liner interpolation}, \textit{discounting techniques}~\cite{good1953population} and \textit{backing-off}~\cite{s_m_katze, ney94} LMs are used.
-
 \subsubsection{Language model for elevator}
-
+For the elevator, we have used grammar based language model, since the vocabulary size is small and the possible commands to the elevator can be modelled by the grammar. 
+We wrote a simple grammar in the JSGF format, that is usable with Sphinx.
 
 \subsection{Reverberation recordings in the elevator}
 
@@ -79,7 +78,7 @@ For a vocabulary $V$ of 10,000 words, the \textit{trigrams} size equals to $V^3$
 \end{figure}
 
 
-To train the accoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made. 
+To train the acoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made. 
 Lists one and two  of the Harvard sentences\footnote{http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German. 
 The full list of sentences which have been used can be found in the appendix. %appendix Sätze
 The sentences were read by all of the participants and recorded in a soundproof studio
@@ -99,7 +98,7 @@ We were also looking for code that was actively maintained.
 We reviewed a few potential contenders:
 \begin{itemize}
 \item[IrisTK] \hfill \\
-IrisTK is a sophistacated dialog manager. The main focus of this dialog manager is multimodality: it can integrate input from multiple sensory output: speech, vision. The multimodal nature of this manager adds a lot of functionality which we would not have used, so we decided not to use it.
+IrisTK is a sophisticated dialog manager. The main focus of this dialog manager is multimodality: it can integrate input from multiple sensory output: speech, vision. The multimodal nature of this manager adds a lot of functionality which we would not have used, so we decided not to use it.
 \item[InproTK] \hfill \\
 The most exciting asset of this dialog manager was incremental processing.
 The code is well maintained and actively developed. 
