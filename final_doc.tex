@@ -90,6 +90,68 @@ It consisted of two loudspeakers positioned on a music stand at the height of ap
 The recordings made in the lab were played through the loudspeakers and recorded with Praat via the elevator's microphone. 
 While the recordings were being played, the elevator was moved between the floors, its doors were opened and closed and kept stationary with its doors opened and closed on different floors.
 
+\subsection{General thoughts}
+Before actually starting to work on the dialogue itself, we decided on how a dialogue with the EllaVator should look like. \\
+
+We came up with the following model: \\
+
+
+\begin{figure} [ht]
+  \center{\includegraphics[scale=0.8, angle=0]{Dialogue_model.jpeg}}
+  \caption{A model for the Dialogue}
+  \label{fig: Dialogue flow}
+\end{figure}
+
+In the figure shown above commands from the user are marked in yellow, the answers from the EllaVator are marked in blue.
+Here is a table giving example sentences for the states indicated by the figure above: \\
+
+
+\begin{tabular}{|ll|}
+  \hline
+  Greeting & The user greets the Ellevator with a keyword \\
+    & and thus activates the system.  \\
+  Greet + Offer & Hello, how can I help you? \\
+  Request & Take me to floor/room XY/ Name\_of\_a\_person \\
+  Grounding/Clarify & You'd like to be taken to ...?\\ 
+   & I didn't get it, could you repeat that? \\
+  Confirm & Yes \\
+  Reject & No \\
+  Execute & Okay I shall now take you to ... \\ 
+   & *here the elevator should also start the action of moving* \\
+  \hline 
+\end{tabular}
+\newline
+Of course the actual system should be able to understand a variety of sentences and maybe alternate the answers but the dialogue itself can be kept as simple as it is shown in the graph.  \\
+
+We thought about including some chatting with the user or small Easter eggs. 
+We have therefore made measurements on how much time the average user spends in the elevator to determine how much time there is for the dialogue.
+On average the elevator needed 40 seconds to go from the ground floor to the top and 21 seconds for going down. Opening the Doors takes 4 seconds, closing them 5.5 seconds.
+With this in mind we decided to keep the dialogue as simple as possible as one of the reasons for everyone using the elevator is to be faster compared to taking the stairs and that maybe the likelihood of people using the speech interface would be lower if too much time was spend on such interactions.\\
+
+Instead, we discussed whether we should enable the user to merge the state "Greet" with the state "Request" which would allow for the user to both activate the elevator and also enter where they would like to be taken to.
+This would skip one state from the user as well as one step from the elevator.
+Depending on the confidence of the user input we also considered leaving out the "Grounding" state to have a shorter dialogue.\\
+
+In the end we implemented the system as was described in the graph above and decided that we should first try out how the system works on the real elevator before making further changes.\\
+
+Another thought we had but have put aside to work on after we have seen our project running on the actual hardware was that it might be the case that more than one person enters the elevator and that these people might have different destinations.
+Of course it would be possible to just run the dialogue with one person, take them to their destination and then run the dialogue again with the next person.
+This approach might however be inconvenient. 
+It might be more natural to enable the system to take more then one request.\\
+
+Another problem that arose when thinking about the scenario of more than one person entering the elevator, was that they might not share the same language.
+We decided to provide an English as well as a German version of our system.
+So the problem was not only to allow for multiple inputs but also for multiple inputs in different languages.\\
+\newline
+
+\textbf{
+  \begin{center}Switching between languages... \\
+    \underline{Our thoughts on this are collected in ticket 80}\\
+    @Naska \\
+    @Laura \\
+    does one of you feel like writing a little about this issue?
+\end{center}}
+
 \section{Dialog manager}
 The dialog manager is responsible for keeping track of the conversation and deciding the next move of the system for each input. The domain of our project is fairly limited. Most conversational situations consist of the user naming a location and the machine taking the action of moving to that location and reassuring the user that it had understood the command. This can described by deterministic If...then... statements. A dialog manager that models the conversation flow as an deterministic FSA is well-suited for our needs.
 When choosing the dialog manager for our project we considered the following factors: It had to be open source, preferably Java, well documented.
@@ -110,29 +172,34 @@ For more detailed description of OpenDial see section ~\ref{sec:opendial}.
 
 \subsection{Open Dial}
 
-We used Opendial to implement not only the dialogue manager but our main class: the dialogue system. Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text to speech system. We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 for ASR and MaryTTS for text to speech. This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module. The main compontent one has to implement for the dialogue manager is the domain file. \\
+We used Opendial to implement not only the dialogue manager but our main class: the dialogue system. 
+Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text to speech system. 
+We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 for ASR and MaryTTS for text to speech. 
+This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module. 
+The main component that has to be implemented for the dialogue manager is the domain file. \\
 
-Like most Dialogue Managers Open Dial also consist of three different components which interact to create a dialogue. 
+Like most Dialogue Managers Open Dial also consists of three different components which interact to create a dialogue. 
 
 The first component is responsible for the recognition of language. 
-In Open Dial this component is called „ Natural Language Understanding model”. 
-The output of the first process is passed on to the next component which checks if there was a instruction given which action should be  be performed upon that input. 
-Such actions might be showing something on a GUI, starting a task or simply selecting an answer to the users input. 
-In OpenDial this part is called „Dialog Manager”.
-The third and last component is called „Natural Language Generation module” and is basically the opposite of the „Natural Language Understanding model”. 
-The „Natural Language Generation model” Generates Language from the output of the „Dialog Manger”. 
-Though the component is named ”Natural Language Generation model” the output of a Dialogue System is not necessarily speech, but the output is often designed so that it can be easily used to generate speech with a TTS. 
-This is also the case for open Dial. 
+In Open Dial this component is called ”Natural Language Understanding model”. 
+The output of the first process is passed on to the next component which checks if there was an instruction given which action should be  be performed upon that input. 
+Such actions might be showing something on a GUI, starting a task or simply selecting an answer to the user's input. 
+In OpenDial this part is called ”Dialog Manager”.
+The third and last component is called ”Natural Language Generation module” and is basically the opposite of the ”Natural Language Understanding model”. 
+The ”Natural Language Generation model” generates Language from the output of the ”Dialog Manger”. 
+Though the component is named ”Natural Language Generation model”, the output of a Dialogue System is not necessarily speech, but the output is often designed so that it can be easily used to generate speech with a TTS. 
+This is also the case for Open Dial. 
 Open Dial also offers a GUI where the dialogue (input, as well as output) is displayed without having to use further plug-ins.
 
 \subsubsection{Domain}
 
 All of the components mentioned above are located in the so called Domain file.
-A dialogue designer working with Open Dial will in most cases just have to work on this one file. For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. \newline
+A dialogue designer working with Open Dial will, in most cases just have to work on this one file. 
+For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. \newline
 
-In this file the users input will be first transformed into a XML structure and then further processed.
+In this file the user's input will be first transformed into an XML structure and then further processed.
 Some systems fill this structure with semantic information. 
-OpenDial however basically passes variables through the components of the system. 
+Open Dial however basically passes variables through the components of the system. 
 The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue. 
 There is a convention for the naming of the variables, they can however be named to the dialogue designers liking. 
 As all information is being passed through variables the correct naming is important though. 
@@ -141,160 +208,162 @@ The value given to this slot has to be the name of all variables which are to ac
 For example giving the component this trigger: 
 \textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”.  \newline
 
-So the variables in Open Dial do not only carry the value through the system but their names also determinate which module should continue to process that variable. The most common way to link them was described above: Having the Natural Language Understanding module process the users input, the Dialogue Manager process that input and then responding using the Natural Language Generation module. 
+So the variables in Open Dial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
+The most common way to link them was described above: 
+Having the Natural Language Understanding module process the user's input, the Dialogue Manager process that input and then responding using the Natural Language Generation module. 
 In case there is no further processing needed one might also decide to directly link Natural Language Understanding module to Natural Language Generation module. 
-If the System should maybe ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the Natural Language Generation twice, either linking Natural Language Generation to Natural Language Generation module or Natural Language Generation module to the Dialogue Manager which again links back to the Natural Language Generation module. \newline
+If the System should for example ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the Natural Language Generation twice, either linking Natural Language Generation to Natural Language Generation module or Natural Language Generation module to the Dialogue Manager which again links back to the Natural Language Generation module. \newline
 
-The domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
+The Domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
 The modules themselves are again subdivided into rules. Every rule in this file represents one command. 
 
 \subsubsection{Natural Language Understanding module}
 
 The first model to receive input is the ”Natural Language Understanding module” (NLU). 
-Depending whether further plug-ins are used this module will get its input either directly from the user or from the plug-in.
+Depending whether further plug-ins are used, this module will get its input either directly from the user or from the plug-in.
 Open Dials NLU component is able to work with plain text input from the user, but in the case of the Ellavator project the User shall also be able to use speech commands to operate the elevator, therefore the NLU in this project receives input from the grammar file of the Sphinx plug-in.
 The grammar of the Sphinx plug-in already does part of the work, which would be usually done by the NLU alone.
 There is only a very limited amount of commands which the elevator is able to execute.
-Each of those can be however be triggered by various expressions. As different people will use different words and structures to express themselves.
+Each of those can however be triggered by various expressions, as different people will use different words and structures to express themselves.
 Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression. \newline
 
 In the example shown below there is a rule which models the command of changing a direction.
 A rule consists of at least one case-expression.
 A case-expression itself consists of a ”condition” and an ”effect”.
  In the ”condition”, as the name already states the Dialogue Designer can define under which circumstances a case-expression will match the users input.
-These conditions are connected using a logical operator.
-In most cases one would want to use the conditions ”or” as either one of those expressions should trigger the rule.
- The ”effect” will be the value passed on to the TM.
-As stated before this is done by assigning a variable of the proper name a value.
-In the case of the example below the variable is assigned the value of the function of changing to floor to the level of the given parameter. 
-\newline
+ These conditions are connected using a logical operator.
+ In most cases one would want to use the conditions ”or” as either one of those expressions should trigger the rule.
+  The ”effect” will be the value passed on to the TM.
+  As stated before this is done by assigning a variable of the proper name a value.
+  In the case of the example below the variable is assigned the value of the function of changing to floor to the level of the given parameter. 
+  \newline
 
 
-\textless rule \textgreater \newline
-\indent \indent \textless  case \textgreater \newline
-\indent \indent \indent \textless condition operator=”or”  \textgreater \newline\indent \indent \indent \indent \textless if var=”u\_u” value=”go to second floor” relation=”contains”/  \textgreater \newline
-\indent \indent \indent \indent \textless if var=”u\_u” value=”take me up to the second floor” \newline
-\indent \indent \indent \indent relation=”contains”/ \textgreater \newline
-\indent  \indent \indent \indent \textless if var=”u\_u” value=”second floor” relation=”contains”/ \textgreater \newline
-\indent \indent \indent \textless /condition \textgreater \newline
-\indent \indent \indent \textless effect prob=”1” \textgreater \textless set var=”a\_u” value=”Request(second)” / \textgreater \newline
-\indent \indent \indent \textless /effect \textgreater \newline
-\indent \indent \textless /case \textgreater \newline
-\indent \indent \textless case \textgreater \newline
-\indent \indent \indent \textless condition operator=”or” \textgreater \newline
-\indent \indent \indent \indent \textless if var=”u\_u” value=”go to thrid floor” relation=”contains”/ \textgreater \newline
-\indent \indent \indent \indent \textless if var=”u\_u” value=”take me up to the third floor” relation=”contains”/ \textgreater \newline
-\indent \indent \indent \indent \textless if var=”u\_u” value=”third floor” relation=”contains”/ \textgreater \newline
- \indent \indent \indent \textless /condition \textgreater \newline
-\indent \indent  \textless effect prob=”1” \textgreater \textless set var=”a\_u” value=”Request(third)” / \textgreater \newline
-\indent \indent  \textless /effect \textgreater \newline
-\indent \indent \textless /case \textgreater \newline
-\indent \textless /rule \textgreater \newline
+  \textless rule \textgreater \newline
+  \indent \indent \textless  case \textgreater \newline
+  \indent \indent \indent \textless condition operator=”or”  \textgreater \newline\indent \indent \indent \indent \textless if var=”u\_u” value=”go to second floor” relation=”contains”/  \textgreater \newline
+  \indent \indent \indent \indent \textless if var=”u\_u” value=”take me up to the second floor” \newline
+  \indent \indent \indent \indent relation=”contains”/ \textgreater \newline
+  \indent  \indent \indent \indent \textless if var=”u\_u” value=”second floor” relation=”contains”/ \textgreater \newline
+  \indent \indent \indent \textless /condition \textgreater \newline
+  \indent \indent \indent \textless effect prob=”1” \textgreater \textless set var=”a\_u” value=”Request(second)” / \textgreater \newline
+  \indent \indent \indent \textless /effect \textgreater \newline
+  \indent \indent \textless /case \textgreater \newline
+  \indent \indent \textless case \textgreater \newline
+  \indent \indent \indent \textless condition operator=”or” \textgreater \newline
+  \indent \indent \indent \indent \textless if var=”u\_u” value=”go to thrid floor” relation=”contains”/ \textgreater \newline
+  \indent \indent \indent \indent \textless if var=”u\_u” value=”take me up to the third floor” relation=”contains”/ \textgreater \newline
+  \indent \indent \indent \indent \textless if var=”u\_u” value=”third floor” relation=”contains”/ \textgreater \newline
+   \indent \indent \indent \textless /condition \textgreater \newline
+   \indent \indent  \textless effect prob=”1” \textgreater \textless set var=”a\_u” value=”Request(third)” / \textgreater \newline
+   \indent \indent  \textless /effect \textgreater \newline
+   \indent \indent \textless /case \textgreater \newline
+   \indent \textless /rule \textgreater \newline
 
 
-In the example above one rule is shown.
-This one rule includes two different commands.
-They are gathered in one rule as the both are orders to switch a floor.
-The only difference is the floor level they have.
-Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. \newline
+   In the example above one rule is shown.
+   This one rule includes two different commands.
+   They are gathered in one rule as they both are orders to switch a floor.
+   The only difference is the floor level they have.
+   Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. \newline
 
 
 
-As stated before every user will use different words to express themselves.
-To cover up all possible utterances for a command is impossible.
-But one should try to at least cover the most common ones,  to make the dialogue more natural for the user.
-This part can also be done in the grammar of Sphinx.
-Open Dial offers a few possibilities to do so.
-The first possibility would be to simply list all the expressions as it is shown in the figure above.
-But as can be easily seen in the example above, there is only a small difference between the sentences.
-If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read.
-Therefore it is recommended to use the following expressions which will help to keep the Domain file smaller and easier to read which will make it less prone to mistakes and errors if used in the right amount. \newline
+   As stated before, every user will use different words to express themselves.
+   To cover all possible utterances for a command is impossible.
+   But the Dialogue Designer should try to at least cover the most common ones,  to make the dialogue more natural for the user.
+   This part can also be done in the grammar of Sphinx.
+   Open Dial offers a few possibilities to do so.
+   The first possibility would be to simply list all the expressions as it is shown in the figure above.
+   But as can easily be seen in the example above, there is only a small difference between the sentences.
+   If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read.
+   Therefore it is recommended to use the following expressions which will help to keep the Domain file smaller and easier to read which will make it less prone to mistakes and errors if used in the right amount. \newline
 
 
-\begin{tabular}{|ll|}
-\hline
-	a? & The word „a” may or may not occure in the expression .  \\
-\hline
-	(a \textbar b \textbar... \textbar x) & One of the symboles written	in the brakets has to occure.\\
-\hline
-	(a \textbar b \textbar... \textbar x))? & One of the symboles written in the brakets may or may not occure.  \\
-\hline
-\end{tabular}
-\newline
+   \begin{tabular}{|ll|}
+     \hline
+      a? & The word ”a” may or may not occur in the expression .  \\
+     \hline
+      (a \textbar b \textbar... \textbar x) & One of the symbols written  in the brackets has to occur.\\
+     \hline
+      (a \textbar b \textbar... \textbar x))? & One of the symbols written in the brackets may or may not occur.  \\
+     \hline
+   \end{tabular}
+   \newline
 
-This table shows the expressions which can be used to structure a the NLU. \newline \newline
+   This table shows the expressions which can be used to structure a the NLU. \newline \newline
 
-In the example used above all three user-utterances could be shortened down using the expression:
-\textless if var=”u\_u” value=”(go \textbar take me) (up to the)?  second floor” relation=”contains”/ \textgreater
+   In the example used above all three user-utterances could be shortened down using the expression:
+   \textless if var=”u\_u” value=”(go \textbar take me) (up to the)?  second floor” relation=”contains”/ \textgreater
 
-Using this expressions is therefore recommended.
+   Using this expressions is therefore recommended.
 
-\subsubsection{Dialogue Manager}
+   \subsubsection{Dialogue Manager}
 
-If the variable which was assigned in the NLU module was named correctly it should, in most cases, first be passed trough the Dialogue Manager (DM).
-In the Dialogue Manager the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
-As was said in the last subchapter, values in Open Dial are saved within and passed trough variables, the input from the NLU will therefore be assigned to another variable. \newline
-Just like all other modules each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
-Therefore in this component the output of the NLU component will be matched against all conditions in the DM. 
-As soon as one matching rule is found, that rule is triggered which sends the ”effect” of that rule.
-The effect of a rule is saved into a variable.
-If no further work, like printing information on a GUI is done, one could argue, that all the DM does is basically linking two variables, the one given in the ”condition” to the variable written in the ”effect”.
-Of course not all parameters do have to be listed.
-It is sufficient to merely put a placeholder in curly brackets to indicate that there is a parameter to be passed on. \newline
+   If the variable which was assigned in the NLU module was named correctly, it should, in most cases, first be passed trough the Dialogue Manager (DM).
+   In the Dialogue Manager, the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
+   As was said in the last subchapter, values in Open Dial are saved within and passed trough variables, the input from the NLU will therefore be assigned to another variable. \newline
+   Just like all other modules, each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
+   Therefore, in this component the output of the NLU component will be matched against all conditions in the DM. 
+   As soon as one matching rule is found, that rule is triggered which sends the ”effect” of that rule.
+   The effect of a rule is saved into a variable.
+   If no further work, like printing information on a GUI is done, one could argue, that all the DM does is basically linking two variables, the one given in the ”condition” to the variable written in the ”effect”.
+   Of course not all parameters do have to be listed.
+   It is sufficient to merely put a placeholder in curly brackets to indicate that there is a parameter to be passed on. \newline
 
 
-\textless rule id=”Movement” \textgreater \newline
- \indent \indent \textless case \textgreater \newline
-\indent \indent \indent \textless condition \textgreater \newline
-\indent \indent \indent \indent \textless if var=”a\_u” value=”Request(\{x\})” / \textgreater \newline
- \indent \indent \indent \textless /condition \textgreater \newline
- \indent \indent \indent \textless effect util=”1” \textgreater \newline 
- \indent \indent \indent \indent \textless set var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
- \indent \indent \indent \textless /effect \textgreater \newline
-\indent \indent \textless /case \textgreater \newline
-\indent \textless /rule \textgreater \newline
+   \textless rule id=”Movement” \textgreater \newline
+    \indent \indent \textless case \textgreater \newline
+    \indent \indent \indent \textless condition \textgreater \newline
+    \indent \indent \indent \indent \textless if var=”a\_u” value=”Request(\{x\})” / \textgreater \newline
+     \indent \indent \indent \textless /condition \textgreater \newline
+      \indent \indent \indent \textless effect util=”1” \textgreater \newline 
+       \indent \indent \indent \indent \textless set var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
+        \indent \indent \indent \textless /effect \textgreater \newline
+        \indent \indent \textless /case \textgreater \newline
+        \indent \textless /rule \textgreater \newline
 
-The figure above shows  a rule called ”Movement” which links the users input ”Request” with any parameter to the effect of that input.
-The variable with the name ”a\_m” and the value ”floor” with the input of the Request is send.
-The parameter specified in the placeholder ”x” written in curly brackets.
+        The figure above shows  a rule called ”Movement” which links the users input ”Request” with any parameter to the effect of that input.
+        The variable with the name ”a\_m” and the value ”floor” with the input of the Request is send.
+        The parameter specified in the placeholder ”x” written in curly brackets.
 
-\subsubsection{Natural Language Generation module}
+        \subsubsection{Natural Language Generation module}
 
-The last part of the system generates the speech. 
-Without any further plug-ins this will be done by printing the text to the GUI.
-As stated before, this component basically does the opposite of the Natural Language Understanding module. 
-Instead of transforming the users input into an XML structure, the system takes the last components output, which is a variable embedded in an XML structure and transforms it back to plan text, either spoken if plug-ins are used or printed on the GUI, if no plug-ins are used. \newline
+        The last part of the system generates the speech. 
+        Without any further plug-ins this will be done by printing the text to the GUI.
+        As stated before, this component basically does the opposite of the Natural Language Understanding module. 
+        Instead of transforming the user's input into an XML structure, the system takes the last components output, which is a variable embedded in an XML structure and transforms it back to plain text, either spoken, if plug-ins are used, or printed on the GUI, if no plug-ins are used. \newline
 
-Each command is again given its own ”rule” and ”case” structure, in which ”condition and effect are included. 
-The effect of this rule is saved in a variable but also used as output for speech. \newline
+        Each command is again given its own ”rule” and ”case” structure, in which ”condition and effect are included. 
+        The effect of this rule is saved in a variable but also used as output for speech. \newline
 
-\textless rule \textgreater \newline
-\indent \indent \textless case \textgreater \newline
-\indent \indent \indent \textless condition \textgreater \newline 
-\indent \indent \indent \indent \textless if var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
-\indent \indent \indent \textless /condition \textgreater \newline
-\indent \indent \indent \textless effect util=”1” \textgreater \newline 
-\indent \indent \indent \indent \textless set var=”u\_m” value=”Okay, I will now take you to the {x} floor.” / \textgreater \newline
-\indent \indent \indent \textless /effect \textgreater \newline
-\indent \indent\textless /case \textgreater \newline
-\indent \textless /rule \textgreater \newline
+        \textless rule \textgreater \newline
+        \indent \indent \textless case \textgreater \newline
+        \indent \indent \indent \textless condition \textgreater \newline 
+        \indent \indent \indent \indent \textless if var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
+        \indent \indent \indent \textless /condition \textgreater \newline
+        \indent \indent \indent \textless effect util=”1” \textgreater \newline 
+        \indent \indent \indent \indent \textless set var=”u\_m” value=”Okay, I will now take you to the {x} floor.” / \textgreater \newline
+        \indent \indent \indent \textless /effect \textgreater \newline
+        \indent \indent\textless /case \textgreater \newline
+        \indent \textless /rule \textgreater \newline
 
-The example above shows one rule from an NLG module. 
-In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
-
+        The example above shows one rule from an NLG module. 
+        In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
+        
 \subsection{Speech synthesis}
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
 For this a Text-to-Speech system (TTS) had to be used. A text to speech system will read out information to the user, transforming written into spoken text.
-Such programs are wildly used today. 
+Such programs are widely used today. 
 There are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
 There are screenreaders for the visual impaired, which read out the elements of a screen, as well as systems which are used by the speech impaired to communicate and speak in their stead.
-One of the most famous talking applications is the Dialoguesystem "Siri" (Siri inc) which is used since 2011 on the iPhone. \newline \newline
+One of the most famous talking applications is the Dialogue system "Siri" (Siri inc) which has been used since 2011 on the iPhone. \newline \newline
 For our talking elevator we wanted to use an open source TTS. 
 We did choose the system Mary for this task.
 Not only was it developed in cooperation with the university of Saabrücken, it also offers many advantages to other TTS and therefore seemed perfect for the task.\newline
 
 Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote {(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the faculty for phonetics of the university of Saarbrücken.
-As Mary is an open Source project one can not only see the code but is also allowed to change and adjust it to ones needs.\newline \newline
+As Mary is an open Source project, the code can be read by everyone. Furthermore everyone is also allowed to change and adjust it to ones needs.\newline \newline
 The name Mary is an acronym for \newline 
 \begin{center}"\textbf{M}odular \textbf{A}rchitecture for \textbf{R}easearch on speech s\textbf{Y}nthesis".\end{center}
 This name already states various facts about the system. 
@@ -310,12 +379,12 @@ A Tool for Research, Development and Teaching by Marc Schröder Marc and Jürgen
 \subsubsection {Modules}
 
 Mary is subdivided into different modules. 
-This allows the used to take a look at the output of each of those components. 
+This allows the user to take a look at the output of each of those components. 
 One could also interchange small details on one component and observe the output on the complete system as well as completely interchanging a component.
 
 \subsubsection* {Input}
 
-Mary acepts differnt kind of inputs, the simplest one being plain text. 
+Mary accepts different kinds of inputs, the simplest one being plain text.
 But also Mark-up Languages such as SABLE or SSML can be used. 
 These are based on the Mark-up Language XML and are developed especially for the use in TTS.
 
@@ -335,20 +404,20 @@ Marking a dot as a sentence might seem obvious at first, but can prove quite dif
 
 \subsubsection* {Preprocessing}
 
-This module also called "Text-normalisation" does only work on very specific tokens.
+This module, also called "Text-normalisation" does only work on very specific tokens.
 It is only needed for acronyms or numbers.
-For acronyms the system will have to decide whether to pronounce them as one word or spell each letter out separately.
+For acronyms, the system will have to decide whether to pronounce them as one word or spell each letter out separately.
 Numbers are divided into ordinal- and cardinal numbers.
 
 \subsubsection* {Tagger and Chunker}
 
 This module has two different tasks to solve. 
 The Chunker labels the constituents in each sentence.
-These are distinguished between adjective-, nominal- and prepositionalphrase. "Chunkie" is used for this task. 
+These are distinguished between adjective, nominal and prepositionalphrase. "Chunkie" is used for this task. 
 It was developed by Skut and Brants in 1998. 
 "TnT", the tagger used was also developed by Brants in 2000. 
 It is a statistical POS-tagger working with trigram provabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} in order to assign every word its proper word class.
-The wordclasses are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
+The word classes are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
 
 The findings of the two components are saved within the placeholders that were created by the tokenizer.
 Unfortunately this also means that some of the information given by the Chunker will be lost. This would be the case for local ambiguities.
@@ -360,14 +429,14 @@ This module also describes the work of several smaller steps.
 The output of this system will be the transcription of every word into phonetic transcription.
 To able to do this however there still needs to be some information extracted.
 One of the steps needed is called "inflection endings". 
-In this process the tokens marked in the step "Preprocessing" are reviewed.
+In this process, the tokens marked in the step "Preprocessing" are reviewed.
 With the information given by the Chunker in the earlier steps as well as under the use of the morphologic analyser "Mmorph" (Petitpierre and Russle, 1995) these tokens such as ordinal number can now be expanded.\newline 
-In this step Mary will also check its a dictionary specifically designed for Mary by the DFKI.
+In this step Mary will also check a dictionary specifically designed for Mary by the DFKI.
 It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules.
 The lexicon also covers many of the acronyms. 
 It can even handle composed words quite will, which is especially important for the German language. \newline 
 In case there is no information found about a word in the dictionary the "letter to sound conversion" will be used.
-Of course this module can not know whether a word unknown to the system is a acronym or an actual word. 
+Of course this module can not know whether a word unknown to the system is an acronym or an actual word. 
 This problem was solved rather simply. 
 All words which have less than five letter will be treated as acronyms and each letter will be pronounced separately. 
 In case the word is longer it will be read out as a complete word.
@@ -388,7 +457,7 @@ These will be included by the program GToBI (Grice et al., 2002).
 With the aid of GToBI Mary distinguishes between six types of pauses, all being different in their length.
 A pause for the end of a paragraph for example will be given the number 6, which is the longest pause there is in Mary.
 
-Again the work of the chunker and tagger is of great importance for this module.
+Again, the work of the chunker and tagger is of great importance for this module.
 The output of the chunker will provide information on the structure of the sentence, for example whether a part of a sentence is a \emph{Vorfeld}. \footnote {Marc Schroder and Juergen Trouvain, 2003}
 Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
 
@@ -401,7 +470,7 @@ After this step the skeleton which has been created at the beginning of the proc
 \subsubsection* {Calculation of acoustic parameters} 
 
 This module will abandon the structure of the MaryXML structure.
-Instead the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
+Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
 "The duration rules" by Brinckmann and Trouvain (2002) were used for this. These were created as an adaptation of the  "Klatt-Rules" (Klatt 1979; Allen et al., 1987) and define how long a tone will be.
 The realisation is taken from GtoBI which was used to determine the pauses between the words in the earlier steps.
 
