@@ -1,15 +1,16 @@
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
 For this a Text-to-Speech system (TTS) had to be used. A text to speech system will read out information to the user, transforming written into spoken text.
-Such programs are wildly used today. 
+Such programs are widely used today. 
 There are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
 There are screenreaders for the visual impaired, which read out the elements of a screen, as well as systems which are used by the speech impaired to communicate and speak in their stead.
-One of the most famous talking applications is the Dialoguesystem "Siri" (Siri inc) which is used since 2011 on the iPhone. \newline \newline
+One of the most famous talking applications is the Dialogue system "Siri" (Siri inc) which has been used since 2011 on the iPhone. \newline \newline
 For our talking elevator we wanted to use an open source TTS. 
 We did choose the system Mary for this task.
 Not only was it developed in cooperation with the university of Saabrücken, it also offers many advantages to other TTS and therefore seemed perfect for the task.\newline
 
 Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote {(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the faculty for phonetics of the university of Saarbrücken.
-As Mary is an open Source project one can not only see the code but is also allowed to change and adjust it to ones needs.\newline \newline
+As Mary is an open Source project, the code can be read by everyone. Furthermore everyone is also allowed to change and adjust it to ones needs.\newline \newline
+
 The name Mary is an acronym for \newline 
 \begin{center}"\textbf{M}odular \textbf{A}rchitecture for \textbf{R}easearch on speech s\textbf{Y}nthesis".\end{center}
 This name already states various facts about the system. 
@@ -25,12 +26,12 @@ A Tool for Research, Development and Teaching by Marc Schröder Marc and Jürgen
 \subsubsection {Modules}
 
 Mary is subdivided into different modules. 
-This allows the used to take a look at the output of each of those components. 
+This allows the user to take a look at the output of each of those components. 
 One could also interchange small details on one component and observe the output on the complete system as well as completely interchanging a component.
 
 \subsubsection* {Input}
 
-Mary acepts differnt kind of inputs, the simplest one being plain text. 
+Mary accepts different kinds of inputs, the simplest one being plain text. 
 But also Mark-up Languages such as SABLE or SSML can be used. 
 These are based on the Mark-up Language XML and are developed especially for the use in TTS.
 
@@ -50,20 +51,20 @@ Marking a dot as a sentence might seem obvious at first, but can prove quite dif
 
 \subsubsection* {Preprocessing}
 
-This module also called "Text-normalisation" does only work on very specific tokens.
+This module, also called "Text-normalisation" does only work on very specific tokens.
 It is only needed for acronyms or numbers.
-For acronyms the system will have to decide whether to pronounce them as one word or spell each letter out separately.
-Numbers are divided into ordinal- and cardinal numbers.
+For acronyms, the system will have to decide whether to pronounce them as one word or spell each letter out separately.
+Numbers are divided into ordinal and cardinal numbers.
 
 \subsubsection* {Tagger and Chunker}
 
 This module has two different tasks to solve. 
 The Chunker labels the constituents in each sentence.
-These are distinguished between adjective-, nominal- and prepositionalphrase. "Chunkie" is used for this task. 
+These are distinguished between adjective, nominal and prepositionalphrase. "Chunkie" is used for this task. 
 It was developed by Skut and Brants in 1998. 
 "TnT", the tagger used was also developed by Brants in 2000. 
 It is a statistical POS-tagger working with trigram provabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} in order to assign every word its proper word class.
-The wordclasses are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
+The word classes are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
 
 The findings of the two components are saved within the placeholders that were created by the tokenizer.
 Unfortunately this also means that some of the information given by the Chunker will be lost. This would be the case for local ambiguities.
@@ -75,14 +76,14 @@ This module also describes the work of several smaller steps.
 The output of this system will be the transcription of every word into phonetic transcription.
 To able to do this however there still needs to be some information extracted.
 One of the steps needed is called "inflection endings". 
-In this process the tokens marked in the step "Preprocessing" are reviewed.
+In this process, the tokens marked in the step "Preprocessing" are reviewed.
 With the information given by the Chunker in the earlier steps as well as under the use of the morphologic analyser "Mmorph" (Petitpierre and Russle, 1995) these tokens such as ordinal number can now be expanded.\newline 
-In this step Mary will also check its a dictionary specifically designed for Mary by the DFKI.
+In this step Mary will also check a dictionary specifically designed for Mary by the DFKI.
 It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules.
 The lexicon also covers many of the acronyms. 
 It can even handle composed words quite will, which is especially important for the German language. \newline 
 In case there is no information found about a word in the dictionary the "letter to sound conversion" will be used.
-Of course this module can not know whether a word unknown to the system is a acronym or an actual word. 
+Of course this module can not know whether a word unknown to the system is an acronym or an actual word. 
 This problem was solved rather simply. 
 All words which have less than five letter will be treated as acronyms and each letter will be pronounced separately. 
 In case the word is longer it will be read out as a complete word.
@@ -103,7 +104,7 @@ These will be included by the program GToBI (Grice et al., 2002).
 With the aid of GToBI Mary distinguishes between six types of pauses, all being different in their length.
 A pause for the end of a paragraph for example will be given the number 6, which is the longest pause there is in Mary.
 
-Again the work of the chunker and tagger is of great importance for this module.
+Again, the work of the chunker and tagger is of great importance for this module.
 The output of the chunker will provide information on the structure of the sentence, for example whether a part of a sentence is a \emph{Vorfeld}. \footnote {Marc Schroder and Juergen Trouvain, 2003}
 Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
 
@@ -116,7 +117,7 @@ After this step the skeleton which has been created at the beginning of the proc
 \subsubsection* {Calculation of acoustic parameters} 
 
 This module will abandon the structure of the MaryXML structure.
-Instead the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
+Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
 "The duration rules" by Brinckmann and Trouvain (2002) were used for this. These were created as an adaptation of the  "Klatt-Rules" (Klatt 1979; Allen et al., 1987) and define how long a tone will be.
 The realisation is taken from GtoBI which was used to determine the pauses between the words in the earlier steps.
 
