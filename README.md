@@ -6,7 +6,7 @@ Please always get the latest changes from the master branch of the [report](http
 git fetch --all
 git merge upstream/master
 ```
-Of course you need to set the remote **upstream** first by:
+Offcourse you need to set the remote **upstream** first by:
 ```json
 git remote add upstream https://github.com/EllaVator/report.git
 ```
