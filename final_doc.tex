@@ -357,33 +357,26 @@ The effect of this rule is saved in a variable but also used as output for speec
 \indent \textless /rule \textgreater \newline
 
 The example above shows one rule from an NLG module. 
-In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
+In this rule, a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
         
 \newpage        
 \section{Speech synthesis}
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
-For this a Text-to-Speech system (TTS) had to be used. A text to speech system will read out information to the user, transforming written into spoken text.
-Such programs are widely used today. 
-There are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
-There are screenreaders for the visual impaired, which read out the elements of a screen, as well as systems which are used by the speech impaired to communicate and speak in their stead.
-One of the most famous talking applications is the Dialogue system "Siri" (Siri inc) which has been used since 2011 on the iPhone. \newline \newline
+For this a Text-to-Speech system (TTS) had to be used. A TTS system will read out information to the user, generating voice for the input text. TTS systems are widely used today. 
+For exmaple in the train stations, there are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
+There are screen readers for the visual impaired, which read out the elements of a screen, as well as systems which are used by the speech impaired to communicate and speak in their stead.
+One of the most famous applications is the dialogue system "Siri" (Siri inc) which has been used since 2011 on the iPhone. \newline \newline
 For our talking elevator we wanted to use an open source TTS. 
-We did choose the system Mary for this task.
-Not only was it developed in cooperation with the university of Saabrücken, it also offers many advantages to other TTS and therefore seemed perfect for the task.\newline
+We choose the MaryTTS (\textbf{M}odular \textbf{A}rchitecture for \textbf{R}easearch on speech s\textbf{Y}nthesis") system for our task.
+Not only was it developed in cooperation with the University of Saarlandn, it also offers many advantages to other TTS and therefore seemed perfect for our task.\newline
 
-Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote {(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the faculty for phonetics of the university of Saarbrücken.
-As Mary is an open Source project, the code can be read by everyone. Furthermore everyone is also allowed to change and adjust it to ones needs.\newline \newline
-The name Mary is an acronym for \newline 
-\begin{center}"\textbf{M}odular \textbf{A}rchitecture for \textbf{R}easearch on speech s\textbf{Y}nthesis".\end{center}
-This name already states various facts about the system. 
-It is build in a "modular architecture" which means that it consists of different components, each dealing with a specific task. We will take a closer look at these in the following subchapter.
+Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote{(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the faculty for phonetics of the university of Saarbrücken.
+As MaryTTS is an open Source project, the code can be read by everyone. Furthermore everyone is also allowed to change and adjust it to ones needs.\newline \newline
+MaryTTS is build in a "modular architecture" which means that it consists of different components, each dealing with a specific task. We will take a closer look at these in the following subchapter.
 The second part of the name states the purpose Mary was developed for.
 It was developed for research having a modular structure and also being a open source project makes it really easy to use Mary for any research projects on speech synthesis. \newline \newline
 Mary is a multilingual TSS, featuring the languages English (British as well as American), German, Telugu, Turkish, Russian, Swedish and Italian. 
 Further languages might be included in the future, but can also be added by any user. \newline \newline
-The following information about the structure and components of Mary is taken from the paper: 
-The German Text-to-Speech Synthesis System MARY:
-A Tool for Research, Development and Teaching by Marc Schröder Marc and Jürgen Trouvain.
 
 \subsection{Modules}
 
@@ -397,10 +390,10 @@ Mary accepts different kinds of inputs, the simplest one being plain text.
 But also Mark-up Languages such as SABLE or SSML can be used. 
 These are based on the Mark-up Language XML and are developed especially for the use in TTS.
 
-In case of the elevator we only pass the output of the OpenDial dialogue manager to Mary, which is plain text.
+In case of the elevator, we only pass the output of the OpenDial dialogue manager to Mary, which is plain text.
 Any input given to Mary will be transformed into a "MaryXML Mark-up Skeleton". 
 A skeleton which already has different slots which will be filled by the system in the other modules.
-If the input was already in a form of Mark-up language the keys assigned in this Mark-up Language will be kept and added to the Skeleton some of the values however might be dropped.
+If the input was already in a form of Mark-up language the keys assigned in this Mark-up Language will be kept and added to the skeleton. Some of the values however might be dropped.
 
 \subsubsection*{Tokenizer}
 
@@ -422,14 +415,14 @@ Numbers are divided into ordinal- and cardinal numbers.
 
 This module has two different tasks to solve. 
 The Chunker labels the constituents in each sentence.
-These are distinguished between adjective, nominal and prepositionalphrase. "Chunkie" is used for this task. 
+These are distinguished between adjective, nominal and prepositional phrase. "Chunkie" is used for this task. 
 It was developed by Skut and Brants in 1998. 
 "TnT", the tagger used was also developed by Brants in 2000. 
-It is a statistical POS-tagger working with trigram provabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} in order to assign every word its proper word class.
+It is a statistical POS-tagger working with trigram probabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} in order to assign every word its proper word class.
 The word classes are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
 
 The findings of the two components are saved within the placeholders that were created by the tokenizer.
-Unfortunately this also means that some of the information given by the Chunker will be lost. This would be the case for local ambiguities.
+Unfortunately this also means that some of the information given by the chunker will be lost. This would be the case for local ambiguities.
 
 
 \subsubsection*{Phonemisation}
@@ -451,10 +444,9 @@ All words which have less than five letter will be treated as acronyms and each 
 In case the word is longer it will be read out as a complete word.
 The "letter to sound conversion" (Alan Black et al., 1998) was trained on the dictionary to obtain about how to pronounce a word.
 The decomposition was trained statistically on the database CELEX (Baayen et al. 1995).
-After decomposing every word they will be matched against a list containing morphemes which change the intonation of a word.
+After decomposing every word will be matched against a list containing morphemes which change the intonation of a word.
 The remaining morphemes are processed according to language specific rules.
-Hyphenation will also be defined by phonological principals such as the sonoraty hierarchy of phonemes \footnote {Schröder, Marc, and Trouvain Juergen. "The German text-to-speech synthesis system MARY: A tool for research, development and teaching." International Journal of Speech Technology 6.4 (2003): 365-377.} \newline
-After these analysis an algorithm decides which syllable will get the main stress.\newline
+Hyphenation will also be defined by phonological principals such as the sonoraty hierarchy of phonemes ~\cite{marytts}. After these analysis an algorithm decides which syllable will get the main stress.\newline
 The output of this module only contains the SAMPA transcription and a note in case a word was processed by the "Letter to sound conversion". 
 Information on intonation will not be seen in the output.
 
@@ -484,14 +476,36 @@ Instead, the output will be a list of segments, their duration and the correspon
 The realisation is taken from GtoBI which was used to determine the pauses between the words in the earlier steps.
 
 \subsubsection*{Synthesis}
-In this final step the values acquired in earlier steps will at last be converted into sound.
+In this final step, the values acquired in earlier steps will at last be converted into sound.
 The modular architecture of Mary makes it easy to interchange the synthesis module as long as it supports the format of the output given by the previous module.
 Currently MBROLA (Dutroit et al., 1996) is used in by Mary, which was selected as it creates a low distortion in the signal.
 
 \newpage
-\section{Implementation}
 \section{Rasberry pi} 
-\section{Rasberry pi virtualization}
+To implement the project, a Raspberry Pi is used instead of a conventional computer. The Raspberry Pi is a single-board computers 
+developed in the United Kingdom by the Raspberry Pi Foundation. We used the \textit{RPi 2 model B}. 
+Figure ~\ref{fig:Pi2} shows the RPi 2. 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10.0cm]{Pi2.jpg}
+\caption{\textit{An image showing Raspberry Pi 2 Model B used for the implementation of our project.}}
+\label{fig:Pi2}
+\end{figure}
+This version of the Pi has the following specifications.
+\begin{itemize}
+  \item A 900MHz quad-core ARM Cortex-A7 CPU
+  \item 1GB RAM
+  \item 4 USB ports
+  \item 40 GPIO pins
+  \item Full HDMI port
+  \item Ethernet port
+  \item Combined 3.5mm audio jack and composite video
+  \item Camera interface (CSI)
+  \item Display interface (DSI)
+  \item Micro SD card slot
+  \item VideoCore IV 3D graphics core
+\end{itemize}
+\subsection{Rasberry pi virtualization}
 By setting up a virtual Raspberry Pi, we can further test our software without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests are passed.
 
 
