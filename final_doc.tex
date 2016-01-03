@@ -13,6 +13,7 @@
 \usepackage{multirow}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
 
@@ -637,7 +638,7 @@ Each item in this array is an array of parameters that will be passed to the tes
 
 \newpage
 \section{Development tools}
-\subsubsection{Gradle}
+\subsection{Gradle}
 Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
 Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
 
@@ -664,7 +665,7 @@ In order to download these dependencies when you clone the repository, you must 
 git clone https://github.com/EllaVator/EllaVator.git --recursive
 \end{lstlisting}
 or init and update all of the subprojects individually.
-\subsubsection*{Continuous integration with Travis CI}
+\subsection{Continuous integration with Travis CI}
 
 Continuous integration is based on the idea that all developers send their changes to a common code repository as soon as possible, as we did on GitHub. 
 Additionally th/ese changes should be tested before they are merged into the main code repository. 
@@ -730,5 +731,7 @@ Now you can build or run the project using one of the following commands:
 ./gradlew run
 \end{lstlisting}
 
-\include{bibliography}
+\cleardoublepage
+\bibliography{final_doc}
+\bibliographystyle{unsrt}
 \end{document}
