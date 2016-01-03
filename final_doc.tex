@@ -90,7 +90,8 @@ It consisted of two loudspeakers positioned on a music stand at the height of ap
 The recordings made in the lab were played through the loudspeakers and recorded with Praat via the elevator's microphone. 
 While the recordings were being played, the elevator was moved between the floors, its doors were opened and closed and kept stationary with its doors opened and closed on different floors.
 
-\subsection{General thoughts}
+\newpage
+\section{General thoughts}
 Before actually starting to work on the dialogue itself, we decided on how a dialogue with the EllaVator should look like. \\
 
 We came up with the following model: \\
@@ -152,6 +153,7 @@ So the problem was not only to allow for multiple inputs but also for multiple i
     does one of you feel like writing a little about this issue?
 \end{center}}
 
+\newpage
 \section{Dialog manager}
 The dialog manager is responsible for keeping track of the conversation and deciding the next move of the system for each input. The domain of our project is fairly limited. Most conversational situations consist of the user naming a location and the machine taking the action of moving to that location and reassuring the user that it had understood the command. This can described by deterministic If...then... statements. A dialog manager that models the conversation flow as an deterministic FSA is well-suited for our needs.
 When choosing the dialog manager for our project we considered the following factors: It had to be open source, preferably Java, well documented.
@@ -351,7 +353,8 @@ A case-expression itself consists of a ”condition” and an ”effect”.
         The example above shows one rule from an NLG module. 
         In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
         
-\subsection{Speech synthesis}
+\newpage        
+\section{Speech synthesis}
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
 For this a Text-to-Speech system (TTS) had to be used. A text to speech system will read out information to the user, transforming written into spoken text.
 Such programs are widely used today. 
@@ -376,13 +379,13 @@ The following information about the structure and components of Mary is taken fr
 The German Text-to-Speech Synthesis System MARY:
 A Tool for Research, Development and Teaching by Marc Schröder Marc and Jürgen Trouvain.
 
-\subsubsection {Modules}
+\subsection{Modules}
 
 Mary is subdivided into different modules. 
 This allows the user to take a look at the output of each of those components. 
 One could also interchange small details on one component and observe the output on the complete system as well as completely interchanging a component.
 
-\subsubsection* {Input}
+\subsubsection*{Input}
 
 Mary accepts different kinds of inputs, the simplest one being plain text.
 But also Mark-up Languages such as SABLE or SSML can be used. 
@@ -393,7 +396,7 @@ Any input given to Mary will be transformed into a "MaryXML Mark-up Skeleton".
 A skeleton which already has different slots which will be filled by the system in the other modules.
 If the input was already in a form of Mark-up language the keys assigned in this Mark-up Language will be kept and added to the Skeleton some of the values however might be dropped.
 
-\subsubsection* {Tokenizer}
+\subsubsection*{Tokenizer}
 
 The tokenizer identifies the tokens of a text. The output of this module will be sentences and words which will be marked as such.
 Any token will be enclosed by "\textless t\textgreater ...\textless  t\textgreater". 
@@ -402,14 +405,14 @@ Later on, further information will be saved in these slots.
 Analogous a sentence is enclosed by "\textless s\textgreater ... \textless s\textgreater". 
 Marking a dot as a sentence might seem obvious at first, but can prove quite difficult if there are other tokens in the text which also come with a dot, but do not mark the end of a sentence, such as the dot placed after titles.
 
-\subsubsection* {Preprocessing}
+\subsubsection*{Preprocessing}
 
 This module, also called "Text-normalisation" does only work on very specific tokens.
 It is only needed for acronyms or numbers.
 For acronyms, the system will have to decide whether to pronounce them as one word or spell each letter out separately.
 Numbers are divided into ordinal- and cardinal numbers.
 
-\subsubsection* {Tagger and Chunker}
+\subsubsection*{Tagger and Chunker}
 
 This module has two different tasks to solve. 
 The Chunker labels the constituents in each sentence.
@@ -423,7 +426,7 @@ The findings of the two components are saved within the placeholders that were c
 Unfortunately this also means that some of the information given by the Chunker will be lost. This would be the case for local ambiguities.
 
 
-\subsubsection* {Phonemisation}
+\subsubsection*{Phonemisation}
 
 This module also describes the work of several smaller steps.
 The output of this system will be the transcription of every word into phonetic transcription.
@@ -449,7 +452,7 @@ After these analysis an algorithm decides which syllable will get the main stres
 The output of this module only contains the SAMPA transcription and a note in case a word was processed by the "Letter to sound conversion". 
 Information on intonation will not be seen in the output.
 
-\subsubsection* {Prosody rules}
+\subsubsection*{Prosody rules}
 
 After the last module has assessed the intonation of a word, this module will analyse the prosody of the entire text.
 The end of a sentence is a classic example for the intonation of a sentence, but one of the most important aspect of prosody of a text are the pauses which have to be added to it.
@@ -461,25 +464,26 @@ Again, the work of the chunker and tagger is of great importance for this module
 The output of the chunker will provide information on the structure of the sentence, for example whether a part of a sentence is a \emph{Vorfeld}. \footnote {Marc Schroder and Juergen Trouvain, 2003}
 Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
 
-\subsubsection* {Postlexical and Phonological process}
+\subsubsection*{Postlexical and Phonological process}
 
 In this step the data will be revised and everything will be put into context.
 Smaller details such as glottal stops or elisions at the end of a word are being added. 
 After this step the skeleton which has been created at the beginning of the process is filled with the maximum of information being available to Mary.
 
-\subsubsection* {Calculation of acoustic parameters} 
+\subsubsection*{Calculation of acoustic parameters} 
 
 This module will abandon the structure of the MaryXML structure.
 Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
 "The duration rules" by Brinckmann and Trouvain (2002) were used for this. These were created as an adaptation of the  "Klatt-Rules" (Klatt 1979; Allen et al., 1987) and define how long a tone will be.
 The realisation is taken from GtoBI which was used to determine the pauses between the words in the earlier steps.
 
-\subsubsection* {Synthesis}
+\subsubsection*{Synthesis}
 In this final step the values acquired in earlier steps will at last be converted into sound.
 The modular architecture of Mary makes it easy to interchange the synthesis module as long as it supports the format of the output given by the previous module.
 Currently MBROLA (Dutroit et al., 1996) is used in by Mary, which was selected as it creates a low distortion in the signal.
 
-\section{Implementation details}
+\newpage
+\section{Implementation}
 \section{Rasberry pi} 
 \section{Rasberry pi virtualization}
 By setting up a virtual Raspberry Pi, we can further test our software without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests are passed.
@@ -631,8 +635,8 @@ This indicates that the test has to be executed multiple times with different te
 The string \texttt{expandedGrammar} refers to the method of this name, that will return the test data as an array.
 Each item in this array is an array of parameters that will be passed to the test function.
 
-
-\subsection{Development tools}
+\newpage
+\section{Development tools}
 \subsubsection{Gradle}
 Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
 Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
@@ -687,8 +691,8 @@ Then go to your profile page on Travis and activate the GitHub repositories you 
 From then on every push to these repositories will trigger Travis to build and run tests and send an email about the result.
 
 
-\section{Quick installation instructions}
-\subsection{Ubuntu}
+\newpage
+\section{Installation instructions}
 These installation instructions have been tested on Ubuntu 14.04.
 
 If you have not installed git on your system, you should do this first:
