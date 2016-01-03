@@ -16,6 +16,7 @@
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand\todo[1]{\textcolor{red}{#1}}
 
 \begin{document}
 %This file will subsume all of the individual chapters of the project report
@@ -42,21 +43,23 @@ Speech recognition is a complex technology which involves many fields, such as p
 \caption{\textit{Basic components of speech recognition system.}}
 \label{fig:asr_component1}
 \end{figure}
+
+
 If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$, \dots \dots, $w_N$, then the decoder will try to find the most probable word sequence $\hat{W}$, given the sequence of acoustic vectors, $Y$ = $y_1$, $y_2$, \dots \dots, $y_T$. Using Byes rule, the probability of a word given an observation $P(W/Y)$ can be found as: 
 \begin{equation}
 \label{equ:bayes_rule}
 \hat{W} = \argmax P(W/Y) = \argmax\frac{P(W)P(Y/W)}{P(Y)}.
 \end{equation}
 In this equation, the word sequence $\hat{W}$ must be found, as the one that maximizes the product of $P(W)$ and $P(Y/W)$, where $P(W)$ is the prior probability which comes from the language model and $P(Y/W)$ is the probability of vector sequence $Y$ given some word sequence $W$, which is known from the acoustic model. $P(Y)$ is ignored, as it is a constant for all possible word sequences. Below each of the component is explained in more detail.
-\subsection{Acoustic modeling}
+\subsubsection{Acoustic modeling}
 The performance of the speech recognition systems mostly depends on a good acoustic model. Acoustic modeling for speech recognition refers to the process of how one can statistically represent the features vectors sequences, which are computed from the continuous speech. Since, it is difficult to have frequent number of each word in the training data to accumulate acoustic statistics for that word, therefore, each word is represented into smaller units of speech called the phonemes. This is usually called the  "pronunciation modeling". In modern speech recognition systems, approximately 39-45 phonemes are used, which are combined to form all possible words in English. To model the acoustic features, Hidden Markov Model (HMM)~\cite{hmm_for_SR} are used.
 
-\subsection{Language modeling}
+\subsubsection{Language modeling}
 The language modeling (LM) specifies what sequence of words to expect in the speech given the previous word or sequence of $N$ words. In equation~\ref{equ:bayes_rule}, the term $P(W)$, represents the language model. Many techniques have been used to estimate the probability, $P(W)$. Two of the most important techniques are mentioned below.
-\subsubsection{Formal language models} 
+\subsubsection*{Formal language models} 
 \label{sec:gramar_based_lm}
 The formal or grammar based language model is composed of a grammar and a parsing algorithm. The grammar specifies allowable structure of a language and the parsing specifies the analysis method to check if rules of the grammar are respected. For small size recognition task, often the grammar based language model is a good solution. 
-\subsubsection{Probabilistic language models}
+\subsubsection*{Probabilistic language models}
 \label{sec:prob_lang_model}
 The probabilistic language models assigns probabilities to words $\textit{W}_k$ based on preceding words $\textit{W}_k^{k-1} = \textit{w}_1 , \cdots \cdot,\textit{w}_{k-1}$  from a training corpus. The most commonly used language model from this category are the $N$-gram language models, where $N$ means number of preceding words to be considered. Some variations are \textit{unigrams}, \textit{bigrams} and \textit{trigrams}. 
 
@@ -66,7 +69,7 @@ For \textit{trigrams}, where \textit{N=3} we can calculate the probability as:
 \end{equation}
 where $c(w_{k-2},w_{k-1},w_k)$, specifies the number of times, the words $w_{k-2},w_{k-1}$ and $w_k$ comes together and $n(w_{k-2},w_{k-1})$, specifies the number of times the words $(w_{k-2},w_{k-1})$ occurs together. 
 
-\subsubsection{Language model for elevator}
+\subsection{Language model for elevator}
 For the elevator, we have used grammar based language model, since the vocabulary size is small and the possible commands to the elevator can be modelled by the grammar. 
 We wrote a simple grammar in the JSGF format\footnote{http://www.w3.org/TR/jsgf/}, that is usable with Sphinx.
 
@@ -81,12 +84,13 @@ We wrote a simple grammar in the JSGF format\footnote{http://www.w3.org/TR/jsgf/
 
 To train the acoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made. 
 Lists one and two  of the Harvard sentences\footnote{http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German. 
-The full list of sentences which have been used can be found in the appendix. %appendix Sätze
-The sentences were read by all of the participants and recorded in a soundproof studio.
-This resulted in recordings of English material spoken by non-natives and German material spoken by natives and by non-natives.
+The full list of sentences which have been used can be found in the appendix. \todo{TODO: attach appendix} %appendix Sätze
+The sentences were read by all of the participants and recorded in a sound proof studio. 
+This resulted in recordings of English sentences spoken by non-natives and German sentences spoken by natives and by non-natives.
 
 
-To account for the noise of the elevator, its sound when moving, the sound of the doors opening and closing and the reverberation with open doors on the different floors and other noises from outside of the elevator, further recordings were made via the elevator's built-in microphone. The setup used for this can be seen in picture \ref{fig:recordingsetup}.
+The commands that are spoken inside the elevator, are taken via a cable to the system that are then processed. But during this process some distortion is produced. This distortion might be caused by cable or some other external factor. To account for this noise of the elevator and the sound of the opening/closing of doors and other noises from outside of the elevator, further recordings were made via the elevator's built-in microphone. The setup used for this can be seen in Figure \ref{fig:recordingsetup}.
+
 It consisted of two loudspeakers positioned on a music stand at the height of approximately 150cm, at a distance of approximately 20cm from the elevator's microphone. 
 The recordings made in the lab were played through the loudspeakers and recorded with Praat via the elevator's microphone. 
 While the recordings were being played, the elevator was moved between the floors, its doors were opened and closed and kept stationary with its doors opened and closed on different floors.
@@ -157,65 +161,68 @@ So the problem was not only to allow for multiple inputs but also for multiple i
 \newpage
 \section{Dialog manager}
 The dialog manager is responsible for keeping track of the conversation and deciding the next move of the system for each input. The domain of our project is fairly limited. Most conversational situations consist of the user naming a location and the machine taking the action of moving to that location and reassuring the user that it had understood the command. This can described by deterministic If...then... statements. A dialog manager that models the conversation flow as an deterministic FSA is well-suited for our needs.
-When choosing the dialog manager for our project we considered the following factors: It had to be open source, preferably Java, well documented.
+When choosing the dialog manager for our project, we considered the following factors: It had to be open source, preferably Java and well documented.
 We were also looking for code that was actively maintained.
 We reviewed a few potential contenders:
 \begin{itemize}
 \item[IrisTK] \hfill \\
-IrisTK is a sophisticated dialog manager. The main focus of this dialog manager is multimodality: it can integrate input from multiple sensory output: speech, vision. The multimodal nature of this manager adds a lot of functionality which we would not have used, so we decided not to use it.
+IrisTK is a sophisticated dialog manager. The main focus of this dialog manager is multimodality i.e it can integrate input from multiple sensory inputs, for example speech and vision. The multimodal nature of this manager adds a lot of functionality which we would not have used, so we decided not to use it.
 \item[InproTK] \hfill \\
 The most exciting asset of this dialog manager was incremental processing.
 The code is well maintained and actively developed. 
 However, we failed to build a demo that uses incremental features due to the lack of documentation so we dropped this option.
 \item[OpenDial] \hfill \\
 OpenDial is probably the most popular open source dialog manager.
-After successfully implementing a short domain-relevant demo we opted for this manager.
-For more detailed description of OpenDial see section ~\ref{sec:opendial}.
+After successfully implementing a short domain-relevant demo, we opted for this dialog manager.
+For more detailed description, see section ~\ref{sec:opendial}.
 \end{itemize}
 
-\subsection{Open Dial}
-
+\subsection{OpenDial}
+\label{sec:opendial}
 We used Opendial to implement not only the dialogue manager but our main class: the dialogue system. 
-Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text to speech system. 
-We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 for ASR and MaryTTS for text to speech. 
+Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text-to-speech (TTS) system. 
+We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speeche 
 This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module. 
 The main component that has to be implemented for the dialogue manager is the domain file. \\
 
-Like most Dialogue Managers Open Dial also consists of three different components which interact to create a dialogue. 
+Like most dialogue managers Opendial also consists of three different components which interact to create a dialogue. 
 
 The first component is responsible for the recognition of language. 
-In Open Dial this component is called ”Natural Language Understanding model”. 
-The output of the first process is passed on to the next component which checks if there was an instruction given which action should be  be performed upon that input. 
+In OpenDial this component is called ”Natural Language Understanding model (NLU)”. 
+The output of the first process is passed on to the next component which checks if there was an instruction given which action should be be performed upon that input. 
 Such actions might be showing something on a GUI, starting a task or simply selecting an answer to the user's input. 
 In OpenDial this part is called ”Dialog Manager”.
-The third and last component is called ”Natural Language Generation module” and is basically the opposite of the ”Natural Language Understanding model”. 
-The ”Natural Language Generation model” generates Language from the output of the ”Dialog Manger”. 
-Though the component is named ”Natural Language Generation model”, the output of a Dialogue System is not necessarily speech, but the output is often designed so that it can be easily used to generate speech with a TTS. 
-This is also the case for Open Dial. 
-Open Dial also offers a GUI where the dialogue (input, as well as output) is displayed without having to use further plug-ins.
+The third and last component is called ”Natural Language Generation module (NLG)” and is basically the opposite of the NLU. 
+The NLU generates language from the output of the ”Dialog Manger”. 
+Though the component is named NLG, the output of a dialogue system is not necessarily speech, but the output is often designed so that it can be easily used to generate speech with a TTS component. 
+This is also the case for OpenDial. 
+OpenDial also offers a GUI where the dialogue (input and output) is displayed without having to use further plugins.
 
 \subsubsection{Domain}
 
 All of the components mentioned above are located in the so called Domain file.
-A dialogue designer working with Open Dial will, in most cases just have to work on this one file. 
-For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. \newline
+A dialogue designer working with OpenDial will, in most cases just have to work on this one file. 
+For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. 
+
 
 In this file the user's input will be first transformed into an XML structure and then further processed.
 Some systems fill this structure with semantic information. 
-Open Dial however basically passes variables through the components of the system. 
+OpenDial however basically passes variables through the components of the system. 
 The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue. 
 There is a convention for the naming of the variables, they can however be named to the dialogue designers liking. 
 As all information is being passed through variables the correct naming is important though. 
 All three components have a slot ”trigger” at the very beginning of their structure. 
 The value given to this slot has to be the name of all variables which are to activate this component.
 For example giving the component this trigger: 
-\textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”.  \newline
+\textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”.
 
-So the variables in Open Dial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
+
+So the variables in OpenDial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
 The most common way to link them was described above: 
-Having the Natural Language Understanding module process the user's input, the Dialogue Manager process that input and then responding using the Natural Language Generation module. 
-In case there is no further processing needed one might also decide to directly link Natural Language Understanding module to Natural Language Generation module. 
-If the System should for example ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the Natural Language Generation twice, either linking Natural Language Generation to Natural Language Generation module or Natural Language Generation module to the Dialogue Manager which again links back to the Natural Language Generation module. \newline
+Having the NLU module process the user's input, the dialogue manager process that input and then responding using the NLG module.
+In case there is no further processing needed one might also decide to directly link NLU module to NLG module. 
+If the system should for example ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the NLG twice, either linking NLU to NLG module or NLU module to the dialogue manager which again links back to the NLG module.
+
 
 The Domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
 The modules themselves are again subdivided into rules. Every rule in this file represents one command. 
@@ -224,25 +231,26 @@ The modules themselves are again subdivided into rules. Every rule in this file 
 
 The first model to receive input is the ”Natural Language Understanding module” (NLU). 
 Depending whether further plug-ins are used, this module will get its input either directly from the user or from the plug-in.
-Open Dials NLU component is able to work with plain text input from the user, but in the case of the Ellavator project the User shall also be able to use speech commands to operate the elevator, therefore the NLU in this project receives input from the grammar file of the Sphinx plug-in.
+OpenDial NLU component is able to work with plain text input from the user, but in the case of the Ellavator project the user shall also be able to use speech commands to operate the elevator, therefore the NLU in this project receives input from the grammar file of the Sphinx plug-in.
 The grammar of the Sphinx plug-in already does part of the work, which would be usually done by the NLU alone.
 There is only a very limited amount of commands which the elevator is able to execute.
 Each of those can however be triggered by various expressions, as different people will use different words and structures to express themselves.
-Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression. \newline
+Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression. 
+
 
 In the example shown below there is a rule which models the command of changing a direction.
 A rule consists of at least one case-expression.
 A case-expression itself consists of a ”condition” and an ”effect”.
- In the ”condition”, as the name already states the Dialogue Designer can define under which circumstances a case-expression will match the users input.
+ In the ”condition”, as the name already states the dialogue designer can define under which circumstances a case-expression will match the users input.
  These conditions are connected using a logical operator.
  In most cases one would want to use the conditions ”or” as either one of those expressions should trigger the rule.
-  The ”effect” will be the value passed on to the TM.
-  As stated before this is done by assigning a variable of the proper name a value.
-  In the case of the example below the variable is assigned the value of the function of changing to floor to the level of the given parameter. 
-  \newline
+ The ”effect” will be the value passed on to the dialogue manager.  
+ As stated before this is done by assigning a variable of the proper name a value.
+ In the case of the example below the variable is assigned the value of the function of changing to floor to the level of the given parameter. 
 
 
-  \textless rule \textgreater \newline
+
+  \textless rule\textgreater \newline
   \indent \indent \textless  case \textgreater \newline
   \indent \indent \indent \textless condition operator=”or”  \textgreater \newline\indent \indent \indent \indent \textless if var=”u\_u” value=”go to second floor” relation=”contains”/  \textgreater \newline
   \indent \indent \indent \indent \textless if var=”u\_u” value=”take me up to the second floor” \newline
@@ -268,19 +276,18 @@ A case-expression itself consists of a ”condition” and an ”effect”.
    This one rule includes two different commands.
    They are gathered in one rule as they both are orders to switch a floor.
    The only difference is the floor level they have.
-   Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. \newline
+   Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. 
 
 
 
    As stated before, every user will use different words to express themselves.
    To cover all possible utterances for a command is impossible.
-   But the Dialogue Designer should try to at least cover the most common ones,  to make the dialogue more natural for the user.
+   But the dialogue designer should try to at least cover the most common ones,  to make the dialogue more natural for the user.
    This part can also be done in the grammar of Sphinx.
-   Open Dial offers a few possibilities to do so.
+   OpenDial offers a few possibilities to do so.
    The first possibility would be to simply list all the expressions as it is shown in the figure above.
    But as can easily be seen in the example above, there is only a small difference between the sentences.
    If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read.
-   Therefore it is recommended to use the following expressions which will help to keep the Domain file smaller and easier to read which will make it less prone to mistakes and errors if used in the right amount. \newline
 
 
    \begin{tabular}{|ll|}
@@ -303,9 +310,9 @@ A case-expression itself consists of a ”condition” and an ”effect”.
 
    \subsubsection{Dialogue Manager}
 
-   If the variable which was assigned in the NLU module was named correctly, it should, in most cases, first be passed trough the Dialogue Manager (DM).
-   In the Dialogue Manager, the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
-   As was said in the last subchapter, values in Open Dial are saved within and passed trough variables, the input from the NLU will therefore be assigned to another variable. \newline
+   If the variable which was assigned in the NLU module was named correctly, it should, in most cases, first be passed through the dialogue manager (DM).
+   In the DM, the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
+   As was said in the last subchapter, values in OpenDial are saved within and passed through variables, the input from the NLU will therefore be assigned to another variable. \newline
    Just like all other modules, each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
    Therefore, in this component the output of the NLU component will be matched against all conditions in the DM. 
    As soon as one matching rule is found, that rule is triggered which sends the ”effect” of that rule.
@@ -326,33 +333,31 @@ A case-expression itself consists of a ”condition” and an ”effect”.
         \indent \indent \textless /case \textgreater \newline
         \indent \textless /rule \textgreater \newline
 
-        The figure above shows  a rule called ”Movement” which links the users input ”Request” with any parameter to the effect of that input.
-        The variable with the name ”a\_m” and the value ”floor” with the input of the Request is send.
-        The parameter specified in the placeholder ”x” written in curly brackets.
+The figure above shows  a rule called ”Movement” which links the users input ”Request” with any parameter to the effect of that input.
+The variable with the name ”a\_m” and the value ”floor” with the input of the Request is send.
+The parameter specified in the placeholder ”x” written in curly brackets.
+\subsubsection{Natural Language Generation module}
+The last part of the system generates the speech. 
+Without any further plug-ins this will be done by printing the text to the GUI.
+As stated before, this component basically does the opposite of the Natural Language Understanding module. 
+Instead of transforming the user's input into an XML structure, the system takes the last components output, which is a variable embedded in an XML structure and transforms it back to plain text, either spoken, if plug-ins are used, or printed on the GUI, if no plug-ins are used. \newline
 
-        \subsubsection{Natural Language Generation module}
+Each command is again given its own ”rule” and ”case” structure, in which condition and effect are included. 
+The effect of this rule is saved in a variable but also used as output for speech. \newline
 
-        The last part of the system generates the speech. 
-        Without any further plug-ins this will be done by printing the text to the GUI.
-        As stated before, this component basically does the opposite of the Natural Language Understanding module. 
-        Instead of transforming the user's input into an XML structure, the system takes the last components output, which is a variable embedded in an XML structure and transforms it back to plain text, either spoken, if plug-ins are used, or printed on the GUI, if no plug-ins are used. \newline
+\textless rule \textgreater \newline
+\indent \indent \textless case \textgreater \newline
+\indent \indent \indent \textless condition \textgreater \newline 
+\indent \indent \indent \indent \textless if var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
+\indent \indent \indent \textless /condition \textgreater \newline
+\indent \indent \indent \textless effect util=”1” \textgreater \newline 
+\indent \indent \indent \indent \textless set var=”u\_m” value=”Okay, I will now take you to the {x} floor.” / \textgreater \newline
+\indent \indent \indent \textless /effect \textgreater \newline
+\indent \indent\textless /case \textgreater \newline
+\indent \textless /rule \textgreater \newline
 
-        Each command is again given its own ”rule” and ”case” structure, in which ”condition and effect are included. 
-        The effect of this rule is saved in a variable but also used as output for speech. \newline
-
-        \textless rule \textgreater \newline
-        \indent \indent \textless case \textgreater \newline
-        \indent \indent \indent \textless condition \textgreater \newline 
-        \indent \indent \indent \indent \textless if var=”a\_m” value=”floor(\{x\})” / \textgreater \newline
-        \indent \indent \indent \textless /condition \textgreater \newline
-        \indent \indent \indent \textless effect util=”1” \textgreater \newline 
-        \indent \indent \indent \indent \textless set var=”u\_m” value=”Okay, I will now take you to the {x} floor.” / \textgreater \newline
-        \indent \indent \indent \textless /effect \textgreater \newline
-        \indent \indent\textless /case \textgreater \newline
-        \indent \textless /rule \textgreater \newline
-
-        The example above shows one rule from an NLG module. 
-        In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
+The example above shows one rule from an NLG module. 
+In this rule a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
         
 \newpage        
 \section{Speech synthesis}
@@ -392,7 +397,7 @@ Mary accepts different kinds of inputs, the simplest one being plain text.
 But also Mark-up Languages such as SABLE or SSML can be used. 
 These are based on the Mark-up Language XML and are developed especially for the use in TTS.
 
-In case of the elevator we only pass the output of the Open Dail Dialogue Manager to Mary, which is plain text.
+In case of the elevator we only pass the output of the OpenDial dialogue manager to Mary, which is plain text.
 Any input given to Mary will be transformed into a "MaryXML Mark-up Skeleton". 
 A skeleton which already has different slots which will be filled by the system in the other modules.
 If the input was already in a form of Mark-up language the keys assigned in this Mark-up Language will be kept and added to the Skeleton some of the values however might be dropped.
