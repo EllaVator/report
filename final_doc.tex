@@ -507,11 +507,11 @@ This version of the Pi has the following specifications.
 \end{itemize}
 \subsection{Rasberry pi virtualization}
 By setting up a virtual Raspberry Pi, we can further test our software without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests are passed.
-
-
 Raspberry Pi uses an ARM processor, so the only tool available to emulate it on PCs is \texttt{qemu}.
 
+
 Basically we follow the instructions from \url{http://www.linux-mitterteich.de/fileadmin/datafile/papers/2013/qemu_raspiemu_lug_18_sep_2013.pdf} but use the latest Raspbian image instead, which can be downloaded from \url{https://www.raspberrypi.org/downloads/}.
+
 
 And download \texttt{kernel-qemu} from \url{http://web.archive.org/web/20150214035104/http://www.xecdesign.com/downloads/linux-qemu/kernel-qemu} because the original page is unavailable.
 
@@ -526,7 +526,7 @@ Note:
 \item Although the new RPi 2 model has an ARMv7 processor, Raspbian is still compiled into ARMv6 (for compatibility with old models), so emulating with \texttt{-cpu arm1176} is reasonable.
 \end{itemize}
 
-\subsection{Serial control of the elevator}
+\section{Serial control of the elevator}
 The Elevator is controlled by sending a hex encoded signal via serial cable.
 In order to move the elevator to floor three, we are sending a signal which is interpreted as a move command to floor three.
 We can also send a special "heartbeat" signal that will make the elevator respond with the information about the current floor it is on.
@@ -539,7 +539,7 @@ After the elevator receives the signal it should close the doors and start movin
 %\caption{Recordings setup.}
 %\label{fig:recordingsetup}
 %\end{figure}
-
+\todo{TODO: a few images of the setup.}
 Before working on serial implementation we reviewed several java libraries for serial communication: pi4j, javax.comm, RXTX.
 It was decided to stay with RXTX, since pi4j was not stable enough and javax.comm didn't have freely available sources.
 Serial implementation follows mainly RXTX examples provided \href{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}{online} as well as source files of the original project.
@@ -609,23 +609,68 @@ We connected Raspi to the elevator using USB serial converter.
 The same RXTX serial port utility was used to send the signals to the elevator.
 However whatever floor we tried to send the elevator to it moved to floor 1. 
 We suspect that Raspi simply does not have enough power to support serial connection to the elevator.
-\\
 
-Our next steps:
 
-Find a way how to boost Raspi serial port power from 5V to 12V.
-If it fails, drop Raspi completely and use a variant of desktop PC with an SD drive.
+\newpage
+\section{Development tools}
+\subsection{Gradle}
+Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
+Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
 
-\subsection{Testing}
+Gradle is configured in the file \texttt{build.gradle}.
+Although it looks like a configuration file, it is actually fully functional code written in Groovy\footnote{http://www.groovy-lang.org/}, a scripting language based on Java.
+
+We included a Gradle wrapper in the repository.
+This file called \texttt{gradlew} (and \texttt{gradle.bat} for windows) download and run the right Gradle version when executed.
+It is recommended to use this file instead of any other locally installed Gradle, because it might be another version of Gradle.
+
+The file \texttt{settings.gradle} specifies the gradle project structure by declaring several subprojects.
+There is the opendial subproject, which is a copy of the dialog manager OpenDial\footnote{http://www.opendial-toolkit.net/}.
+Next we have the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4~\cite{Walker:2004:SFO:1698193}.
+These subprojects are all forked on github from the originals, eventually adapted for our purposes and then included as a git submodule.
+Finally we have a subproject called prompts, that is our own making.
+It contains example audio prompts for our application, that are used for the acoustic model training and for testing.
+
+\subsection{GitHub}
+GitHub is a web platform for collaboration using git, which is a version control system. 
+We used this system to allow several people work on the same project at the same time without overwriting each others changes.
+
+For some of our dependencies (Sphinx, OpenDial) we used git submodules to include them into our project. 
+This gave us the possibility to adapt the original code for our purposes if necessary.
+In order to download these dependencies when you clone the repository, you must therefore execute
+\begin{lstlisting}[language=bash]
+git clone https://github.com/EllaVator/EllaVator.git --recursive
+\end{lstlisting}
+or init and update all of the subprojects individually.
+\subsection{Continuous integration with Travis CI}
+
+Continuous integration is based on the idea that all developers send their changes to a common code repository as soon as possible, as we did on GitHub. 
+Additionally these changes should be tested before they are merged into the main code repository. 
+In order to do this automatically, it is necessary to automate the build process completely, as we did using Gradle.
+If the build succeeds, all unit and integration tests can be executed, which prevents non-working code to enter the main repository if the error is covered by a test case.
+This procedure is much better than having each developer running the tests before committing the changes to the main repository for a couple of reasons.
+Firstly it does not rely on the developer to run all the tests which can be easily forgotten or skipped because the developer does not see the whole effect his modification has.
+Secondly the project is built in a “neutral” environment that should be a close copy of the production environment if possible. 
+This way for example code that runs fine on the developer's Windows machine but not on Linux can be detected.
+
+As it integrates seamlessly into GitHub, we decided to use Travis CI as our continuous integration service. Each pull request gets marked by colors: yellow means the build is still running, red means failed build or failed test, green says everything is OK. In each pull request there is a link to Travis that gives details about the build process, too.
+
+Travis is configured by a file named \texttt{.travis.yml} in the root directory of the project. 
+It is not even necessary to specify that the build process is handled by Gradle.
+Travis can detect this automatically, given that we specify groovy as our project language (\texttt{language: groovy}).
+We needed to use Java 8 because this is a minimum requirement for Opendial.
+Also, Travis must install the \texttt{sox} command, which is used to extract single sentences from our test audio files in the prompts subproject.
+Finally, we cache the gradle files to speed up the build process (otherwise the Gradle wrapper will download Gradle every time).
+
+Each developer can add Travis to his own repositories, too.
+That way failures can be detected even before sending a pull request.
+Travis can be activated by signing up on \url{https://travis-ci.org/} using your GitHub account.
+Then go to your profile page on Travis and activate the GitHub repositories you want to be watched (which must contain a \texttt{.travis.yml} file).
+From then on every push to these repositories will trigger Travis to build and run tests and send an email about the result.
+
+\newpage
+\section{Testing}
 Software testing is an essential process in modern software development, in particular in the process of quality assurance (QA) of software.
-As the name indicates software testing verifies whether the software does what it is supposed to do.
-But though invented for this purpose, software testing can accomplish more than that.
-Tests also help to maintain the features that have been developed in the past and protects them from being destroyed accidentally by new code.
-On top of that tests can help developers to understand or remember what exactly the code does, as tests are generally easier to understand than code.
-Tests provide examples of how the existing code is supposed to be used and therefore provide a very useful addition to the documentation.
-The most extreme incarnation of testing might be a development process called Test Driven Development.
-In this process tests are even written before the actual code.
-
 Generally there at least two types of tests: unit and integration tests.
 While unit tests are thought to test small components (e.g. classes) in isolation, integration tests verify how these components work as a whole.
 
@@ -654,62 +699,6 @@ In this case we have the additional parameter \texttt{dataProvider = 'expandedGr
 This indicates that the test has to be executed multiple times with different test data, which is a very useful feature of TestNG.
 The string \texttt{expandedGrammar} refers to the method of this name, that will return the test data as an array.
 Each item in this array is an array of parameters that will be passed to the test function.
-
-\newpage
-\section{Development tools}
-\subsection{Gradle}
-Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
-Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
-
-Gradle is configured in the file \texttt{build.gradle}.
-Although it looks like a configuration file, it is actually fully functional code written in Groovy\footnote{http://www.groovy-lang.org/}, a programming language based on Java.
-
-We included a Gradle wrapper in the repository.
-This file called \texttt{gradlew} (and \texttt{gradle.bat} for windows) download and run the right Gradle version when executed.
-It is recommended to use this file instead of using this file instead of any other locally installed Gradle, because it might be another version of Gradle.
-
-The file \texttt{settings.gradle} specifies the gradle project structure by declaring several subprojects.
-There is the opendial subproject, which is a copy of the dialog manager OpenDial\footnote{http://www.opendial-toolkit.net/}.
-Next we have the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4\footnote{https://github.com/cmusphinx/sphinx4}.
-These subprojects are all forked on github from the originals, eventually adapted for our purposes and then included as a Git submodule.
-Finally we have a subproject called prompts, that is our own making.
-It contains example audio prompts for our application, that are used for the acoustic model training and for testing.
-GitHub is a web platform for collaboration using git, which is a version control system. 
-We used this system to allow several people work on the same project at the same time without overwriting each others changes.
-
-For some of our dependencies (Sphinx, OpenDial) we used git submodules to include them into our project. 
-This gave us the possibility to adapt the original code for our purposes if necessary.
-In order to download these dependencies when you clone the repository, you must therefore execute
-\begin{lstlisting}[language=bash]
-git clone https://github.com/EllaVator/EllaVator.git --recursive
-\end{lstlisting}
-or init and update all of the subprojects individually.
-\subsection{Continuous integration with Travis CI}
-
-Continuous integration is based on the idea that all developers send their changes to a common code repository as soon as possible, as we did on GitHub. 
-Additionally th/ese changes should be tested before they are merged into the main code repository. 
-In order to do this automatically, it is necessary to automate the build process completely, as we did using Gradle.
-If the build succeeds, all unit and integration tests can be executed, which prevents non-working code to enter the main repository if the error is covered by a test case.
-This procedure is much better than having each developer running the tests before committing the changes to the main repository for a couple of reasons.
-Firstly it does not rely on the developer to run all the tests which can be easily forgotten or skipped because the developer does not see the whole effect his modification has.
-Secondly the project is built in a “neutral” environment that should be a close copy of the production environment if possible. 
-This way for example code that runs fine on the developer's Windows machine but not on Linux can be detected.
-
-As it integrates seamlessly into GitHub, we decided to use Travis CI as our continuous integration service. Each pull request gets marked by colors: yellow means the build is still running, red means failed build or failed test, green says everything is OK. In each pull request there is a link to Travis that gives details about the build process, too.
-
-Travis is configured by a file named \texttt{.travis.yml} in the root directory of the project. 
-It is not even necessary to specify that the build process is handled by Gradle.
-Travis can detect this automatically, given that we specify groovy as our project language (\texttt{language: groovy}).
-We needed to use Java 8 because this is a minimum requirement for Opendial.
-Also, Travis must install the \texttt{sox} command, which is used to extract single sentences from our test audio files in the prompts subproject.
-Finally, we cache the gradle files to speed up the build process (otherwise the Gradle wrapper will download Gradle every time).
-
-Each developer can add Travis to his own repositories, too.
-That way failures can be detected even before sending a pull request.
-Travis can be activated by signing up on \url{https://travis-ci.org/} using your GitHub account.
-Then go to your profile page on Travis and activate the GitHub repositories you want to be watched (which must contain a \texttt{.travis.yml} file).
-From then on every push to these repositories will trigger Travis to build and run tests and send an email about the result.
-
 
 \newpage
 \section{Installation instructions}
