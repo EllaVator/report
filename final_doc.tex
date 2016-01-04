@@ -12,6 +12,9 @@
 \usepackage{colortbl}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 
@@ -539,6 +542,39 @@ After the elevator receives the signal it should close the doors and start movin
 %\caption{Recordings setup.}
 %\label{fig:recordingsetup}
 %\end{figure}
+
+\begin{comment}
+\begin{figure}%
+\parbox{1.2in}{%
+\includegraphics[height=4.0cm, angle=-90]{inside_ellevator1.jpg}
+\caption{First.}%
+\label{fig:2figsA}}%
+\qquad 
+\hspace{10pt}
+\begin{minipage}{1.2in}%
+\includegraphics[height=4.0cm, angle=-90]{inside_ellevator3.jpg}
+\caption{Second.}%
+\label{fig:2figsB}%
+\end{minipage}%
+\end{figure}%
+
+\begin{figure*}%[t!]
+\centering
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\includegraphics[width=0.5\textwidth, angle=-90]{inside_ellevator1.jpg}
+\caption{Lorem ipsum}
+\end{subfigure}
+~ 
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\includegraphics[width=0.5\textwidth, angle=-90]{inside_ellevator3.jpg}
+\caption{Lorem ipsum, lorem ipsum,Lorem ipsum, lorem ipsum,Lorem ipsum}
+\end{subfigure}
+\caption{Caption place holder}
+\end{figure*}
+\end{comment}
+
 \todo{TODO: a few images of the setup.}
 Before working on serial implementation we reviewed several java libraries for serial communication: pi4j, javax.comm, RXTX.
 It was decided to stay with RXTX, since pi4j was not stable enough and javax.comm didn't have freely available sources.
