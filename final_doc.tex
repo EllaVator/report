@@ -386,6 +386,9 @@ Further languages might be included in the future, but can also be added by any 
 Mary is subdivided into different modules. 
 This allows the user to take a look at the output of each of those components. 
 One could also interchange small details on one component and observe the output on the complete system as well as completely interchanging a component.
+In most cases these components were not specifically designed for Mary. 
+It would go beyond the scope of this paper to mention all of them. 
+Detailed information can be found on the website \url{http://mary.dfki.de/ }.
 
 \subsubsection*{Input}
 
@@ -418,11 +421,8 @@ Numbers are divided into ordinal- and cardinal numbers.
 
 This module has two different tasks to solve. 
 The Chunker labels the constituents in each sentence.
-These are distinguished between adjective, nominal and prepositional phrase. "Chunkie" is used for this task. 
-It was developed by Skut and Brants in 1998. 
-"TnT", the tagger used was also developed by Brants in 2000. 
-It is a statistical POS-tagger working with trigram probabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} in order to assign every word its proper word class.
-The word classes are provided by the Stuttgard-Tuebinger-Tagset (Schiller et. al., 1997)
+These are distinguished between adjective, nominal and prepositional phrase.  
+A statistical POS-tagger working with trigram probabilities \footnote {To assign the correct word class the tagger does not only consider the current word but also the two words which were used last, making it a total of three words.} is used in order to assign every word its proper word class.
 
 The findings of the two components are saved within the placeholders that were created by the tokenizer.
 Unfortunately this also means that some of the information given by the chunker will be lost. This would be the case for local ambiguities.
@@ -435,34 +435,20 @@ The output of this system will be the transcription of every word into phonetic 
 To able to do this however there still needs to be some information extracted.
 One of the steps needed is called "inflection endings". 
 In this process, the tokens marked in the step "Preprocessing" are reviewed.
-With the information given by the Chunker in the earlier steps as well as under the use of the morphologic analyser "Mmorph" (Petitpierre and Russle, 1995) these tokens such as ordinal number can now be expanded.\newline 
+With the information given by the Chunker in the earlier steps as well as under the use of an morphologic analyser these tokens such as ordinal number can now be expanded.\newline 
 In this step Mary will also check a dictionary specifically designed for Mary by the DFKI.
-It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules.
-The lexicon also covers many of the acronyms. 
-It can even handle composed words quite will, which is especially important for the German language. \newline 
+It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules. \newline
 In case there is no information found about a word in the dictionary the "letter to sound conversion" will be used.
-Of course this module can not know whether a word unknown to the system is an acronym or an actual word. 
-This problem was solved rather simply. 
-All words which have less than five letter will be treated as acronyms and each letter will be pronounced separately. 
-In case the word is longer it will be read out as a complete word.
-The "letter to sound conversion" (Alan Black et al., 1998) was trained on the dictionary to obtain about how to pronounce a word.
-The decomposition was trained statistically on the database CELEX (Baayen et al. 1995).
-After decomposing every word will be matched against a list containing morphemes which change the intonation of a word.
-The remaining morphemes are processed according to language specific rules.
-Hyphenation will also be defined by phonological principals such as the sonoraty hierarchy of phonemes ~\cite{marytts}. After these analysis an algorithm decides which syllable will get the main stress.\newline
 The output of this module only contains the SAMPA transcription and a note in case a word was processed by the "Letter to sound conversion". 
 Information on intonation will not be seen in the output.
 
 \subsubsection*{Prosody rules}
 
 After the last module has assessed the intonation of a word, this module will analyse the prosody of the entire text.
-The end of a sentence is a classic example for the intonation of a sentence, but one of the most important aspect of prosody of a text are the pauses which have to be added to it.
-These will be included by the program GToBI (Grice et al., 2002). 
-With the aid of GToBI Mary distinguishes between six types of pauses, all being different in their length.
-A pause for the end of a paragraph for example will be given the number 6, which is the longest pause there is in Mary.
-
-Again, the work of the chunker and tagger is of great importance for this module.
-The output of the chunker will provide information on the structure of the sentence, for example whether a part of a sentence is a \emph{Vorfeld}. \footnote {Marc Schroder and Juergen Trouvain, 2003}
+The end of a sentence is a classic example for the intonation of a sentence. One of the most important aspect of prosody of a text are the pauses which have to be added to it. 
+These will not only be added at the end of sentences but also at the end of paragraphs or chunks within a sentence.
+The work of the chunker and tagger is therefore of great importance for this module.
+\newline
 Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
 
 \subsubsection*{Postlexical and Phonological process}
@@ -475,8 +461,6 @@ After this step the skeleton which has been created at the beginning of the proc
 
 This module will abandon the structure of the MaryXML structure.
 Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
-"The duration rules" by Brinckmann and Trouvain (2002) were used for this. These were created as an adaptation of the  "Klatt-Rules" (Klatt 1979; Allen et al., 1987) and define how long a tone will be.
-The realisation is taken from GtoBI which was used to determine the pauses between the words in the earlier steps.
 
 \subsubsection*{Synthesis}
 In this final step, the values acquired in earlier steps will at last be converted into sound.
