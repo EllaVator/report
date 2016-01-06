@@ -468,7 +468,7 @@ The modular architecture of Mary makes it easy to interchange the synthesis modu
 Currently MBROLA (Dutroit et al., 1996) is used in by Mary, which was selected as it creates a low distortion in the signal.
 
 \newpage
-\section{Rasberry pi} 
+\section{Raspberry Pi}
 To implement the project, a Raspberry Pi is used instead of a conventional computer. The Raspberry Pi is a single-board computers 
 developed in the United Kingdom by the Raspberry Pi Foundation. We used the \textit{RPi 2 model B}. 
 Figure ~\ref{fig:Pi2} shows the RPi 2. 
@@ -492,14 +492,11 @@ This version of the Pi has the following specifications.
   \item Micro SD card slot
   \item VideoCore IV 3D graphics core
 \end{itemize}
-\subsection{Rasberry pi virtualization}
-By setting up a virtual Raspberry Pi, we can further test our software without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests are passed.
+\subsection{Raspberry Pi virtualization}
+By setting up a virtual Raspberry Pi, the software can be further tested without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests have passed.
 Raspberry Pi uses an ARM processor, so the only tool available to emulate it on PCs is \texttt{qemu}.
 
-
-Basically we follow the instructions from \url{http://www.linux-mitterteich.de/fileadmin/datafile/papers/2013/qemu_raspiemu_lug_18_sep_2013.pdf} but use the latest Raspbian image instead, which can be downloaded from \url{https://www.raspberrypi.org/downloads/}.
-
-
+Basically follow the instructions from \url{http://www.linux-mitterteich.de/fileadmin/datafile/papers/2013/qemu_raspiemu_lug_18_sep_2013.pdf} but use the latest Raspbian image instead, which can be downloaded from \url{https://www.raspberrypi.org/downloads/}.
 And download \texttt{kernel-qemu} from \url{http://web.archive.org/web/20150214035104/http://www.xecdesign.com/downloads/linux-qemu/kernel-qemu} because the original page is unavailable.
 
 Currently this solution has several drawbacks, mostly notable ones are low speed and lack of serial port support.
