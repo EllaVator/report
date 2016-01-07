@@ -35,7 +35,41 @@
 %please put in the files you wrote in the corresponding order and space by
 %using \input{filename} so that we can compile the entire project report as one
 
+\section{EllaVator}
+
+The project "EllaVator" was started in the summer term 2015 with the goal to revive the speaking elevator in building C4.7 of the university of Saarland. \newline
+
+When the elevator currently in use was installed in the year 2000 the computational linguistic faculty of the University Saarland started the software project "Sprachsteuerung im Aufzug". \footnote {"Voice commands in the elevator"}
+The result of this project was a interdisciplinary work with the faculty of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. \newline
+
+Ever since, the elevator had been used not only for practicality but also to introduce guests and students to one of the many fields of application for computational linguistic; 
+To show them the possibilities of such an application as well as limits. \newline
+
+The software project for the speaking elevator had since then been repeated to give students the opportunity of experiencing procedure of working together on a real application while trying to further develop the product of the speaking elevator.
+In the iteration of summer 2015 it was decided to work on the software as well as to replace part of the hardware.
+While the hardware used inside the elevator was not touched, the computer which is connected to the elevator and runs the software being used for the voice control of the elevator was exchanged.
+The hardware used before was outdated and was causing problems which is why it was decided that it should be replaced. \newline
+As it turned out replacing the hardware was not as easy as assumed in the beginning.
+In the end the hardware chosen proved incompatible with the elevator.
+Further information about this problem is provided in section ~\ref{sec:Serial_cable_connection_setup}
+\newline
+
+Unfortunately the result of the software project "speaking elevator" of the summer term 2015 thus is not a new iteration of the application running on the elevator, but the work done can still be used if new hardware is provided.
+The system developed by the participants of this project runs on any computer.
+If it were to be connected to the elevator it would merely have to be tested inside the elevator and adjusted to the specific conditions of reverberation and movement of the elevator. \newline
+
+In the following there will be given an introduction the components of the elevator control in section  ~\ref{sec:Components_of_elevator_control} , chapter ~\ref{sec:General_thoughts} will present some basic ideas that were discussed before starting the implementation of the system.
+In section ~\ref{sec:Dialog_manager} a selection of currently popular dialogue managers, as well as an introduction to the OpenDial, the dialogue manager used for the project will be given.
+Mary TTS, the text to speech system that was used is presented in chapter ~\ref{sec:Speech_Synthesis}. \newline
+In the sections which follow, information about the hardware used is provided.
+With section ~\ref{sec:Rasberry_Pi} presenting the Rasberry PI used and section ~\ref{sec:Serial_control_of_the_elevator} the serial control of the elevator.
+Section ~\ref{sec:Development_tools} contains information about the tools used for the development of the project, which are Gradle, GitHub and Travis.
+The section Testing ~\ref{sec:Testing} presents the methods used to automatically test the system.
+The final chapter ~\ref{sec:Installation_instructions} provides installation instruction for running the project "EllaVator".
+
+
 \section{Components of elevator control}
+\label{sec:Components_of_elevator_control}
 
 \subsection{Automatic speech recognition}
 Speech recognition is a complex technology which involves many fields, such as probability theory, machine learning, statistical natural language processing and speech processing. However, the architecture of a modern speech recognizer can be broadly divided into two main components namely the Acoustic Model (AM) and the Language Model (LM). The decoder uses these two components and produces the text output of the extracted input features as shown in Figure~\ref{fig:asr_component1}. 
@@ -100,6 +134,7 @@ While the recordings were being played, the elevator was moved between the floor
 
 \newpage
 \section{General thoughts}
+\label{sec:General_thoughts}
 Before actually starting to work on the dialogue itself, we decided on how a dialogue with the EllaVator should look like. \\
 
 We came up with the following model: \\
@@ -163,6 +198,7 @@ So the problem was not only to allow for multiple inputs but also for multiple i
 
 \newpage
 \section{Dialog manager}
+\label{sec:Dialog_manager}
 The dialog manager is responsible for keeping track of the conversation and deciding the next move of the system for each input. The domain of our project is fairly limited. Most conversational situations consist of the user naming a location and the machine taking the action of moving to that location and reassuring the user that it had understood the command. This can described by deterministic If...then... statements. A dialog manager that models the conversation flow as an deterministic FSA is well-suited for our needs.
 When choosing the dialog manager for our project, we considered the following factors: It had to be open source, preferably Java and well documented.
 We were also looking for code that was actively maintained.
@@ -364,6 +400,7 @@ In this rule, a variable to which a function  is assigned, triggers the speech o
         
 \newpage        
 \section{Speech synthesis}
+\label{sec:Speech_Synthesis}
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
 For this a Text-to-Speech system (TTS) had to be used. A TTS system will read out information to the user, generating voice for the input text. TTS systems are widely used today. 
 For exmaple in the train stations, there are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
@@ -468,7 +505,8 @@ The modular architecture of Mary makes it easy to interchange the synthesis modu
 Currently MBROLA (Dutroit et al., 1996) is used in by Mary, which was selected as it creates a low distortion in the signal.
 
 \newpage
-\section{Rasberry pi} 
+\section{Raspberry Pi}
+\label{sec:Rasberry_Pi}
 To implement the project, a Raspberry Pi is used instead of a conventional computer. The Raspberry Pi is a single-board computers 
 developed in the United Kingdom by the Raspberry Pi Foundation. We used the \textit{RPi 2 model B}. 
 Figure ~\ref{fig:Pi2} shows the RPi 2. 
@@ -492,14 +530,11 @@ This version of the Pi has the following specifications.
   \item Micro SD card slot
   \item VideoCore IV 3D graphics core
 \end{itemize}
-\subsection{Rasberry pi virtualization}
-By setting up a virtual Raspberry Pi, we can further test our software without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests are passed.
+\subsection{Raspberry Pi virtualization}
+By setting up a virtual Raspberry Pi, the software can be further tested without physically accessing the Raspberry Pi and burning disk images all the time, even after all automatic tests have passed.
 Raspberry Pi uses an ARM processor, so the only tool available to emulate it on PCs is \texttt{qemu}.
 
-
-Basically we follow the instructions from \url{http://www.linux-mitterteich.de/fileadmin/datafile/papers/2013/qemu_raspiemu_lug_18_sep_2013.pdf} but use the latest Raspbian image instead, which can be downloaded from \url{https://www.raspberrypi.org/downloads/}.
-
-
+Basically follow the instructions from \url{http://www.linux-mitterteich.de/fileadmin/datafile/papers/2013/qemu_raspiemu_lug_18_sep_2013.pdf} but use the latest Raspbian image instead, which can be downloaded from \url{https://www.raspberrypi.org/downloads/}.
 And download \texttt{kernel-qemu} from \url{http://web.archive.org/web/20150214035104/http://www.xecdesign.com/downloads/linux-qemu/kernel-qemu} because the original page is unavailable.
 
 Currently this solution has several drawbacks, mostly notable ones are low speed and lack of serial port support.
@@ -514,6 +549,7 @@ Note:
 \end{itemize}
 
 \section{Serial control of the elevator}
+\label{sec:Serial_control_of_the_elevator}
 The Elevator is controlled by sending a hex encoded signal via serial cable.
 In order to move the elevator to floor three, we are sending a signal which is interpreted as a move command to floor three.
 We can also send a special "heartbeat" signal that will make the elevator respond with the information about the current floor it is on.
@@ -567,6 +603,7 @@ For example, floor hex codes and "heartbeat" signal were taken from the original
 We also reused several methods from old source files, like the ones that deal with "heartbeat" processing logic.
 
 \subsection{Serial cable connection setup}
+\label{sec:Serial_cable_connection_setup}
 Raspberri Pi 2 should be connected to the elevator via DE-9 type serial port.
 After numerous of unsuccessful attempts to connect Raspi to the serial port via its GPIO pins, we decided to buy a USB to serial converter. 
 The new converter worked fine out-of-the-box.
@@ -633,6 +670,7 @@ We suspect that Raspi simply does not have enough power to support serial connec
 
 \newpage
 \section{Development tools}
+\label{sec:Development_tools}
 \subsection{Gradle}
 Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
 Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
@@ -690,6 +728,7 @@ From then on every push to these repositories will trigger Travis to build and r
 
 \newpage
 \section{Testing}
+\label{sec:Testing}
 Software testing is an essential process in modern software development, in particular in the process of quality assurance (QA) of software.
 Generally there at least two types of tests: unit and integration tests.
 While unit tests are thought to test small components (e.g. classes) in isolation, integration tests verify how these components work as a whole.
@@ -722,6 +761,7 @@ Each item in this array is an array of parameters that will be passed to the tes
 
 \newpage
 \section{Installation instructions}
+\label{sec:Installation_instructions}
 These installation instructions have been tested on Ubuntu 14.04.
 
 If you have not installed git on your system, you should do this first:
