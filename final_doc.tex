@@ -40,7 +40,7 @@
 The project "EllaVator" was started in the summer term 2015 with the goal to revive the speaking elevator in building C4.7 of the university of Saarland. \newline
 
 When the elevator currently in use was installed in the year 2000 the computational linguistic faculty of the University Saarland started the software project "Sprachsteuerung im Aufzug". \footnote {"Voice commands in the elevator"}
-The result of this project was a interdisciplinary work with the faculty of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. \newline
+The result of this project was a interdisciplinary work with the faculty of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. ~\cite{SprachsteuerungimAufzug} \newline
 
 Ever since, the elevator had been used not only for practicality but also to introduce guests and students to one of the many fields of application for computational linguistic; 
 To show them the possibilities of such an application as well as limits. \newline
@@ -243,9 +243,10 @@ OpenDial also offers a GUI where the dialogue (input and output) is displayed wi
 All of the components mentioned above are located in the so called Domain file.
 A dialogue designer working with OpenDial will, in most cases just have to work on this one file. 
 For easier readability, it can of course be split into smaller files, which will then have to be imported into one single file. 
+As the complete dialogue for the elevator is rather small it was not split for the project EllaVator, but kept in one file. \newline
 
-
-In this file the user's input will be first transformed into an XML structure and then further processed.
+This file provides instructions for the system on what to do.
+The user's input will be first transformed into an XML structure and then further processed.
 Some systems fill this structure with semantic information. 
 OpenDial however basically passes variables through the components of the system. 
 The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue. 
@@ -254,18 +255,22 @@ As all information is being passed through variables the correct naming is impor
 All three components have a slot ”trigger” at the very beginning of their structure. 
 The value given to this slot has to be the name of all variables which are to activate this component.
 For example giving the component this trigger: 
-\textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”.
+\textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”. \\
 
 
 So the variables in OpenDial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
-The most common way to link them was described above: 
+The most common way to link them was described in the previous section.
 Having the NLU module process the user's input, the dialogue manager process that input and then responding using the NLG module.
 In case there is no further processing needed one might also decide to directly link NLU module to NLG module. 
 If the system should for example ask a question after having said something, it might also be possible that the dialogue designer might want to trigger the NLG twice, either linking NLU to NLG module or NLU module to the dialogue manager which again links back to the NLG module.
 
 
-The Domain-file is first subdivided into three parts as they each represent one components these parts are called modules. 
-The modules themselves are again subdivided into rules. Every rule in this file represents one command. 
+The Domain-file is subdivided into three parts as they each represent one components these parts are called modules. 
+The modules themselves are again subdivided into rules, with every rule representing one command.\\
+
+In the following subsections, information about each component will be given.
+The user-manual of Open Dial \cite{OpenDial} was used as the main source for the following subsections.
+For further instructions as well as example code illustration the more advanced possibilities given by Open Dial, please see the webpage \url{http://www.opendial-toolkit.net/user-manual}.
 
 \subsubsection{Natural Language Understanding module}
 
@@ -275,7 +280,7 @@ OpenDial NLU component is able to work with plain text input from the user, but 
 The grammar of the Sphinx plug-in already does part of the work, which would be usually done by the NLU alone.
 There is only a very limited amount of commands which the elevator is able to execute.
 Each of those can however be triggered by various expressions, as different people will use different words and structures to express themselves.
-Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression. 
+Therefore a domain-file that should be capable of doing something should have at least one rule which can be activated by at least one expression. \newline
 
 
 In the example shown below there is a rule which models the command of changing a direction.
@@ -312,23 +317,22 @@ A case-expression itself consists of a ”condition” and an ”effect”.
    \indent \textless /rule \textgreater \newline
 
 
-   In the example above one rule is shown.
-   This one rule includes two different commands.
-   They are gathered in one rule as they both are orders to switch a floor.
-   The only difference is the floor level they have.
-   Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. 
+In the example above one rule is shown.
+This one rule includes two different commands.
+They are gathered in one rule as they both are orders to switch a floor.
+The only difference is the floor level they have.
+Resulting in different parameters which are given to the function of the variable ”a\_u” in the ”effect” slot. \newline
 
 
 
-   As stated before, every user will use different words to express themselves.
-   To cover all possible utterances for a command is impossible.
-   But the dialogue designer should try to at least cover the most common ones,  to make the dialogue more natural for the user.
-   This part can also be done in the grammar of Sphinx.
-   OpenDial offers a few possibilities to do so.
-   The first possibility would be to simply list all the expressions as it is shown in the figure above.
-   But as can easily be seen in the example above, there is only a small difference between the sentences.
-   If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read.
-
+As stated before, every user will use different words to express themselves.
+To cover all possible utterances for a command is impossible.
+But the dialogue designer should try to at least cover the most common ones,  to make the dialogue more natural for the user.
+This part can also be done in the grammar of Sphinx.
+OpenDial offers a few possibilities to do so.
+The first possibility would be to simply list all the expressions as it is shown in the figure above.
+But as can easily be seen in the example above, there is only a small difference between the sentences.
+If one would like to cover all possible sentences by merely enlisting them the Domain file will not only get extremely huge it will also be hard to read. \newline
 
    \begin{tabular}{|ll|}
      \hline
@@ -350,11 +354,12 @@ A case-expression itself consists of a ”condition” and an ”effect”.
 
    \subsubsection{Dialogue Manager}
 
-   If the variable which was assigned in the NLU module was named correctly, it should, in most cases, first be passed through the dialogue manager (DM).
-   In the DM, the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
-   As was said in the last subchapter, values in OpenDial are saved within and passed through variables, the input from the NLU will therefore be assigned to another variable. \newline
-   Just like all other modules, each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
-   Therefore, in this component the output of the NLU component will be matched against all conditions in the DM. 
+If the variable which was assigned in the NLU module was named correctly, it should, in most cases, first be passed through the dialogue manager (DM).
+In the DM, the effect of a rule is triggered. A mapping occurs which links the input provided by the NLU to another structure that will trigger a reaction of the system.
+As was said in the last subchapter, values in OpenDial are saved within and passed through variables, the input from the NLU will therefore be assigned to another variable. \newline
+
+Just like all other modules, each command in the DM is divided into rules, each of them having a condition, when they are to be activated. 
+Therefore, in this component the output of the NLU component will be matched against all conditions in the DM. 
    As soon as one matching rule is found, that rule is triggered which sends the ”effect” of that rule.
    The effect of a rule is saved into a variable.
    If no further work, like printing information on a GUI is done, one could argue, that all the DM does is basically linking two variables, the one given in the ”condition” to the variable written in the ”effect”.
