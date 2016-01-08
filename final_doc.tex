@@ -37,36 +37,40 @@
 
 \section{EllaVator}
 
-The project "EllaVator" was started in the summer term 2015 with the goal to revive the speaking elevator in building C4.7 of the university of Saarland. \newline
+The project "EllaVator" was started in the summer term 2015 with the goal to
+revive the speaking elevator in building C4.7 of the University of Saarland.\newline
 
-When the elevator currently in use was installed in the year 2000 the computational linguistic faculty of the University Saarland started the software project "Sprachsteuerung im Aufzug". \footnote {"Voice commands in the elevator"}
+The elevator currently in use was installed in the year 2000, by the
+computational linguistic faculty of the University of Saarland. The software
+project was named "Sprachsteuerung im Aufzug". \footnote {"Voice commands in the elevator"}
 The result of this project was a interdisciplinary work with the faculty of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. ~\cite{SprachsteuerungimAufzug} \newline
 
-Ever since, the elevator had been used not only for practicality but also to introduce guests and students to one of the many fields of application for computational linguistic; 
+Since then, the elevator is been in used practicality but also it serves as to introduce guests and students to one of the many fields of application for computational linguistic; 
 To show them the possibilities of such an application as well as limits. \newline
 
 The software project for the speaking elevator had since then been repeated to give students the opportunity of experiencing procedure of working together on a real application while trying to further develop the product of the speaking elevator.
 In the iteration of summer 2015 it was decided to work on the software as well as to replace part of the hardware.
 While the hardware used inside the elevator was not touched, the computer which is connected to the elevator and runs the software being used for the voice control of the elevator was exchanged.
 The hardware used before was outdated and was causing problems which is why it was decided that it should be replaced. \newline
-As it turned out replacing the hardware was not as easy as assumed in the beginning.
-In the end the hardware chosen proved incompatible with the elevator.
-Further information about this problem is provided in section ~\ref{sec:Serial_cable_connection_setup}
-\newline
 
-Unfortunately the result of the software project "speaking elevator" of the summer term 2015 thus is not a new iteration of the application running on the elevator, but the work done can still be used if new hardware is provided.
+The main purpose of the project was to renew the old hardware that is currently
+in use, improve the overall efficiency of the elevator, update/replace the software components with open source software and
+release/publish the code for free, like on github.
+
+The result of the software project "speaking elevator" of the summer term 2015
+thus is not a new iteration of the application running on the elevator, but the
+work done can be used with new hardware provided.
 The system developed by the participants of this project runs on any computer.
 If it were to be connected to the elevator it would merely have to be tested inside the elevator and adjusted to the specific conditions of reverberation and movement of the elevator. \newline
 
-In the following there will be given an introduction the components of the elevator control in section  ~\ref{sec:Components_of_elevator_control} , chapter ~\ref{sec:General_thoughts} will present some basic ideas that were discussed before starting the implementation of the system.
+In the following, there will be given an introduction to the components of the elevator control in section  ~\ref{sec:Components_of_elevator_control} , chapter ~\ref{sec:General_thoughts} will present some basic ideas that were discussed before starting the implementation of the system.
 In section ~\ref{sec:Dialog_manager} a selection of currently popular dialogue managers, as well as an introduction to the OpenDial, the dialogue manager used for the project will be given.
 Mary TTS, the text to speech system that was used is presented in chapter ~\ref{sec:Speech_Synthesis}. \newline
 In the sections which follow, information about the hardware used is provided.
-With section ~\ref{sec:Rasberry_Pi} presenting the Rasberry PI used and section ~\ref{sec:Serial_control_of_the_elevator} the serial control of the elevator.
+With section ~\ref{sec:Rasberry_Pi} presenting the Raspberry PI used and section ~\ref{sec:Serial_control_of_the_elevator} the serial control of the elevator.
 Section ~\ref{sec:Development_tools} contains information about the tools used for the development of the project, which are Gradle, GitHub and Travis.
 The section Testing ~\ref{sec:Testing} presents the methods used to automatically test the system.
 The final chapter ~\ref{sec:Installation_instructions} provides installation instruction for running the project "EllaVator".
-
 
 \section{Components of elevator control}
 \label{sec:Components_of_elevator_control}
