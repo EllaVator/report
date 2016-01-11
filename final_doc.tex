@@ -656,7 +656,7 @@ Serial port name = \textbf{\texttt{/dev/ttyAMA0}} default serial port on Raspber
 \href{https://en.wikipedia.org/wiki/Serial\_port\#Stop_bits}{Stopbits} = use \textbf{1}.\\
 \href{https://en.wikipedia.org/wiki/Serial\_port\#Parity}{Data correction or Parity} = set to \textbf{NO\_PARITY}.\\
 
-All the constants are are kept in \texttt{SerialControllerInterface.java} class.
+All the constants are kept in \texttt{SerialControllerInterface.java} class.
 After instantiating \texttt{SerialPortController} the following public methods become available through \texttt{ElevatorController} class: \texttt{getCurrentFloor()} and \texttt{pushButton()}. 
 Method \texttt{pushButton()} is invoked whenever we want elevator to move to specific floor.
 It accepts integers from 0 to 5 where each integer corresponds to specific floor (see \texttt{SerialControllerInterface.java}). 
