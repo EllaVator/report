@@ -38,17 +38,17 @@
 \section{EllaVator}
 
 The project "EllaVator" was started in the summer term 2015 with the goal to
-revive the speaking elevator in building C4.7 of the University of Saarland.\newline
+revive the speaking elevator in building C4.7 of Saarland University.\newline
 
 The elevator currently in use was installed in the year 2000, by the
-computational linguistic faculty of the University of Saarland. The software
+computational linguistic department of Saarland University. The software
 project was named "Sprachsteuerung im Aufzug". \footnote {"Voice commands in the elevator"}
-The result of this project was a interdisciplinary work with the faculty of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. ~\cite{SprachsteuerungimAufzug} \newline
+The result of this project was an interdisciplinary work with the department of informatics, phonology and computational linguistics, the outcome was an elevator that could not only be controlled haptically by pressing buttons, but also with voice command. ~\cite{SprachsteuerungimAufzug} \newline
 
-Since then, the elevator is been in used practicality but also it serves as to introduce guests and students to one of the many fields of application for computational linguistic; 
+Since then, the elevator has been in normal use for transporting people, but it also serves to introduce guests and students to one of the many fields of application for computational linguistic; 
 To show them the possibilities of such an application as well as limits. \newline
 
-The software project for the speaking elevator had since then been repeated to give students the opportunity of experiencing procedure of working together on a real application while trying to further develop the product of the speaking elevator.
+The software project for the speaking elevator had since then been repeated to give students the opportunity of experiencing the procedure of working together on a real application while trying to further develop the product of the speaking elevator.
 In the iteration of summer 2015 it was decided to work on the software as well as to replace part of the hardware.
 While the hardware used inside the elevator was not touched, the computer which is connected to the elevator and runs the software being used for the voice control of the elevator was exchanged.
 The hardware used before was outdated and was causing problems which is why it was decided that it should be replaced. \newline
@@ -93,10 +93,10 @@ If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$
 \end{equation}
 In this equation, the word sequence $\hat{W}$ must be found, as the one that maximizes the product of $P(W)$ and $P(Y/W)$, where $P(W)$ is the prior probability which comes from the language model and $P(Y/W)$ is the probability of vector sequence $Y$ given some word sequence $W$, which is known from the acoustic model. $P(Y)$ is ignored, as it is a constant for all possible word sequences. Below each of the component is explained in more detail.
 \subsubsection{Acoustic modeling}
-The performance of the speech recognition systems mostly depends on a good acoustic model. Acoustic modeling for speech recognition refers to the process of how one can statistically represent the features vectors sequences, which are computed from the continuous speech. Since, it is difficult to have frequent number of each word in the training data to accumulate acoustic statistics for that word, therefore, each word is represented into smaller units of speech called the phonemes. This is usually called the  "pronunciation modeling". In modern speech recognition systems, approximately 39-45 phonemes are used, which are combined to form all possible words in English. To model the acoustic features, Hidden Markov Model (HMM)~\cite{hmm_for_SR} are used.
+The performance of the speech recognition systems mostly depends on a good acoustic model. Acoustic modeling for speech recognition refers to the process of how one can statistically represent the features vectors sequences, which are computed from the continuous speech. Since it is difficult to have frequent number of each word in the training data to accumulate acoustic statistics for that word, each word is represented into smaller units of speech called the phonemes. This is usually called the  "pronunciation modeling". In modern speech recognition systems, approximately 39-45 phonemes are used, which are combined to form all possible words in English. To model the acoustic features, Hidden Markov Model (HMM)~\cite{hmm_for_SR} are used.
 
 \subsubsection{Language modeling}
-The language modeling (LM) specifies what sequence of words to expect in the speech given the previous word or sequence of $N$ words. In equation~\ref{equ:bayes_rule}, the term $P(W)$, represents the language model. Many techniques have been used to estimate the probability, $P(W)$. Two of the most important techniques are mentioned below.
+The language modeling (LM) specifies what sequence of words to expect in the speech given the previous word or sequence of $N$ words. In equation~\ref{equ:bayes_rule}, the term $P(W)$ represents the language model. Many techniques have been used to estimate the probability, $P(W)$. Two of the most important techniques are mentioned below.
 \subsubsection*{Formal language models} 
 \label{sec:gramar_based_lm}
 The formal or grammar based language model is composed of a grammar and a parsing algorithm. The grammar specifies allowable structure of a language and the parsing specifies the analysis method to check if rules of the grammar are respected. For small size recognition task, often the grammar based language model is a good solution. 
@@ -110,9 +110,30 @@ For \textit{trigrams}, where \textit{N=3} we can calculate the probability as:
 \end{equation}
 where $c(w_{k-2},w_{k-1},w_k)$, specifies the number of times, the words $w_{k-2},w_{k-1}$ and $w_k$ comes together and $n(w_{k-2},w_{k-1})$, specifies the number of times the words $(w_{k-2},w_{k-1})$ occurs together. 
 
-\subsection{Language model for elevator}
-For the elevator, we have used grammar based language model, since the vocabulary size is small and the possible commands to the elevator can be modelled by the grammar. 
-We wrote a simple grammar in the JSGF format\footnote{http://www.w3.org/TR/jsgf/}, that is usable with Sphinx.
+\subsection{Language model for the elevator}
+For the elevator, a grammar-based language model was used, since the vocabulary size is small and the possible commands to the elevator can be modelled by the grammar. 
+It consists of a set of two simple grammars, one in German and one in English, in the JSGF format\footnote{http://www.w3.org/TR/jsgf/} that is usable with Sphinx.
+
+
+\subsection{Dictionaries for the elevator domain}
+Two dictionaries, one in German and one in English, were created to generate representations for the Sphinx speech recognition and speech synthesis and to connect with the JSGF grammar.  
+They both contain just under 200 words with their respective phonetic transcriptions. 
+The vocabulary is made up of the names of the people working in building C7.4, as well as numbers, room names such as "laboratory" or "restrooms" and all other words relevant to the limited elevator domain. 
+Each of the words is followed by its phonetic transcription in the ARPAbet phoneme set. 
+The ARPAbet maps each of its currently 39 phonemes to one single or a pair of ASCII characters. 
+The English dictionary is based on the CMU Pronouncing Dictionary\footnote{http://www.speech.cs.cmu.edu/cgi-bin/cmudict\#lookup}, an open-source  machine-readable pronunciation dictionary for North American English. 
+Words that could not be found in the existing CMU dictionary, which was mainly the case for proper nouns, were entered into the LOGIOS lexicon tool.\footnote{http://www.speech.cs.cmu.edu/tools/lextool.html}
+
+
+The German dictionary is based on the voxforge German CMU dictionary which can be found via sourceforge.%
+\footnote{http://sourceforge.net/projects/cmusphinx/?source=typ\_redirect}
+
+
+
+
+
+
+
 
 \subsection{Reverberation recordings in the elevator}
 
@@ -125,12 +146,12 @@ We wrote a simple grammar in the JSGF format\footnote{http://www.w3.org/TR/jsgf/
 
 To train the acoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made. 
 Lists one and two  of the Harvard sentences\footnote{http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German. 
-The full list of sentences which have been used can be found in the appendix. \todo{TODO: attach appendix} %appendix Sätze
+The full list of sentences which have been used can be found in the appendix \ref{prompts}.
 The sentences were read by all of the participants and recorded in a sound proof studio. 
 This resulted in recordings of English sentences spoken by non-natives and German sentences spoken by natives and by non-natives.
 
 
-The commands that are spoken inside the elevator, are taken via a cable to the system that are then processed. But during this process some distortion is produced. This distortion might be caused by cable or some other external factor. To account for this noise of the elevator and the sound of the opening/closing of doors and other noises from outside of the elevator, further recordings were made via the elevator's built-in microphone. The setup used for this can be seen in Figure \ref{fig:recordingsetup}.
+The commands that are spoken inside the elevator, are taken via a cable to the system where they are then processed. But during this process some distortion is produced. This distortion might be caused by cable or some other external factor. To account for this noise of the elevator and the sound of the opening/closing of doors and other noises from outside of the elevator, further recordings were made via the elevator's built-in microphone. The setup used for this can be seen in Figure \ref{fig:recordingsetup}.
 
 It consisted of two loudspeakers positioned on a music stand at the height of approximately 150cm, at a distance of approximately 20cm from the elevator's microphone. 
 The recordings made in the lab were played through the loudspeakers and recorded with Praat via the elevator's microphone. 
@@ -156,7 +177,7 @@ Here is a table giving example sentences for the states indicated by the figure 
 
 \begin{tabular}{|ll|}
   \hline
-  Greeting & The user greets the Ellevator with a keyword \\
+  Greeting & The user greets the elevator with a keyword \\
     & and thus activates the system.  \\
   Greet + Offer & Hello, how can I help you? \\
   Request & Take me to floor/room XY/ Name\_of\_a\_person \\
@@ -223,13 +244,12 @@ For more detailed description, see section ~\ref{sec:opendial}.
 
 \subsection{OpenDial}
 \label{sec:opendial}
-We used Opendial to implement not only the dialogue manager but our main class: the dialogue system. 
+Opendial was used to implement not only the dialogue manager,  but also the main class: the dialogue system. 
 Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text-to-speech (TTS) system. 
-We used a collection of plugins to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speeche 
+A collection fo plugins was used to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speech. 
 This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module. 
 The main component that has to be implemented for the dialogue manager is the domain file. \\
-
-Like most dialogue managers Opendial also consists of three different components which interact to create a dialogue. 
+\indent Like most dialogue managers Opendial also consists of three different components which interact to create a dialogue. 
 
 The first component is responsible for the recognition of language. 
 In OpenDial this component is called ”Natural Language Understanding model (NLU)”. 
@@ -413,15 +433,14 @@ In this rule, a variable to which a function  is assigned, triggers the speech o
 \label{sec:Speech_Synthesis}
 The final step in creating the speaking elevator "Ella" was of course to make it actually talk to the user.
 For this a Text-to-Speech system (TTS) had to be used. A TTS system will read out information to the user, generating voice for the input text. TTS systems are widely used today. 
-For exmaple in the train stations, there are announcements at the train station informing guests about delays or if there are changes causing a train to depart from a different platform as planned.
+For example in train stations, there are announcements informing passengers about delays or if there are changes causing a train to depart from a different platform as planned.
 There are screen readers for the visual impaired, which read out the elements of a screen, as well as systems which are used by the speech impaired to communicate and speak in their stead.
 One of the most famous applications is the dialogue system "Siri" (Siri inc) which has been used since 2011 on the iPhone. \newline \newline
-For our talking elevator we wanted to use an open source TTS. 
-We choose the MaryTTS (\textbf{M}odular \textbf{A}rchitecture for \textbf{R}easearch on speech s\textbf{Y}nthesis") system for our task.
-Not only was it developed in cooperation with the University of Saarlandn, it also offers many advantages to other TTS and therefore seemed perfect for our task.\newline
+MaryTTS ("\textbf{M}odular \textbf{A}rchitecture for \textbf{R}esearch on Speech S\textbf{Y}nthesis") was chosen as the system for the talking elevator.
+Not only was it developed in cooperation with Saarland University, it also offers many advantages to other TTS and therefore seemed perfect for the task.\newline
 
-Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote{(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the faculty for phonetics of the university of Saarbrücken.
-As MaryTTS is an open Source project, the code can be read by everyone. Furthermore everyone is also allowed to change and adjust it to ones needs.\newline \newline
+Written in the programming language Java it was designed in a collaboration between the  "Language Technology Lab" of the DFKI \footnote{(\textbf{D}eutsches-\textbf{F}orschungszentrum für \textbf{K}ünstliche \textbf{I}ntelligenz) - The German Research Centre for Artificial Intelligence} and the department of phonetics of Saarland University.
+As MaryTTS is an open Source project, the code can be read by everyone. Furthermore, everyone is allowed to change and adjust it to their needs.\newline \newline
 MaryTTS is build in a "modular architecture" which means that it consists of different components, each dealing with a specific task. We will take a closer look at these in the following subchapter.
 The second part of the name states the purpose Mary was developed for.
 It was developed for research having a modular structure and also being a open source project makes it really easy to use Mary for any research projects on speech synthesis. \newline \newline
@@ -432,7 +451,7 @@ Further languages might be included in the future, but can also be added by any 
 
 Mary is subdivided into different modules. 
 This allows the user to take a look at the output of each of those components. 
-One could also interchange small details on one component and observe the output on the complete system as well as completely interchanging a component.
+One could also interchange small details in one component and observe the output on the complete system, as well as completely interchanging a component.
 In most cases these components were not specifically designed for Mary. 
 It would go beyond the scope of this paper to mention all of them. 
 Detailed information can be found on the website \url{http://mary.dfki.de/ }.
@@ -440,10 +459,10 @@ Detailed information can be found on the website \url{http://mary.dfki.de/ }.
 \subsubsection*{Input}
 
 Mary accepts different kinds of inputs, the simplest one being plain text.
-But also Mark-up Languages such as SABLE or SSML can be used. 
+But Mark-up Languages such as SABLE or SSML can also be used. 
 These are based on the Mark-up Language XML and are developed especially for the use in TTS.
 
-In case of the elevator, we only pass the output of the OpenDial dialogue manager to Mary, which is plain text.
+In case of the elevator, only the output of the OpenDial dialogue manager is passed to Mary, which is plain text.
 Any input given to Mary will be transformed into a "MaryXML Mark-up Skeleton". 
 A skeleton which already has different slots which will be filled by the system in the other modules.
 If the input was already in a form of Mark-up language the keys assigned in this Mark-up Language will be kept and added to the skeleton. Some of the values however might be dropped.
@@ -483,8 +502,8 @@ To able to do this however there still needs to be some information extracted.
 One of the steps needed is called "inflection endings". 
 In this process, the tokens marked in the step "Preprocessing" are reviewed.
 With the information given by the Chunker in the earlier steps as well as under the use of an morphologic analyser these tokens such as ordinal number can now be expanded.\newline 
-In this step Mary will also check a dictionary specifically designed for Mary by the DFKI.
-It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules. \newline
+\indent In this step Mary will also check a dictionary specifically designed for Mary by the DFKI.
+It contains information about the stem of a word as well grammatical information, which reduces the amount of data as regular words can be conjugated and inflected according to those rules.
 In case there is no information found about a word in the dictionary the "letter to sound conversion" will be used.
 The output of this module only contains the SAMPA transcription and a note in case a word was processed by the "Letter to sound conversion". 
 Information on intonation will not be seen in the output.
@@ -496,7 +515,7 @@ The end of a sentence is a classic example for the intonation of a sentence. One
 These will not only be added at the end of sentences but also at the end of paragraphs or chunks within a sentence.
 The work of the chunker and tagger is therefore of great importance for this module.
 \newline
-Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
+\indent Though not all of the information will be seen in the output of this module, every word will contain a new field called "accent" in its placeholder, where the information about the intonation of the word will be stored.
 
 \subsubsection*{Postlexical and Phonological process}
 
@@ -517,13 +536,13 @@ Currently MBROLA ~\cite{dutoit1996mbrola} is used in by Mary, which was selected
 \newpage
 \section{Raspberry Pi}
 \label{sec:Rasberry_Pi}
-To implement the project, a Raspberry Pi is used instead of a conventional computer. The Raspberry Pi is a single-board computers 
-developed in the United Kingdom by the Raspberry Pi Foundation. We used the
-\textit{RPi 2 model B} shown in the Figure ~\ref{fig:Pi2}.
+To implement the project, a Raspberry Pi is used instead of a conventional computer. The Raspberry Pi is a single-board computer 
+developed in the United Kingdom by the Raspberry Pi Foundation. The
+\textit{RPi 2 model B} shown in the Figure ~\ref{fig:Pi2} was used.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=10.0cm]{Pi2.jpg}
-\caption{\textit{An image showing Raspberry Pi 2 Model B used for the implementation of our project.}}
+\caption{\textit{An image showing Raspberry Pi 2 Model B used for the implementation of the project.}}
 \label{fig:Pi2}
 \end{figure}
 This version of the Pi has the following specifications.
@@ -562,8 +581,8 @@ Note:
 \label{sec:Serial_control_of_the_elevator}
 The Elevator is controlled by sending a hex encoded signal via serial cable.
 In order to move the elevator to floor three, we are sending a signal which is interpreted as a move command to floor three.
-We can also send a special "heartbeat" signal that will make the elevator respond with the information about the current floor it is on.
-So, when the user enters the elevator cabin and asks to take him to certain floor, the user utterance is recognized and the corresponding floor signal is sent.
+One can also send a special "heartbeat" signal that will make the elevator respond with the information about the current floor it is on.
+So, when the user enters the elevator cabin and asks to be taken to a certain floor, the user utterance is recognized and the corresponding floor signal is sent.
 After the elevator receives the signal it should close the doors and start moving if everything went well.
 
 % we need a few pics here when we finish the setup
@@ -606,28 +625,29 @@ After the elevator receives the signal it should close the doors and start movin
 \end{comment}
 
 \todo{TODO: a few images of the setup.}
-Before working on serial implementation we reviewed several java libraries for serial communication: pi4j, javax.comm, RXTX.
+Before working on serial implementation several java libraries for serial communication were reviewed: pi4j, javax.comm, RXTX.
 It was decided to stay with RXTX, since pi4j was not stable enough and javax.comm didn't have freely available sources.
 Serial implementation follows mainly RXTX examples provided \href{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}{online} as well as source files of the original project.
 For example, floor hex codes and "heartbeat" signal were taken from the original source code.
-We also reused several methods from old source files, like the ones that deal with "heartbeat" processing logic.
+Several methods from old source files were also used, like the ones that deal with "heartbeat" processing logic.
 
 \subsection{Serial cable connection setup}
 \label{sec:Serial_cable_connection_setup}
-Raspberri Pi 2 should be connected to the elevator via DE-9 type serial port.
-After numerous of unsuccessful attempts to connect Raspi to the serial port via its GPIO pins, we decided to buy a USB to serial converter. 
+Raspberry Pi 2 should be connected to the elevator via DE-9 type serial port.
+After numerous unsuccessful attempts to connect Raspi to the serial port via its GPIO pins, a USB to serial converter was used. 
 The new converter worked fine out-of-the-box.
-We successfully sent test signals via serial port from Raspi to desktop PC and vice verse.
+Test signals via serial port from Raspi to desktop PC and vice versa were successfully sent.
 After running several tests between Raspi and desktop PC we decided to test serial connection to the elevator.
 
-We managed to send a signal to the elevator via serial port however the elevator was able to move only to one specific floor (0.5 which corresponds to 1 floor).
+Signals could be send to the elevator via the serial port, but the elevator was able to move only to one specific floor (0.5 which corresponds to 1 floor).
 The signal was interpreted by the elevator as a command to move to floor 1.
-We suspect that this is due to insufficient power (5V) of Raspi USB to serial connector.
+This might be due to insufficient power (5V) of Raspi USB to serial connector.
 The signal gets garbled upon transmission.
-We believe that if we manage to boost the serial port power up to 12V the connection should stabilize and work correctly.
+If the serial port power could be boosted up to 12V the connection should stabilize and work correctly. 
 
-\subsection{Serial connection impleentation}
-Within EllaVator project you can find the following classes that handle serial connection and data transmission between Raspberry Pi and the elevator: \texttt{ElevatorController.java, SerialControllerInterface.java, SerialPortController.java}.\\
+
+\subsection{Serial connection implementation}
+Within the EllaVator project you can find the following classes that handle serial connection and data transmission between Raspberry Pi and the elevator: \texttt{ElevatorController.java, SerialControllerInterface.java, SerialPortController.java}.\\
 \texttt{ElevatorController.java} is basically a wrapper class that instantiates \texttt{SerialPortController} with predefined constant values for serial connection.
 These values are important and should not be changed unless you decide to replace Raspberri Pi.\\
 Serial port name = \textbf{\texttt{/dev/ttyAMA0}} default serial port on Raspberry Pi.\\
@@ -637,7 +657,7 @@ Serial port name = \textbf{\texttt{/dev/ttyAMA0}} default serial port on Raspber
 \href{https://en.wikipedia.org/wiki/Serial\_port\#Parity}{Data correction or Parity} = set to \textbf{NO\_PARITY}.\\
 
 All the constants are are kept in \texttt{SerialControllerInterface.java} class.
-After we instantiate \texttt{SerialPortController} the following public methods become available through \texttt{ElevatorController} class: \texttt{getCurrentFloor()} and \texttt{pushButton()}. 
+After instantiating \texttt{SerialPortController} the following public methods become available through \texttt{ElevatorController} class: \texttt{getCurrentFloor()} and \texttt{pushButton()}. 
 Method \texttt{pushButton()} is invoked whenever we want elevator to move to specific floor.
 It accepts integers from 0 to 5 where each integer corresponds to specific floor (see \texttt{SerialControllerInterface.java}). 
 Method \texttt{getCurrentFloor()} should return the integer which represents current floor the elevator is on.
@@ -647,35 +667,35 @@ Each method is accompanied by extensive information, please read it first.
 
 \subsection{Serail port testing}
 It is technically impossible to test Raspi and elevator connection without opening the elevator control panel.
-Therefore, for testing we used an old laptop with serial port and a desktop PC.
-For testing purposes we wrote several python scripts, pi4j java testing tool and a small RXTX java implementation.
-We also used such shell utilities as minicom.
+Therefore, an old laptop with serial port and a desktop PC were used.
+For testing purposes several python scripts, pi4j java testing tools and a small RXTX java implementation were written.
+Shell utilities such as minicom were also used.
 \\
 
 There were 3 testing phases.
 
 1 testing:
 
-We used python pyserial implementation to test serial connection between Raspi, laptop and PC.
-After several unsuccessful attempts to use pi4j and GPIO pins connection, we switched to USB serial converter.
+Python pyserial implementation were used to test serial connection between Raspi, laptop and PC.
+After several unsuccessful attempts to use pi4j and GPIO pins connection, the switch was made to a USB serial converter.
 Raspi successfully sent the signals via serial port using USB converter.
-We also managed to test the serial connection between a laptop and a desktop PC.
+The serial connection between a laptop and a desktop PC was also tested successfully
 Everything worked as expected.
 \\
 
 2 testing:
 
-We connected the laptop to the elevator via laptop serial port with a simple serial cord.
+The laptop was connected to the elevator via laptop serial port with a simple serial cord.
 Small RXTX serial port utility was used to send the signals from the laptop.
-Everything worked correctly and we managed to control the elevator from the laptop by sending the appropriate signals.
+Everything worked correctly and the elevator was controlled from the laptop by sending the appropriate signals.
 \\
 
 3 testing:
 
-We connected Raspi to the elevator using USB serial converter.
+Raspi was connected to the elevator using USB serial converter.
 The same RXTX serial port utility was used to send the signals to the elevator.
-However whatever floor we tried to send the elevator to it moved to floor 1. 
-We suspect that Raspi simply does not have enough power to support serial connection to the elevator.
+However, whatever floor the elevator was sent to, it only ever moved to floor 1.
+A reason for this might be that Raspi simply does not have enough power to support serial connection to the elevator.
 
 
 \newpage
@@ -688,8 +708,8 @@ Instead of having a readme file that explains how to build the project, building
 Gradle is configured in the file \texttt{build.gradle}.
 Although it looks like a configuration file, it is actually fully functional code written in Groovy\footnote{http://www.groovy-lang.org/}, a scripting language based on Java.
 
-We included a Gradle wrapper in the repository.
-This file called \texttt{gradlew} (and \texttt{gradle.bat} for windows) download and run the right Gradle version when executed.
+A Gradle wrapper was included in the repository.
+This file called \texttt{gradlew} (and \texttt{gradle.bat} for windows) downloads and runs the right Gradle version when executed.
 It is recommended to use this file instead of any other locally installed Gradle, because it might be another version of Gradle.
 
 The file \texttt{settings.gradle} specifies the gradle project structure by declaring several subprojects.
@@ -701,9 +721,9 @@ It contains example audio prompts for our application, that are used for the aco
 
 \subsection{GitHub}
 GitHub is a web platform for collaboration using git, which is a version control system. 
-We used this system to allow several people work on the same project at the same time without overwriting each others changes.
+This system was used to allow several people work on the same project at the same time without overwriting each others changes.
 
-For some of our dependencies (Sphinx, OpenDial) we used git submodules to include them into our project. 
+For some of the dependencies (Sphinx, OpenDial) git submodules were used to include them into the project. 
 This gave us the possibility to adapt the original code for our purposes if necessary.
 In order to download these dependencies when you clone the repository, you must therefore execute
 \begin{lstlisting}[language=bash]
@@ -714,19 +734,19 @@ or init and update all of the subprojects individually.
 
 Continuous integration is based on the idea that all developers send their changes to a common code repository as soon as possible, as we did on GitHub. 
 Additionally these changes should be tested before they are merged into the main code repository. 
-In order to do this automatically, it is necessary to automate the build process completely, as we did using Gradle.
+In order to do this automatically, it is necessary to automate the build process completely, as was done in this project  using Gradle.
 If the build succeeds, all unit and integration tests can be executed, which prevents non-working code to enter the main repository if the error is covered by a test case.
 This procedure is much better than having each developer running the tests before committing the changes to the main repository for a couple of reasons.
-Firstly it does not rely on the developer to run all the tests which can be easily forgotten or skipped because the developer does not see the whole effect his modification has.
-Secondly the project is built in a “neutral” environment that should be a close copy of the production environment if possible. 
-This way for example code that runs fine on the developer's Windows machine but not on Linux can be detected.
+Firstly, it does not rely on the developer to run all the tests which can be easily forgotten or skipped, because the developer does not see the whole effect his modification has.
+Secondly, the project is built in a “neutral” environment that should be a close copy of the production environment if possible. 
+For example, code that runs fine on the developer's Windows machine but not on Linux can be detected this way.
 
 As it integrates seamlessly into GitHub, we decided to use Travis CI as our continuous integration service. Each pull request gets marked by colors: yellow means the build is still running, red means failed build or failed test, green says everything is OK. In each pull request there is a link to Travis that gives details about the build process, too.
 
 Travis is configured by a file named \texttt{.travis.yml} in the root directory of the project. 
 It is not even necessary to specify that the build process is handled by Gradle.
 Travis can detect this automatically, given that we specify groovy as our project language (\texttt{language: groovy}).
-We needed to use Java 8 because this is a minimum requirement for Opendial.
+Java 8 had to be used, because this is a minimum requirement for Opendial.
 Also, Travis must install the \texttt{sox} command, which is used to extract single sentences from our test audio files in the prompts subproject.
 Finally, we cache the gradle files to speed up the build process (otherwise the Gradle wrapper will download Gradle every time).
 
@@ -743,7 +763,7 @@ Software testing is an essential process in modern software development, in part
 Generally there at least two types of tests: unit and integration tests.
 While unit tests are thought to test small components (e.g. classes) in isolation, integration tests verify how these components work as a whole.
 
-Seeing time constraints and also our lack of experience, we decided not to be as strict with testing, and we put a focus on integration testing.
+Seeing time constraints and also lack of experience, the decision was made not to be as strict with testing, and to put a focus on integration testing.
 All tests are placed in the \texttt{test} source set, i.e. under \texttt{src/test}.
 There they can be found automatically by gradle when executing \texttt{./gradlew test} in the commandline.
 We used TestNG\footnote{http://testng.org/doc/} as our testing framework.
@@ -812,4 +832,131 @@ Now you can build or run the project using one of the following commands:
 \cleardoublepage
 \bibliography{final_doc}
 \bibliographystyle{unsrt}
+
+\begin{appendix}
+\section{Recorded sentences} \label{prompts}
+\subsection{English elevator commands}
+\begin{itemize}
+\item To the eye-tracking experiment
+\item I would like to go up
+\item To office three seventeen
+\item To the restroom
+\item To the reading laboratory please
+\item Please to the ground level 
+\item Third floor thank you
+\item To the conference room
+\item To the aquarium
+\item Down thank you
+\item Office one seventeen thank you
+\item Room three hundred and twelve please
+\item I would like to go to the office two zero four
+\item Room two hundred and two 
+\item I would like to go to the top floor
+\item Vera Demberg's office
+\item Please Manfred Pinkal's room
+\item Hello 
+\item To the guest kitchen
+\item To the first floor
+\item To the mezzanine
+\item To room oh oh seven
+\item To Maria's office
+\item To Dr. Steiner's office
+\item Skywards
+\item Tell me how to get to the lab.
+\item Where is the restroom?
+\item Open.
+\item Close doors.
+\item Hurry up.
+\item Bring me to double oh four, please.
+\item I would like to see Maria Staudte.
+\item Where is Ross Macdonald's office?
+\item Which floor is Arif Khan's room?
+\item Room one point one.
+\item To the top floor.
+\item Bring me to where Alexander Hewer's office is.
+\item Can you tell me where Hongxia Shi's office is?
+\item Can you lift me up to floor two, please?
+\item Two floors up please.
+\end{itemize}
+
+\subsection{Harvard sentences}
+\begin{itemize}
+\item The birch canoe slid on the smooth planks.
+\item Glue the sheet to the dark blue background.
+\item It's easy to tell the depth of a well.
+\item These days a chicken leg is a rare dish.
+\item Rice is often served in round bowls.
+\item The juice of lemons makes fine punch.
+\item The box was thrown beside the parked truck.
+\item The hogs were fed chopped corn and garbage.
+\item Four hours of steady work faced us.
+\item Large size in stockings is hard to sell.
+\item The boy was there when the sun rose.
+\item A rod is used to catch pink salmon.
+\item The source of the huge river is the clear spring.
+\item Kick the ball straight and follow through.
+\item Help the woman get back to her feet.
+\item A pot of tea helps to pass the evening.
+\item Smoky fires lack flame and heat.
+\item The soft cushion broke the man's fall.
+\item The salt breeze came across from the sea.
+\item The girl at the booth sold fifty bonds.
+\end{itemize}
+
+
+\subsection{German elevator commands}
+\begin{itemize}
+\item Bring mich bitte zu null null eins.
+\item Ich möchte zu Maria Staudte.
+\item Wo ist Ross Macdonalds Büro?
+\item In welcher Etage arbeitet Arif Khan?
+\item Raum eins punkt eins.
+\item Bis ganz nach oben.
+\item Bringe mich in den Stock, in dem Alexander Hewers Büro ist.
+\item Wo ist denn Hongxia Shis Büro?
+\item Kannst du mich bitte in die zweite Etage bringen?
+\item Zwei Stockwerke höher bitte.
+\item Ich suche das Eye-Tracking Labor.
+\item Zum Labor bitte.
+\item Zum Aufnahmestudio bitte.
+\item Ich muss zur Gästeküche.
+\item Zum Aquarium.
+\item Zum Büro dreihundertundachtzehn.
+\item Zur Toilette bitte.
+\item Ich möchte das Gebäude verlassen.
+\item Ich suche das Lese-Experiment.
+\item Ich habe es eilig.
+\item Zum Konferenzraum.
+\item Ins dritte Stockwerk.
+\item Ins zweite Sockwerk.
+\item Ins erste Stockwerk.
+\item Einmal nach unten bitte.
+\item Zu Professor Pinkal.
+\item Zur Gruppe von Dr. Demberg.
+\end{itemize}
+
+\subsection{Sentences from BITS}
+\begin{itemize}
+\item Das Dunkel war ein kurzes und leiser werdendes Verschwinden.
+\item Er sah sich im Karstadt-Kaufhaus um
+\item Fahr, hat er gesagt, um das Hindernis herum.
+\item Gemütlicher Abend auf der Weser mit Kohlfahrt ab Martini-Anleger
+\item Das Schiff wogte auf den starken Wellen hin und her.
+\item Der schnellste Weg zum Jenseits führt kopfüber in die Nacht.
+\item Zu schade für's Altpapier.
+\item Zu den Ressorts Arbeit und Frauen könnte noch Gesundheit oder Soziales hinzukommen.
+\item Weltausstellung in Hannover ökologisch vertretbar.
+\item Das Gemälde ohne Titel in Tusche auf Papier.
+\item In Ungarn zeigt die Abbildung eine Zahnbürste mit Zahnpasta.
+\item Ein Computer besitzt im Allgemeinen Prozessor, Arbeitsspeicher und Festplatte.
+\item Das Netzwerk hilft dem Automotor auf das Motorrad.
+\item Die Telekom drückt mit ihrer Preispolitik kräftig auf das Bremspedal.
+\item Der Lehrer benutzte den Projektor im Unterricht.
+\item In der Linguistik kommt es zu Meinungsverschiedenheiten zwischen Fundis und Realos.
+\item Die Sprache ist ein weltweites Medium der Kommunikation.
+\item Hervor trat ein langes Messer im Suhrkamp-Verlag
+\item Wo Wilhelm Busch zur Schule ging.
+\item Unter anderem flog Lufthansa von Friedrichshafen nach Oldenburg.
+\end{itemize}
+\end{appendix}
 \end{document}
