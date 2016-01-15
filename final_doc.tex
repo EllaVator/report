@@ -433,6 +433,23 @@ The effect of this rule is saved in a variable but also used as output for speec
 The example above shows one rule from an NLG module.
 In this rule, a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
 
+\section{ModuleElla - from OpenDial to the elevator}
+The Java module ModuleElla serves as a connection between the OpenDial module and the elevator controller. 
+It transforms the information from the dialogue manager about the movement of the elevator cabin into a digit which is then handed on to the controller. 
+The class ModuleElla contains a logger and a reference to the controller to speak with the elevator via the serial port. 
+To ease development there is also a graphical output of the current state.
+The JFrame graphics output (line 40 and 54 to 71) creates a grid of the building's six floors to show the position of the elevator while testing the system. 
+In the ModuleElla file the controller is commented out at the moment, because the system is not yet connected to the elevator, which causes it to crash. 
+Because of this, the initial position of the elevator is also set to 0. 
+The information about the current position of the elevator is needed for commands like "one floor up".
+If it is not paused, the trigger (line 79) looks at the a_m (action variable) from the dialogue manager. 
+If the variable is "Movefloor" then the correct floor is locked up and the changePosition is called. 
+ChangePosition (lines 102-124) maps the variables like "zero" and "zero point five" to the floors 0 to 5.
+The pushButton call to the controller is again commented out in lines 127 to 129, because the controller does not work.
+The JFrame graphics are updated to the new position (line 131). 
+There are also two methods for OpenDial, one for pausing it (line 145) and one to see if it is paused (line 153).
+
+
 \newpage
 \section{Speech synthesis}
 \label{sec:Speech_Synthesis}
