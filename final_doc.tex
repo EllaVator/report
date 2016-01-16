@@ -120,7 +120,7 @@ For the elevator, a grammar-based language model was used, since the vocabulary 
 It consists of a set of two simple grammars, one in German and one in English, in the JSGF format\footnote{http://www.w3.org/TR/jsgf/} that is usable with Sphinx.
 
 
-\subsection{Dictionaries for the elevator domain}
+\subsection{Dictionaries for the elevator domain}\label{dicts}
 Two dictionaries, one in German and one in English, were created to generate representations for the Sphinx speech recognition and speech synthesis and to connect with the JSGF grammar.
 They both contain just under 200 words with their respective phonetic transcriptions.
 The vocabulary is made up of the names of the people working in building C7.4, as well as numbers, room names such as "laboratory" or "restrooms" and all other words relevant to the limited elevator domain.
@@ -226,6 +226,52 @@ So the problem was not only to allow for multiple inputs but also for multiple i
     @Laura \\
     does one of you feel like writing a little about this issue?
 \end{center}}
+
+
+
+\section{The EllaVator JSGF grammars}
+The JSpeech Grammar Format (JSGF) is a platform-independent textual representation of grammars for use in speech recognition.
+The EllaVator project uses two grammars, one for German and one for English. 
+They define the set of utterances a user may say, i.e. the utterances the speech recognizer "listens for."
+The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{http://www.w3.org/TR/jsgf}
+
+In the following, the English EllaVator JSGF file (appendix \ref{grammar} is used to explain the most essential elements of JSGF.
+The grammar consists of two parts, the grammar header (lines 1 and ) and the grammar body (lines 3 to 67). 
+Line 1 indicates the version of JSGF used in the file, line 2 contains the unique self-identifying name of the grammar.
+The header may also contain declarations of rules imported from other grammars. 
+
+
+The rule in line 3, $<$BasicElevator$>$ = $<$FloorRequest$>$ already forms part of the grammar body.
+It links to the last rule in the file (line 67).
+This is the rule that combines all of the possible utterances the grammar accepts into one floor request. 
+The declaration in line 3 makes this rule public, which means that its use is not limited to the local grammar, but that it can be accessed from other JSFG grammar files as well. 
+The rest of the grammar consists of very straightforward JSGF rules. 
+The name of the rule is given in angle brackets, followed by an equals sign, as in the rule $<$Greeting$>$ = hi $|$ hello; 
+This particular rule contains two terminal symbols in its expansion. 
+The terminal symbols are the words that may be spoken by a user. 
+A sequence of tokens is separated by whitespace characters, the pipe symbol is used to separate different alternative terminal symbols.  
+Every rule closes with a semi-colon.
+The tokens are references to the entries in the dictionaries for the elevator domain (section \ref{dicts}). 
+With the pronunciation defined in the dictionaries, the recognizer can "listen" for that terminal symbol.
+More complex rules are built as the composition of other rules. 
+The rule "$<$RoomNumber$>$ = $<$ground$>$ $|$ $<$first$>$ $|$ $<$oneandhalf$>$ $|$ $<$second$>$ $|$ $<$third$>$;", for example, combines the rules $<$ground$>$, $<$first$>$, $<$oneandhalf$>$, $<$second$>$ and  $<$third$>$ in its expansion.
+ Parentheses have a high precedence and  are used in the expansion to group elements together and ensure the correct interpretation of rules. 
+Square brackets are used to indicate optional terminal symbols or rules. 
+Both can be seen in line 67: $<$FloorRequest$>$ =  [($<$StartPolite$>$ $|$ $<$PoliteRequest$>$)]  [$<$To$>$] $<$FloorRequestMiddle$>$ [$<$EndPolite$>$];
+
+
+The rules may also contain a number of other elements common to machine-readable grammars. 
+Some of them are: unary operators such as the Kleene star, plus operator and tags, which attach application-specific information to parts of rule definitions. 
+There's also the possibility to use the special rulenames $<$NULL$>$ and $<$VOID$>$ which can be used to block and enable parts of grammars for more complex tasks.
+$<$NULL$>$ defines a rule that is automatically matched without the user speaking a word. 
+$<$VOID$>$ is the rule that can never be spoken.
+Due to the the small size of the elevator domain, only the most basic mechanisms were needed. 
+
+
+
+
+
+
 
 \newpage
 \section{Dialog manager}
@@ -442,7 +488,7 @@ The JFrame graphics output (line 40 and 54 to 71) creates a grid of the building
 In the ModuleElla file the controller is commented out at the moment, because the system is not yet connected to the elevator, which causes it to crash. 
 Because of this, the initial position of the elevator is also set to 0. 
 The information about the current position of the elevator is needed for commands like "one floor up".
-If it is not paused, the trigger (line 79) looks at the a_m (action variable) from the dialogue manager. 
+If it is not paused, the trigger (line 79) looks at the a\_m (action variable) from the dialogue manager. 
 If the variable is "Movefloor" then the correct floor is locked up and the changePosition is called. 
 ChangePosition (lines 102-124) maps the variables like "zero" and "zero point five" to the floors 0 to 5.
 The pushButton call to the controller is again commented out in lines 127 to 129, because the controller does not work.
