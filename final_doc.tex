@@ -126,12 +126,12 @@ They both contain just under 200 words with their respective phonetic transcript
 The vocabulary is made up of the names of the people working in building C7.4, as well as numbers, room names such as "laboratory" or "restrooms" and all other words relevant to the limited elevator domain.
 Each of the words is followed by its phonetic transcription in the ARPAbet phoneme set.
 The ARPAbet maps each of its currently 39 phonemes to one single or a pair of ASCII characters.
-The English dictionary is based on the CMU Pronouncing Dictionary\footnote{http://www.speech.cs.cmu.edu/cgi-bin/cmudict\#lookup}, an open-source  machine-readable pronunciation dictionary for North American English.
-Words that could not be found in the existing CMU dictionary, which was mainly the case for proper nouns, were entered into the LOGIOS lexicon tool.\footnote{http://www.speech.cs.cmu.edu/tools/lextool.html}
+The English dictionary is based on the CMU Pronouncing Dictionary\footnote{Lenzo, Kevin. \textit{The CMU Pronouncing Dictionary.} http://www.speech.cs.cmu.edu/cgi-bin/cmudict}, an open-source  machine-readable pronunciation dictionary for North American English.
+Words that could not be found in the existing CMU dictionary, which was mainly the case for proper nouns, were entered into the LOGIOS lexicon tool.\footnote{\textit{LOGIOS Lexicon Tool}. http://www.speech.cs.cmu.edu/tools/lextool.html}
 
 
 The German dictionary is based on the voxforge German CMU dictionary which can be found via sourceforge.%
-\footnote{http://sourceforge.net/projects/cmusphinx/?source=typ\_redirect}
+\footnote{CMU Sphinx. Speech Recognition Toolkit. Slashdot Media, 2016. http://sourceforge.net/projects/cmusphinx/?source=typ\_redirect}
 
 
 
@@ -150,7 +150,7 @@ The German dictionary is based on the voxforge German CMU dictionary which can b
 
 
 To train the acoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made.
-Lists one and two  of the Harvard sentences\footnote{http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German.
+Lists one and two  of the Harvard sentences\footnote{Harvard http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German.
 The full list of sentences which have been used can be found in the appendix \ref{prompts}.
 The sentences were read by all of the participants and recorded in a sound proof studio.
 This resulted in recordings of English sentences spoken by non-natives and German sentences spoken by natives and by non-natives.
@@ -233,10 +233,10 @@ So the problem was not only to allow for multiple inputs but also for multiple i
 The JSpeech Grammar Format (JSGF) is a platform-independent textual representation of grammars for use in speech recognition.
 The EllaVator project uses two grammars, one for German and one for English. 
 They define the set of utterances a user may say, i.e. the utterances the speech recognizer "listens for."
-The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{http://www.w3.org/TR/jsgf}
+The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{ Speech Grammar Format. \textit{W3CNote}. http://www.w3.org/TR/jsgf}
 
 In the following, the English EllaVator JSGF file (appendix \ref{grammar} is used to explain the most essential elements of JSGF.
-The grammar consists of two parts, the grammar header (lines 1 and ) and the grammar body (lines 3 to 67). 
+The grammar consists of two parts, the grammar header (lines 1 and ) and the grammar body (lines 3 to 66). 
 Line 1 indicates the version of JSGF used in the file, line 2 contains the unique self-identifying name of the grammar.
 The header may also contain declarations of rules imported from other grammars. 
 
@@ -1029,6 +1029,91 @@ Now you can build or run the project using one of the following commands:
 \item Unter anderem flog Lufthansa von Friedrichshafen nach Oldenburg.
 \end{itemize}
 \end{appendix}
+
+
+\subsection{English JSGF grammar}
+\begin{verbatim}
+ 1 #JSGF V1.0 ;
+ 2 grammar elevator_english;
+ 3 public <BasicElevator> = <FloorRequest>;
+ 4
+ 5 <Greeting> = hi | hello;
+ 6 <Address> = ella | elevator | lift;
+ 7 <GreetingWithAddress> = <Greeting> [ <Address> ];
+ 8 <StartPolite> = please;
+ 9 <EndPolite> = please | thanks | thank you | thanks a lot;
+10 <PoliteRequest> = i would like to go | take me;
+11 <Number> = one | two | three | first | second | third;
+12 <AnyFloor> = floor | storey;
+13 <PreciseFloor> = ground floor | aquarium  | mezzanine | entresol | 
+                    intermediate storey | top floor | lobby | street level | 
+                    ground level | ground floor | mezzanine | exit |
+                    conference room;
+14 <MovementWithoutGoal> = up | down;
+15 <Bathroom> = bathroom | restroom | restrooms;
+16 <Lab> = lab | laboratory | experiment | eye-tracking experiment |
+           reading experiment | eye-tracking laboratory | eye-tracking lab |
+           guest kitchen | kitchen | lego mind storms lab | 
+           lego mind storms laboratory | usability lab | usability laboratory |
+           recording studio | dialogue lab | dialogue laboratory | control room |
+           systems group | server room;
+17 <RoomWithNameOrNumber> = (<Room> (<RoomNumber> | <RoomName>)) | 
+                            (<RoomName> <Room>);
+18 <Room> = room | office;
+19 <RoomNumber> = <ground> | <first> | <oneandhalf> | <second> | <third>;
+20 <zero> = oh | zero;
+21 <number> = one | two | three | four;
+22 <style> = hundred | hundred and | <zero>;
+23 <room-1-7> = one | two | three | four | five | six | seven;
+24 <room-8-19> = eight | nine | ten | eleven | twelve | thirteen | fourteen | 
+                 fifteen | sixteen | eighteen | nineteen;
+25 <room-all> = <room-1-7> | <room-8-19>;
+26 <style1> = [ <zero> ] <number>;
+27 <style2> = zero zero <number>;
+28 <ground> = <style1> | <style2>;
+29 <first> = one <style> <room-1-7>;
+30 <oneandhalf> = one seventeen | one hundred seventeen |
+                  one hundred and seventeen;
+31 <second> = two <style> <room-1-7>;
+32 <third> = three <style> <room-all>;
+33 <RoomName> = [of] <Name> ;
+34 <Name> = <NameOnGroundFloor> | <NameOnSecondFloor> | <NameOnThirdFloor>;
+35 <NameOnThirdFloor> = manfred pinkal
+36 | vera demberg
+37 | annemarie friedrich
+38 | asad sayeed
+39 | andrea horbach
+40 | david howcroft
+41 | ekaterina kravtchenko
+42 | ashutosh modi
+43 | diana steffen
+44 | fatemeh torabi asr
+45 | jorrig vogels
+46 | lilian wanzare
+47 | alessandra zarcone
+48 | chiara gambi
+49 | ines rehbein
+50 | william blacoe
+51 | caroline sporleder
+52 | hongxia shi;
+53 <NameOnSecondFloor> = maria staudte
+54 | ingmar steiner
+55 | alexander hewer
+56 | arif khan
+57 | sebastien le maguer
+58 | mirjana sekicki
+59 | ross macdonald
+60 | nikolina koleva
+61 | christine ankener;
+62 <NameOnGroundFloor> = christoph clodo
+63 | bernd mechenbier;
+64 <To> = to | to the;
+65 <FloorRequestMiddle> = ((<Number> <AnyFloor>) | <PreciseFloor> | <Lab> | 
+                           <Bathroom> | <MovementWithoutGoal> |  
+                           <RoomWithNameOrNumber>);
+66 <FloorRequest> =  [(<StartPolite> | <PoliteRequest>)]  [<To>]
+                     <FloorRequestMiddle> [<EndPolite>];
+\end{verbatim}
 
 \cleardoublepage
 \bibliography{final_doc}
