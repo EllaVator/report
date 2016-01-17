@@ -442,12 +442,13 @@ The JFrame graphics output (line 40 and 54 to 71) creates a grid of the building
 In the ModuleElla file the controller is commented out at the moment, because the system is not yet connected to the elevator, which causes it to crash. 
 Because of this, the initial position of the elevator is also set to 0. 
 The information about the current position of the elevator is needed for commands like "one floor up".
-If it is not paused, the trigger (line 79) looks at the a_m (action variable) from the dialogue manager. 
+If it is not paused, the trigger (line 79) looks at the a\_m (action variable) from the dialogue manager. 
 If the variable is "Movefloor" then the correct floor is locked up and the changePosition is called. 
 ChangePosition (lines 102-124) maps the variables like "zero" and "zero point five" to the floors 0 to 5.
 The pushButton call to the controller is again commented out in lines 127 to 129, because the controller does not work.
 The JFrame graphics are updated to the new position (line 131). 
 There are also two methods for OpenDial, one for pausing it (line 145) and one to see if it is paused (line 153).
+Keep in mind that ModuleElla has never been tested in conjunction with the rest of the system, so the implementation is more of a draft one. Basically the whole code was taken from OpenDial module examples and slightly modified to fit our purposes.
 
 
 \newpage
@@ -607,12 +608,22 @@ One can also send a special "heartbeat" signal that will make the elevator respo
 So, when the user enters the elevator cabin and asks to be taken to a certain floor, the user utterance is recognized and the corresponding floor signal is sent.
 After the elevator receives the signal it should close the doors and start moving if everything went well.
 
-% we need a few pics here when we finish the setup
-%\begin{figure}
-%\center{\includegraphics[scale=0.10, angle=-90]{setup_reverberation_rec.jpg}}
-%\caption{Recordings setup.}
-%\label{fig:recordingsetup}
-%\end{figure}
+Before trying our demo implementation on the elevator we attempted to connect Raspberry Pi with a laptop with a serial port connector. 
+Unfortunately we were not able to find the "right" combination of pins after the official didn't work. 
+Here are couple~\ref{fig:serialsetup1} \ref{fig:serialsetup2} of \textbf{incorrect} pin connection screenshots included for historical purposes.\\
+
+% we need a few 0pics here when we finish the setup
+\begin{figure}
+\center{\includegraphics[scale=0.25, angle=0]{bad_serial_setup3.JPG}}
+\caption{Grey: GROUND, purple: TRANSMIT, blue: RECEIVE}
+\label{fig:serialsetup1}
+\end{figure}
+
+\begin{figure}
+\center{\includegraphics[scale=0.45, angle=0]{bad_serial_setup4.JPG}}
+\caption{Grey: GROUND, purple: TRANSMIT, blue: RECEIVE}
+\label{fig:serialsetup2}
+\end{figure}
 
 \begin{comment}
 \begin{figure}%
@@ -646,12 +657,16 @@ After the elevator receives the signal it should close the doors and start movin
 \end{figure*}
 \end{comment}
 
-\todo{TODO: a few images of the setup.}
 Before working on serial implementation several java libraries for serial communication were reviewed: pi4j, javax.comm, RXTX.
 It was decided to stay with RXTX, since pi4j was not stable enough and javax.comm didn't have freely available sources.
 Serial implementation follows mainly RXTX examples provided \href{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}{online} as well as source files of the original project.
 For example, floor hex codes and "heartbeat" signal were taken from the original source code.
 Several methods from old source files were also used, like the ones that deal with "heartbeat" processing logic.
+It should me mentioned that original implementation used javax.comm library which worked fine under Windows but crashed on Linux.
+We tried several workarounds suggested on official Sun forums. 
+Unfortunately it didn't help and we gave up on javax.comm eventually. 
+Pi4j on the other hand looked promising but still in beta state. 
+If anything was not working, pi4j developers advised us to try the very last package version, which never worked for us anyway.
 
 \subsection{Serial cable connection setup}
 \label{sec:Serial_cable_connection_setup}
@@ -659,13 +674,16 @@ Raspberry Pi 2 should be connected to the elevator via DE-9 type serial port.
 After numerous unsuccessful attempts to connect Raspi to the serial port via its GPIO pins, a USB to serial converter was used.
 The new converter worked fine out-of-the-box.
 Test signals via serial port from Raspi to desktop PC and vice versa were successfully sent.
-After running several tests between Raspi and desktop PC we decided to test serial connection to the elevator.
+After running several tests between Raspi and desktop PC we decided to test serial connection to the elevator but using a laptop PC with a classic serial connection setup. 
+For this purpose we implemented a small java script that used RXTX library and accepted console input in a form of a floor string. 
+After the user input the test script sent the corresponding signal to the elevator via a serial cable. 
+We were able to correctly send the elevator to the desired floor. When we were sure that RXTX serial implementation worked via classical serial cable we decided to test it on Rasppi but through USB to serial converter.
 
-Signals could be send to the elevator via the serial port, but the elevator was able to move only to one specific floor (0.5 which corresponds to 1 floor).
-The signal was interpreted by the elevator as a command to move to floor 1.
-This might be due to insufficient power (5V) of Raspi USB to serial connector.
+Unfortunately, while the test script was working correctly and signals could be send to the elevator, the elevator was able to move only to the first floor no matter which we tried it to send to. 
+Moreover the elevator responded to the first few inputs only and stayed unresponsive no matter what input we provided later. After we restarted the system and tried again, the elevator responded to the first input again and stayed unresponsive afterwards.
+This issue might be due to insufficient power (5V) of Raspi USB to serial connector.
 The signal gets garbled upon transmission.
-If the serial port power could be boosted up to 12V the connection should stabilize and work correctly.
+If the serial port power could be boosted up to 12V the connection should stabilize and work correctly. 
 
 
 \subsection{Serial connection implementation}
