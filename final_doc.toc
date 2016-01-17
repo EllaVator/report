@@ -24,7 +24,7 @@
 \contentsline {section}{\numberline {8}Serial control of the elevator}{20}{section.8}
 \contentsline {subsection}{\numberline {8.1}Serial cable connection setup}{20}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Serial connection implementation}{22}{subsection.8.2}
-\contentsline {subsection}{\numberline {8.3}Serail port testing}{22}{subsection.8.3}
+\contentsline {subsection}{\numberline {8.3}Serail port testing}{23}{subsection.8.3}
 \contentsline {section}{\numberline {9}Development tools}{24}{section.9}
 \contentsline {subsection}{\numberline {9.1}Gradle}{24}{subsection.9.1}
 \contentsline {subsection}{\numberline {9.2}GitHub}{24}{subsection.9.2}
