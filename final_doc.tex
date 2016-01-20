@@ -51,9 +51,6 @@ The result of this project was an interdisciplinary work with the department of 
 Since then, the elevator has been in normal use for transporting people, but it also serves to introduce guests and students to one of the many fields of the application for computational linguistic;
 To show them the possibilities of such an application as well as its limits. \newline
 \subsection{Previous implementation}
-\todo{re write this paragraph as: Issues with previous implemenation}\\
-\todo{some points: Hang up unexpectedly, wrong floors entry, wrong language recognition, asking for input repeatedly}\\
-\todo{some points: Old hardware, Had to be rebooted frequently}\\
 The software project for the speaking elevator had since then been repeated to give students the opportunity 
 of experiencing the procedure of working together on a real application while trying to further develop the speaking elevator.
 In summer 2015, it was decided to work on the software as well as to replace part of the hardware.
@@ -217,18 +214,9 @@ It might be more natural to enable the system to take more then one request.\\
 Another problem that arose when thinking about the scenario of more than one person entering the elevator, was that they might not share the same language.
 For the project EllaVator an English as well as a German version of the system is provided.
 So the problem was not only to allow for multiple inputs but also for multiple inputs in different languages.\\
-\newline
-
-\textbf{
-  \begin{center}Switching between languages... \\
-    \underline{Our thoughts on this are collected in ticket 80}\\
-    @Naska \\
-    @Laura \\
-    does one of you feel like writing a little about this issue?
-\end{center}}
 
 
-
+\newpage
 \section{The EllaVator JSGF grammars}
 The JSpeech Grammar Format (JSGF) is a platform-independent textual representation of grammars for use in speech recognition.
 The EllaVator project uses two grammars, one for German and one for English. 
@@ -266,12 +254,6 @@ There's also the possibility to use the special rulenames $<$NULL$>$ and $<$VOID
 $<$NULL$>$ defines a rule that is automatically matched without the user speaking a word. 
 $<$VOID$>$ is the rule that can never be spoken.
 Due to the the small size of the elevator domain, only the most basic mechanisms were needed. 
-
-
-
-
-
-
 
 \newpage
 \section{Dialog manager}
@@ -479,6 +461,7 @@ The effect of this rule is saved in a variable but also used as output for speec
 The example above shows one rule from an NLG module.
 In this rule, a variable to which a function  is assigned, triggers the speech output of an acknowledgement from the system.
 
+\newpage
 \section{ModuleElla - from OpenDial to the elevator}
 The Java module ModuleElla serves as a connection between the OpenDial module and the elevator controller. 
 It transforms the information from the dialogue manager about the movement of the elevator cabin into a digit which is then handed on to the controller. 
@@ -660,7 +643,7 @@ Here are couple~\ref{fig:serialsetup1} \ref{fig:serialsetup2} of \textbf{incorre
 
 % we need a few 0pics here when we finish the setup
 \begin{figure}
-\center{\includegraphics[scale=0.25, angle=0]{bad_serial_setup3.JPG}}
+\center{\includegraphics[width=10.0cm, angle=0]{bad_serial_setup3.JPG}}
 \caption{Grey: GROUND, purple: TRANSMIT, blue: RECEIVE}
 \label{fig:serialsetup1}
 \end{figure}
