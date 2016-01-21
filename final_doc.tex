@@ -169,10 +169,8 @@ While the recordings were being played, the elevator was moved between the floor
 \newpage
 \section{General thoughts}
 \label{sec:General_thoughts}
-Before actually starting to work on the dialogue itself, it was first decided how a dialogue with the EllaVator should look like. \\
-
-The Participants came up with the following model: \\
-
+Before actually starting to work on the dialogue itself, it was first decided how a dialogue with the EllaVator 
+should look like. The Participants came up with the following model: \\ 
 
 \begin{figure} [ht]
   \center{\includegraphics[scale=0.8, angle=0]{Dialogue_model.jpeg}}
@@ -222,16 +220,16 @@ It might be more natural to enable the system to take more then one request.\\
 A problem that arose when thinking about the scenario of more than one person entering the elevator, was that they might not share the same language.
 For the project EllaVator an English as well as a German version of the system is provided.
 So the problem was not only to allow for multiple inputs but also for multiple inputs in different languages.\\
-The software Sphinx is able to distinguish between languages. 
+Sphinx is able to distinguish between languages. 
 It has to be run with the configuration for every language that should be understood by the system.
 One the system is given input it will choose the language that yields the highest probability for the input.
-We did use Sphinx for the speech-recognition, not as a standalone Software, but as a plug-in for OpenDial.\\
+We did use Sphinx for the speech-recognition as a plug-in for OpenDial not as a
+standalone software.\\
 \newline
 For the EllaVator project the lines of code that would yield the recognition probability are currently commented out.
-Instead, a fixed probability was used, as there were difficulties with retrieving scored N-Best lists from Sphinx if the language model is grammar-based, which is the case for EllaVator.\\
+Instead, a fixed probability was used, as there were difficulties with
+retrieving scored N-Best lists from sphinx if the language model is grammar-based, which is the case for EllaVator.\\
 This problem could possibly be solved by using a confidence scorer.
-
-
 
 
 \newpage
