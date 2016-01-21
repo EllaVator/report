@@ -218,9 +218,20 @@ Of course it would be possible to just run the dialogue with one person, take th
 This approach might however be inconvenient.
 It might be more natural to enable the system to take more then one request.\\
 
-Another problem that arose when thinking about the scenario of more than one person entering the elevator, was that they might not share the same language.
+
+A problem that arose when thinking about the scenario of more than one person entering the elevator, was that they might not share the same language.
 For the project EllaVator an English as well as a German version of the system is provided.
 So the problem was not only to allow for multiple inputs but also for multiple inputs in different languages.\\
+The software Sphinx is able to distinguish between languages. 
+It has to be run with the configuration for every language that should be understood by the system.
+One the system is given input it will choose the language that yields the highest probability for the input.
+We did use Sphinx for the speech-recognition, not as a standalone Software, but as a plug-in for OpenDial.\\
+\newline
+For the EllaVator project the lines of code that would yield the recognition probability are currently commented out.
+Instead, a fixed probability was used, as there were difficulties with retrieving scored N-Best lists from Sphinx if the language model is grammar-based, which is the case for EllaVator.\\
+This problem could possibly be solved by using a confidence scorer.
+
+
 
 
 \newpage
