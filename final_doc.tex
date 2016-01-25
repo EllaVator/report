@@ -5,6 +5,7 @@
 \usepackage{setspace}
 \usepackage{url}
 \usepackage{hyperref}
+\usepackage[all]{hypcap}
 \usepackage{longtable}
 \usepackage{lscape}
 \usepackage[final]{pdfpages}
@@ -95,7 +96,7 @@ Speech recognition is a complex technology which involves many fields, such as p
 \end{figure}
 
 
-If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$, \dots \dots, $w_N$, then the decoder will try to find the most probable word sequence $\hat{W}$, given the sequence of acoustic vectors, $Y$ = $y_1$, $y_2$, \dots \dots, $y_T$. Using Byes rule, the probability of a word given an observation $P(W/Y)$ can be found as:
+If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$, \dots \dots, $w_N$, then the decoder will try to find the most probable word sequence $\hat{W}$, given the sequence of acoustic vectors, $Y$ = $y_1$, $y_2$, \dots \dots, $y_T$. Using Bayes' rule, the probability of a word given an observation $P(W/Y)$ can be found as:
 \begin{equation}
 \label{equ:bayes_rule}
 \hat{W} = \argmax P(W/Y) = \argmax\frac{P(W)P(Y/W)}{P(Y)}.
@@ -121,7 +122,7 @@ where $c(w_{k-2},w_{k-1},w_k)$, specifies the number of times, the words $w_{k-2
 
 \subsection{Language model for the elevator}
 For the elevator, a grammar-based language model was used, since the vocabulary size is small and the possible commands to the elevator can be modelled by the grammar.
-It consists of a set of two simple grammars, one in German and one in English, in the JSGF format\footnote{http://www.w3.org/TR/jsgf/} that is usable with Sphinx.
+It consists of a set of two simple grammars, one in German and one in English, in the JSGF format\footnote{\url{http://www.w3.org/TR/jsgf/}} that is usable with Sphinx.
 
 
 \subsection{Dictionaries for the elevator domain}\label{dicts}
@@ -130,12 +131,12 @@ They both contain just under 200 words with their respective phonetic transcript
 The vocabulary is made up of the names of the people working in building C7.4, as well as numbers, room names such as "laboratory" or "restrooms" and all other words relevant to the limited elevator domain.
 Each of the words is followed by its phonetic transcription in the ARPAbet phoneme set.
 The ARPAbet maps each of its currently 39 phonemes to one single or a pair of ASCII characters.
-The English dictionary is based on the CMU Pronouncing Dictionary\footnote{Lenzo, Kevin. \textit{The CMU Pronouncing Dictionary.} http://www.speech.cs.cmu.edu/cgi-bin/cmudict}, an open-source  machine-readable pronunciation dictionary for North American English.
-Words that could not be found in the existing CMU dictionary, which was mainly the case for proper nouns, were entered into the LOGIOS lexicon tool.\footnote{\textit{LOGIOS Lexicon Tool}. http://www.speech.cs.cmu.edu/tools/lextool.html}
+The English dictionary is based on the CMU Pronouncing Dictionary\footnote{Lenzo, Kevin. \textit{The CMU Pronouncing Dictionary.} \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}}, an open-source  machine-readable pronunciation dictionary for North American English.
+Words that could not be found in the existing CMU dictionary, which was mainly the case for proper nouns, were entered into the LOGIOS lexicon tool.\footnote{\textit{LOGIOS Lexicon Tool}. \url{http://www.speech.cs.cmu.edu/tools/lextool.html}}
 
 
 The German dictionary is based on the voxforge German CMU dictionary which can be found via sourceforge.%
-\footnote{CMU Sphinx. Speech Recognition Toolkit. Slashdot Media, 2016. http://sourceforge.net/projects/cmusphinx/?source=typ\_redirect}
+\footnote{CMU Sphinx. Speech Recognition Toolkit. Slashdot Media, 2016. \url{http://cmusphinx.sourceforge.net/}}
 
 
 
@@ -154,7 +155,7 @@ The German dictionary is based on the voxforge German CMU dictionary which can b
 
 
 To train the acoustic model for the elevator, recordings of elevator-specific commands and phonetically balanced sentences in both English and German were made.
-Lists one and two  of the Harvard sentences\footnote{Harvard Sentences. http://www.cs.columbia.edu/~hgs/audio/harvard.html} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE} were used for German.
+Lists one and two  of the Harvard sentences\footnote{Harvard Sentences. \url{http://www.cs.columbia.edu/~hgs/audio/harvard.html}} were used as phonetically balanced sentences in English and twenty sentences taken from BITS\footnote{\url{http://www.bas.uni-muenchen.de/forschung/Bas/BasBITSUSTABLE}} were used for German.
 The full list of sentences which have been used can be found in the appendix \ref{prompts}.
 The sentences were read by all of the participants and recorded in a sound proof studio.
 This resulted in recordings of English sentences spoken by non-natives and German sentences spoken by natives and by non-natives.
@@ -237,10 +238,10 @@ This problem could possibly be solved by using a confidence scorer.
 The JSpeech Grammar Format (JSGF) is a platform-independent textual representation of grammars for use in speech recognition.
 The EllaVator project uses two grammars, one for German and one for English.
 They define the set of utterances a user may say, i.e. the utterances the speech recognizer "listens for."
-The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{ Speech Grammar Format. \textit{W3CNote}. http://www.w3.org/TR/jsgf}
+The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{ JSpeech Grammar Format. \textit{W3CNote}. \url{http://www.w3.org/TR/jsgf}}
 
-In the following, the English EllaVator JSGF file (appendix \ref{grammar} is used to explain the most essential elements of JSGF.
-The grammar consists of two parts, the grammar header (lines 1 and ) and the grammar body (lines 3 to 66).
+In the following, the English EllaVator JSGF file (appendix \ref{grammar}) is used to explain the most essential elements of JSGF.
+The grammar consists of two parts, the grammar header (lines 1 and 2) and the grammar body (lines 3 to 66).
 Line 1 indicates the version of JSGF used in the file, line 2 contains the unique self-identifying name of the grammar.
 The header may also contain declarations of rules imported from other grammars.
 
@@ -295,7 +296,7 @@ For more detailed description, see section ~\ref{sec:opendial}.
 \label{sec:opendial}
 Opendial was used to implement not only the dialogue manager,  but also the main class: the dialogue system.
 Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text-to-speech (TTS) system.
-A collection fo plugins was used to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speech.
+A collection of plugins was used to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speech.
 This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module.
 The main component that has to be implemented for the dialogue manager is the domain file. \\
 \indent Like most dialogue managers Opendial also consists of three different components which interact to create a dialogue.
@@ -322,7 +323,7 @@ This file provides instructions for the system on what to do.
 The user's input will be first transformed into an XML structure and then further processed.
 Some systems fill this structure with semantic information.
 OpenDial however basically passes variables through the components of the system.
-The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue.
+The dialogue designer can then assign values to those variables which will ultimately determine the flow of the dialogue.
 There is a convention for the naming of the variables, they can however be named to the dialogue designers liking.
 As all information is being passed through variables the correct naming is important though.
 All three components have a slot ”trigger” at the very beginning of their structure.
@@ -331,7 +332,7 @@ For example giving the component this trigger:
 \textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”. \\
 
 
-So the variables in OpenDial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
+So the variables in OpenDial do not only carry the value through the system but their names also determine which module should continue to process that variable.
 The most common way to link them was described in the previous section.
 Having the NLU module process the user's input, the dialogue manager process that input and then responding using the NLG module.
 In case there is no further processing needed one might also decide to directly link NLU module to NLG module.
@@ -522,7 +523,7 @@ This allows the user to take a look at the output of each of those components.
 One could also interchange small details in one component and observe the output on the complete system, as well as completely interchanging a component.
 In most cases these components were not specifically designed for Mary.
 It would go beyond the scope of this paper to mention all of them.
-Detailed information can be found on the website \url{http://mary.dfki.de/ }.
+Detailed information can be found on the website \url{http://mary.dfki.de/}.
 
 \subsubsection*{Input}
 
@@ -594,12 +595,12 @@ After this step the skeleton which has been created at the beginning of the proc
 \subsubsection*{Calculation of acoustic parameters}
 
 This module will abandon the structure of the MaryXML structure.
-Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
+Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the formant 0, or the fundamental frequency of a voice and indicates the pitch.}
 
 \subsubsection*{Synthesis}
 In this final step, the values acquired in earlier steps will at last be converted into sound.
 The modular architecture of Mary makes it easy to interchange the synthesis module as long as it supports the format of the output given by the previous module.
-Currently MBROLA ~\cite{dutoit1996mbrola} is used in by Mary, which was selected as it creates a low distortion in the signal.
+%Currently MBROLA ~\cite{dutoit1996mbrola} is used in by Mary, which was selected as it creates a low distortion in the signal.
 
 \newpage
 \section{Raspberry Pi}
@@ -655,7 +656,7 @@ After the elevator receives the signal it should close the doors and start movin
 
 Before trying our demo implementation on the elevator we attempted to connect Raspberry Pi with a laptop with a serial port connector.
 Unfortunately we were not able to find the "right" combination of pins after the official didn't work.
-Here are couple~\ref{fig:serialsetup1} \ref{fig:serialsetup2} of \textbf{incorrect} pin connection screenshots included for historical purposes.\\
+Here are couple (\autoref{fig:serialsetup1}, \autoref{fig:serialsetup2}) of \textbf{incorrect} pin connection screenshots included for historical purposes.\\
 
 % we need a few 0pics here when we finish the setup
 \begin{figure}
@@ -704,13 +705,15 @@ Here are couple~\ref{fig:serialsetup1} \ref{fig:serialsetup2} of \textbf{incorre
 
 Before working on serial implementation several java libraries for serial communication were reviewed: pi4j, javax.comm, RXTX.
 It was decided to stay with RXTX, since pi4j was not stable enough and javax.comm didn't have freely available sources.
-Serial implementation follows mainly RXTX examples provided \href{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}{online} as well as source files of the original project.
+Serial implementation follows mainly RXTX examples provided online%
+\footnote{\url{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}}
+as well as source files of the original project.
 For example, floor hex codes and "heartbeat" signal were taken from the original source code.
 Several methods from old source files were also used, like the ones that deal with "heartbeat" processing logic.
-It should me mentioned that original implementation used javax.comm library which worked fine under Windows but crashed on Linux.
+It should be mentioned that the original implementation used javax.comm library which worked fine under Windows but crashed on Linux.
 We tried several workarounds suggested on official Sun forums.
 Unfortunately it didn't help and we gave up on javax.comm eventually.
-Pi4j on the other hand looked promising but still in beta state.
+Pi4j on the other hand looked promising but is still in beta state.
 If anything was not working, pi4j developers advised us to try the very last package version, which never worked for us anyway.
 
 \subsection{Serial cable connection setup}
@@ -734,12 +737,13 @@ If the serial port power could be boosted up to 12V the connection should stabil
 \subsection{Serial connection implementation}
 Within the EllaVator project you can find the following classes that handle serial connection and data transmission between Raspberry Pi and the elevator: \texttt{ElevatorController.java, SerialControllerInterface.java, SerialPortController.java}.\\
 \texttt{ElevatorController.java} is basically a wrapper class that instantiates \texttt{SerialPortController} with predefined constant values for serial connection.
-These values are important and should not be changed unless you decide to replace Raspberri Pi.\\
+These values are important and should not be changed unless you decide to replace Raspberri Pi.%
+\footnote{See \url{https://en.wikipedia.org/wiki/Serial_port} for details}\\
 Serial port name = \textbf{\texttt{/dev/ttyAMA0}} default serial port on Raspberry Pi.\\
-\href{https://en.wikipedia.org/wiki/Serial\_port\#Speed}{Baudrate} = \textbf{38400} proved to work well with our implementation.\\
-\href{https://en.wikipedia.org/wiki/Serial\_port\#Data_bits}{Bits} = use \textbf{8} bits.\\
-\href{https://en.wikipedia.org/wiki/Serial\_port\#Stop_bits}{Stopbits} = use \textbf{1}.\\
-\href{https://en.wikipedia.org/wiki/Serial\_port\#Parity}{Data correction or Parity} = set to \textbf{NO\_PARITY}.\\
+Baudrate = \textbf{38400} proved to work well with our implementation.\\
+Bits = use \textbf{8} bits.\\
+Stopbits = use \textbf{1}.\\
+Data correction or Parity = set to \textbf{NO\_PARITY}.\\
 
 All the constants are kept in \texttt{SerialControllerInterface.java} class.
 After instantiating \texttt{SerialPortController} the following public methods become available through \texttt{ElevatorController} class: \texttt{getCurrentFloor()} and \texttt{pushButton()}.
@@ -750,7 +754,7 @@ This method triggers \texttt{getReceivedBytes}, \texttt{findValidSubstrings} (ta
 Method \texttt{findValidSubstrings} triggers \texttt{addByteStringToArrayList}.
 Each method is accompanied by extensive information, please read it first.
 
-\subsection{Serail port testing}
+\subsection{Serial port testing}
 It is technically impossible to test Raspi and elevator connection without opening the elevator control panel.
 Therefore, an old laptop with serial port and a desktop PC were used.
 For testing purposes several python scripts, pi4j java testing tools and a small RXTX java implementation were written.
@@ -787,19 +791,19 @@ A reason for this might be that Raspi simply does not have enough power to suppo
 \section{Development tools}
 \label{sec:Development_tools}
 \subsection{Gradle}
-Gradle\footnote{http://gradle.org/} is a build automation tool and simplifies the build process drastically.
+Gradle\footnote{\url{http://gradle.org/}} is a build automation tool and simplifies the build process drastically.
 Instead of having a readme file that explains how to build the project, building the project is as easy as executing \texttt{./gradlew build} on the command line.
 
 Gradle is configured in the file \texttt{build.gradle}.
-Although it looks like a configuration file, it is actually fully functional code written in Groovy\footnote{http://www.groovy-lang.org/}, a scripting language based on Java.
+Although it looks like a configuration file, it is actually fully functional code written in Groovy\footnote{\url{http://www.groovy-lang.org/}}, a scripting language based on Java.
 
 A Gradle wrapper was included in the repository.
 This file called \texttt{gradlew} (and \texttt{gradle.bat} for windows) downloads and runs the right Gradle version when executed.
 It is recommended to use this file instead of any other locally installed Gradle, because it might be another version of Gradle.
 
 The file \texttt{settings.gradle} specifies the gradle project structure by declaring several subprojects.
-There is the opendial subproject, which is a copy of the dialog manager OpenDial\footnote{http://www.opendial-toolkit.net/}.
-Next ther is the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4~\cite{Walker:2004:SFO:1698193}.
+There is the opendial subproject, which is a copy of the dialog manager OpenDial\footnote{\url{http://www.opendial-toolkit.net/}}.
+Next there is the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4~\cite{Walker:2004:SFO:1698193}.
 These subprojects are all forked on github from the originals, eventually adapted for the purposes of this project and then included as a git submodule.
 Finally there is a subproject called prompts, that is our own making.
 It contains example audio prompts for this project, that are used for the acoustic model training and for testing.
@@ -853,7 +857,7 @@ While unit tests are thought to test small components (e.g. classes) in isolatio
 Seeing time constraints and also lack of experience, the decision was made not to be as strict with testing, and to put a focus on integration testing.
 All tests are placed in the \texttt{test} source set, i.e. under \texttt{src/test}.
 There they can be found automatically by gradle when executing \texttt{./gradlew test} in the commandline.
-TestNG\footnote{http://testng.org/doc/} was used as testing framework in this project.
+TestNG\footnote{\url{http://testng.org/doc/}} was used as testing framework in this project.
 
 As an example let us have a look at the test called \texttt{SpeechIOTest} in \texttt{src/test/groovy}.
 
@@ -1049,6 +1053,7 @@ Now you can build or run the project using one of the following commands:
 
 
 \subsection{English JSGF grammar}
+\label{grammar}
 \begin{verbatim}
  1 #JSGF V1.0 ;
  2 grammar elevator_english;
