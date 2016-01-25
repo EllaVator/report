@@ -95,7 +95,7 @@ Speech recognition is a complex technology which involves many fields, such as p
 \end{figure}
 
 
-If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$, \dots \dots, $w_N$, then the decoder will try to find the most probable word sequence $\hat{W}$, given the sequence of acoustic vectors, $Y$ = $y_1$, $y_2$, \dots \dots, $y_T$. Using Byes rule, the probability of a word given an observation $P(W/Y)$ can be found as:
+If an utterance is represented as a sequence of words, $W$ = $w_1$, $w_2$, $w_3$, \dots \dots, $w_N$, then the decoder will try to find the most probable word sequence $\hat{W}$, given the sequence of acoustic vectors, $Y$ = $y_1$, $y_2$, \dots \dots, $y_T$. Using Bayes' rule, the probability of a word given an observation $P(W/Y)$ can be found as:
 \begin{equation}
 \label{equ:bayes_rule}
 \hat{W} = \argmax P(W/Y) = \argmax\frac{P(W)P(Y/W)}{P(Y)}.
@@ -239,8 +239,8 @@ The EllaVator project uses two grammars, one for German and one for English.
 They define the set of utterances a user may say, i.e. the utterances the speech recognizer "listens for."
 The JSGF uses the style and conventions of Java, as well as those of traditional grammar notations.\footnote{ Speech Grammar Format. \textit{W3CNote}. http://www.w3.org/TR/jsgf}
 
-In the following, the English EllaVator JSGF file (appendix \ref{grammar} is used to explain the most essential elements of JSGF.
-The grammar consists of two parts, the grammar header (lines 1 and ) and the grammar body (lines 3 to 66).
+In the following, the English EllaVator JSGF file (appendix \ref{grammar}) is used to explain the most essential elements of JSGF.
+The grammar consists of two parts, the grammar header (lines 1 and 2) and the grammar body (lines 3 to 66).
 Line 1 indicates the version of JSGF used in the file, line 2 contains the unique self-identifying name of the grammar.
 The header may also contain declarations of rules imported from other grammars.
 
@@ -295,7 +295,7 @@ For more detailed description, see section ~\ref{sec:opendial}.
 \label{sec:opendial}
 Opendial was used to implement not only the dialogue manager,  but also the main class: the dialogue system.
 Opendial handles the whole dialogue system, which consists of the automatic speech recognition (ASR), the dialogue manager and the text-to-speech (TTS) system.
-A collection fo plugins was used to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speech.
+A collection of plugins was used to connect external plugins to the dialogue system: Sphinx 4 ~\cite{Walker:2004:SFO:1698193} for ASR and MaryTTS ~\cite{marytts} for text to speech.
 This means that Opendial takes care of updating the dialogue manager's variables on speech input (coming from the ASR module), and forwarding the dialogue manager's output to the text to speech module.
 The main component that has to be implemented for the dialogue manager is the domain file. \\
 \indent Like most dialogue managers Opendial also consists of three different components which interact to create a dialogue.
@@ -322,7 +322,7 @@ This file provides instructions for the system on what to do.
 The user's input will be first transformed into an XML structure and then further processed.
 Some systems fill this structure with semantic information.
 OpenDial however basically passes variables through the components of the system.
-The dialogue designer can then assigns values to those variables which will ultimately determine the flow of the dialogue.
+The dialogue designer can then assign values to those variables which will ultimately determine the flow of the dialogue.
 There is a convention for the naming of the variables, they can however be named to the dialogue designers liking.
 As all information is being passed through variables the correct naming is important though.
 All three components have a slot ”trigger” at the very beginning of their structure.
@@ -331,7 +331,7 @@ For example giving the component this trigger:
 \textless model trigger=”a\_u” \textgreater will make it respond to all variables with the name ”a\_u”. \\
 
 
-So the variables in OpenDial do not only carry the value through the system but their names also determinate which module should continue to process that variable.
+So the variables in OpenDial do not only carry the value through the system but their names also determine which module should continue to process that variable.
 The most common way to link them was described in the previous section.
 Having the NLU module process the user's input, the dialogue manager process that input and then responding using the NLG module.
 In case there is no further processing needed one might also decide to directly link NLU module to NLG module.
@@ -594,7 +594,7 @@ After this step the skeleton which has been created at the beginning of the proc
 \subsubsection*{Calculation of acoustic parameters}
 
 This module will abandon the structure of the MaryXML structure.
-Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the format 0, or the fundamental frequency of a voice and indicates the pitch.}
+Instead, the output will be a list of segments, their duration and the corresponding F0 value \footnote {The F0 value is a number describing the formant 0, or the fundamental frequency of a voice and indicates the pitch.}
 
 \subsubsection*{Synthesis}
 In this final step, the values acquired in earlier steps will at last be converted into sound.
@@ -707,10 +707,10 @@ It was decided to stay with RXTX, since pi4j was not stable enough and javax.com
 Serial implementation follows mainly RXTX examples provided \href{http://rxtx.qbang.org/wiki/index.php/Two_way_communcation_with_the_serial_port}{online} as well as source files of the original project.
 For example, floor hex codes and "heartbeat" signal were taken from the original source code.
 Several methods from old source files were also used, like the ones that deal with "heartbeat" processing logic.
-It should me mentioned that original implementation used javax.comm library which worked fine under Windows but crashed on Linux.
+It should be mentioned that the original implementation used javax.comm library which worked fine under Windows but crashed on Linux.
 We tried several workarounds suggested on official Sun forums.
 Unfortunately it didn't help and we gave up on javax.comm eventually.
-Pi4j on the other hand looked promising but still in beta state.
+Pi4j on the other hand looked promising but is still in beta state.
 If anything was not working, pi4j developers advised us to try the very last package version, which never worked for us anyway.
 
 \subsection{Serial cable connection setup}
@@ -750,7 +750,7 @@ This method triggers \texttt{getReceivedBytes}, \texttt{findValidSubstrings} (ta
 Method \texttt{findValidSubstrings} triggers \texttt{addByteStringToArrayList}.
 Each method is accompanied by extensive information, please read it first.
 
-\subsection{Serail port testing}
+\subsection{Serial port testing}
 It is technically impossible to test Raspi and elevator connection without opening the elevator control panel.
 Therefore, an old laptop with serial port and a desktop PC were used.
 For testing purposes several python scripts, pi4j java testing tools and a small RXTX java implementation were written.
@@ -799,7 +799,7 @@ It is recommended to use this file instead of any other locally installed Gradle
 
 The file \texttt{settings.gradle} specifies the gradle project structure by declaring several subprojects.
 There is the opendial subproject, which is a copy of the dialog manager OpenDial\footnote{http://www.opendial-toolkit.net/}.
-Next ther is the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4~\cite{Walker:2004:SFO:1698193}.
+Next there is the sphinx4 subproject, consisting of sphinx4-core and sphinx4-data, which is a copy of the speech recognition software Sphinx4~\cite{Walker:2004:SFO:1698193}.
 These subprojects are all forked on github from the originals, eventually adapted for the purposes of this project and then included as a git submodule.
 Finally there is a subproject called prompts, that is our own making.
 It contains example audio prompts for this project, that are used for the acoustic model training and for testing.
